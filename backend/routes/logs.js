@@ -41,20 +41,25 @@ router.post('/upload', function(req, res, next){
       res.send({ message : 'File type mismatch' });
     } else{
       // Everything went fine.
-      LogModelObj = new LogModel({
-        logName : req.body.fileName,
-        logType : req.body.logType,
-        logLink : req.file.path,
-        logSize :  req.file.size,
-      });
-
-      LogModelObj.save(function(err , logDetails){
-        if(err){
-          res.send({message:'Unable to add Object'});
-        }else{
-          res.send({ message : 'Log Added', log : logDetails })
-        }
-      });
+      if(req.file){
+        LogModelObj = new LogModel({
+          logName : req.body.fileName,
+          logType : req.body.logType,
+          logLink : req.file.path,
+          logSize :  req.file.size,
+        });
+  
+        LogModelObj.save(function(err , logDetails){
+          if(err){
+            res.send({message:'Unable to add Object'});
+          }else{
+            res.send({ message : 'Log Added', log : logDetails })
+          }
+        });
+      }else{
+        res.send({ message : 'No file selected' });
+      }
+      
     } 
   });
 });

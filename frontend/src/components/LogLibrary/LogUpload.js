@@ -5,9 +5,11 @@ const LogUpload = () => {
 	const [file, setFile] = useState(null);
 	const [fileName, setFileName] = useState('');
 	const [logType, setLogType] = useState('');
+	const [message, setMessage] = useState({color: null, text : null});
+	const [isUploading, setIsUploading] = useState(false);
 
 	const uploadLog = () => {
-
+		setIsUploading(true);
 		const data = new FormData();
         data.append('upload_file', file );
         data.append('fileName', fileName);
@@ -23,7 +25,12 @@ const LogUpload = () => {
 	}
 
 	const handleUpload = (data) => {
-		console.log(data.message);
+		if(data.log){
+			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
+		}else{
+			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
+		}
+		setIsUploading(false);
 	}
 
     return (
@@ -57,15 +64,18 @@ const LogUpload = () => {
 							<input
 							type = "file"
 							name = "file_l"
-							onChange = {(e) => {setFile(e.target.files[0])}}
+							onChange = {(e) => {setFile(e.target.files[0]);setIsUploading(false);}}
 							className = "form-control"
 							placeholder="" 
 							/>
 						</div>
 						
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 						
 						<div className = "box-footer">
-							<button type="button" onClick={uploadLog} className = "btn btn-primary">
+							<button type="button" onClick={uploadLog} className = "btn btn-primary" disabled={isUploading}>
 								Submit
 							</button>
 							<button type="button" className="btn btn-outline-warning">Back</button>
