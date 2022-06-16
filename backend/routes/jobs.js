@@ -36,24 +36,13 @@ router.post('/update', async function(req, res, next){
 
     const jobObj = await JobModel.findOne({ _id: req.body._id }); // checking for Job
     if (jobObj) {
-        jobModelObj = new JobModel({
-          logSourceID : req.body.logSourceID ? req.body.logSourceID : jobObj.logSourceID,
-          frequency : req.body.frequency ? req.body.frequency : jobObj.frequency,
-          volume :  req.body.volume ? req.body.volume : jobObj.volume,
-          schedule : req.body.schedule ? req.body.schedule : jobObj.schedule,
-          date : req.body.date ? req.body.date : jobObj.date,
-          time : req.body.time ? req.body.time : jobObj.time,
-          sourceIP : req.body.sourceIP ? req.body.sourceIP : jobObj.sourceIP,
-          collectorIP : req.body.collectorIP ? req.body.collectorIP : jobObj.collectorIP,
-        });
-  
-        jobModelObj.save(function(err , jobDetails){
-          if(err){
-            res.send({message:'Unable to add Object'});
-          }else{
-            res.send({ message : 'Job Updated', job : jobDetails })
-          }
-        });
+      const jobObj = JobModel.findOneAndUpdate({  _id: req.body._id }, req.body, function(err, jobDetails){
+            if(err){
+              res.send({message:'Unable to add Object'});
+            }else{
+              res.send({ message : 'Job Updated', job : jobDetails });
+            }
+        });        
       }else{
         res.send({ message : "Job doesn't exists" });
       }
@@ -68,7 +57,7 @@ router.get('/view/:jobId', function(req, res, next) {
       if(err){
         res.send({message:'Unable to fetch Object'});
       }else{
-        res.send({message: 'Job fetched', image: jobObj});
+        res.send({message: 'Job fetched', job: jobObj});
       }
     });
   });
@@ -82,7 +71,7 @@ router.delete('/remove/:jobId', function(req, res, next) {
       if(err){
         res.send({message:'Unable to fetch Object'});
       }else{
-        res.send({message: 'Job deleted', jobDetails: jobObj});
+        res.send({message: 'Job deleted', job: jobObj});
       }
     });
   });
