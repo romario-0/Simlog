@@ -3,6 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 const path = require("path");
 const LogModel = require('../models/log.model');
+const LogTypeModel = require('../models/logType.model');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -44,11 +45,7 @@ router.post('/upload', function(req, res, next){
       if(req.file){
         LogModelObj = new LogModel({
           logName : req.body.fileName,
-          logType : {
-            logTypeId : req.body.logType.logTypeId,
-            logTypeName : req.body.logType.logTypeName,
-            grokPattern : req.body.logType.grokPattern
-        },
+          logTypeId : req.body.logTypeId,
           logLink : req.file.path,
           logSize :  req.file.size,
         });
@@ -69,17 +66,25 @@ router.post('/upload', function(req, res, next){
 });
 
 /* Read log details */
-router.get('/view/:logId', function(req, res, next) {
+router.get('/view/:logId', async function(req, res, next) {
 
     const logId = req.params.logId;
   
-    LogModel.findById(logId, function(err , logObj){
-      if(err){
-        res.send({message:'Unable to fetch Object'});
-      }else{
-        res.send({message: 'Log fetched', image: logObj});
-      }
-    });
+    const logObj = await LogModel.findById(logId);
+    if(!logObj){
+      res.send({message:'Unable to fetch Object'});
+    }else{
+      const logFullDetails = {
+        _id : logObj._id,
+        logName : logObj.logName,
+        logTypeId : logObj.logTypeId,
+        logLink : logObj.logLink,
+        logSize :  logObj.logSize,
+      };
+      const logType = await LogTypeModel.findById(logObj.logTypeId);
+      logFullDetails.logType = logType;
+      res.send({message: 'Log fetched', log: logFullDetails});    
+    }
   });
 
 /* Delete Log details */
