@@ -7,7 +7,7 @@ router.post('/save', async function(req, res, next){
 
     const logTypeObj = await LogTypeModel.findOne({ logTypeName: req.body.logTypeName }); // checking if logName is alreday existing or not
     if (!logTypeObj) {
-        logTypeModelObj = new logModel({
+        logTypeModelObj = new LogTypeModel({
           logTypeName : req.body.logTypeName,
           grokPattern : req.body.grokPattern
         });
