@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const CollectorDetails = () => {
     useEffect(() => {
 		if(id !== 0){
-        	fetch(`http://localhost:8000/collectors/view/${id}`).then( res => res.json() ).then( data => {setCollectorValue(data.collector)});
+        	fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/view/${id}`).then( res => res.json() ).then( data => {setCollectorValue(data.collector)});
 		}
     },[]);
     const {id} = useParams();
@@ -42,9 +42,9 @@ const CollectorDetails = () => {
         };
 
 		if(collectorId){
-			fetch('http://localhost:8000/collectors/update', requestOptions).then( res => res.json() ).then( data => handleData(data));
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}else{
-			fetch('http://localhost:8000/collectors/save', requestOptions).then( res => res.json() ).then( data => handleData(data));
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}
 	}
 
