@@ -2,33 +2,36 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CollectorDetails = () => {
-    useEffect(() => {
+    const {id} = useParams();
+	useEffect(() => {
 		if(id !== 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/view/${id}`).then( res => res.json() ).then( data => {setCollectorValue(data.collector)});
 		}
     },[]);
-    const {id} = useParams();
 
 	const [collectorId, setCollectorId] = useState('');
-	const [typeName, setTypeName] = useState('');
-	const [grokPattern, setGrokPattern] = useState('');
+	const [collectorName, setCollectorName] = useState('');
+	const [collectorIP, setCollectorIP] = useState('');
+	const [collectorPort, setCollectorPort] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
 
 	const setCollectorValue = (data) => {
-		setTypeName(data.collectorName);
-		setGrokPattern(data.grokPattern);
+		setCollectorName(data.collectorName);
+		setCollectorIP(data.collectorIP);
+		setCollectorPort(data.collectorPort);
 		setCollectorId(data._id); 
 		setIsLoading(false)
 	}
 
-	const savecollector = () => {
+	const saveCollector = () => {
 		setIsLoading(true);
 
 		const collectorObj = {
-			collectorName :  typeName, 
-			grokPattern
+			collectorName, 
+			collectorIP,
+			collectorPort
 		}
 
 		if(collectorId){
@@ -64,12 +67,13 @@ const CollectorDetails = () => {
 			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h2 className = "text-left"> Create New Log Collector </h2>
 				<div className = "card-body">
-					<form>
 						<div className ="form-group">
 							<label> Log Collector Name </label>
 							<input
 							type = "text"
 							name = "name"
+							value={collectorName}
+							onChange={e => setCollectorName(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Log Collector Name" 
 							/>
@@ -80,6 +84,8 @@ const CollectorDetails = () => {
 							<input
 							type = "text"
 							name = "collectorIp"
+							value={collectorIP}
+							onChange={e => setCollectorIP(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Log Collector Ip" 
 							/>
@@ -90,6 +96,8 @@ const CollectorDetails = () => {
 							<input
 							type = "text"
 							name = "collectorPort"
+							value={collectorPort}
+							onChange={e => setCollectorPort(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Log Collector Port" 
 							/>
@@ -98,13 +106,11 @@ const CollectorDetails = () => {
 						
 						
 						<div className = "box-footer">
-							<button className = "btn btn-primary">
+							<button className = "btn btn-primary" onClick={saveCollector}>
 								Submit
 							</button>
 							<button className="btn btn-outline-warning">Back</button>
 						</div>
-					</form>
-				
 				</div>
 			</div>
 		</div>

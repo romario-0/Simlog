@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const JobList = () => {
     return (
         <div>
-            <Link to={'/jobUpdate'}>Add new Job</Link>
+            <Link to={'/job/0'}>Add new Job</Link>
         </div>
     );
 }

@@ -68,7 +68,7 @@ const LogUpload = () => {
 						<div className ="form-group">
 							<label> Log Upload Type </label>
 							<select className = "form-control" onChange={(e) => setLogType(e.target.value)}>
-								<option selected="selected"  >-- Select Log Type --</option>
+								<option>-- Select Log Type --</option>
 								{typeOptions && createLogTypeOptions()}
 							</select>
 						</div>
