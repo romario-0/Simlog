@@ -13,6 +13,8 @@ const NavBar = () => {
                 <li className={selectedTab === 'LogLibrary' ? 'active' : ''}><Link to={'/logLibrary'} onClick={()=>setSelectedTab('LogLibrary')} >Log</Link></li>
                 <li className={selectedTab === 'LogTypes' ? 'active' : ''}><Link to={'/logTypes'} onClick={()=>setSelectedTab('LogTypes')} >Log Type</Link></li>
                 <li className={selectedTab === 'Jobs' ? 'active' : ''}><Link to={'/jobs'} onClick={()=>setSelectedTab('Jobs')} >Jobs</Link></li>
+                <li className={selectedTab === 'Sources' ? 'active' : ''}><Link to={'/sources'} onClick={()=>setSelectedTab('Sources')} >Sources</Link></li>
+                <li className={selectedTab === 'Collectors' ? 'active' : ''}><Link to={'/collectors'} onClick={()=>setSelectedTab('Collectors')} >Collectors</Link></li>
             </ul>
         </div>
     );
