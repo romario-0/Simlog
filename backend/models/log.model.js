@@ -2,11 +2,7 @@ const mongoose = require('mongoose');
 
 const LogSchema = mongoose.Schema({
     logName : String,
-    logType : {
-        logTypeId : String,
-        logTypeName : String,
-        grokPattern : String
-    },
+    logTypeId : String,
     logLink : String,
     logSize :  String,
     //uploadedBy : mongoose.SchemaTypes.ObjectId,

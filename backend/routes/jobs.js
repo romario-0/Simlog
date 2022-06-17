@@ -1,6 +1,8 @@
 var express = require('express');
 const router = express.Router();
 const JobModel = require('../models/job.model');
+const CollectorModel = require('../models/collector.model');
+const SourceModel = require('../models/source.model');
 
 /* Create new Job*/
 router.post('/save', async function(req, res, next){
@@ -9,14 +11,14 @@ router.post('/save', async function(req, res, next){
     if (!jobObj) {
         jobModelObj = new JobModel({
           jobName : req.body.jobName,
-          logSourceID : req.body.logSourceID,
+          logId : req.body.logId,
           frequency : req.body.frequency,
           volume :  req.body.volume,
           schedule : req.body.schedule,
           date : req.body.date,
           time : req.body.time,
-          sourceIP : req.body.sourceIP,
-          collectorIP : req.body.collectorIP,
+          sourceId : req.body.sourceId,
+          collectorId : req.body.collectorId,
         });
   
         jobModelObj.save(function(err , jobDetails){
@@ -49,17 +51,40 @@ router.post('/update', async function(req, res, next){
 });
 
 /* Read Job details */
-router.get('/view/:jobId', function(req, res, next) {
+router.get('/view/:jobId', async function(req, res, next) {
 
     const jobId = req.params.jobId;
+
+    const jobObj = await JobModel.findById(jobId);
+    if(!jobObj){
+      res.send({message:'Unable to fetch Object'});
+    }else{
+      const jobFullDetails = {
+        _id : jobObj._id,
+        jobName : jobObj.jobName,
+        logId : jobObj.logId,
+        frequency : jobObj.frequency,
+        volume :  jobObj.volume,
+        schedule : jobObj.schedule,
+        date : jobObj.date,
+        time : jobObj.time,
+        sourceId : jobObj.sourceId,
+        collectorId : jobObj.collectorId,
+      };
+      const source = await SourceModel.findById(jobObj.sourceId);
+      const collector = await CollectorModel.findById(jobObj.collectorId);
+      jobFullDetails.source = source;
+      jobFullDetails.collector = collector;
+      res.send({message: 'Log fetched', log: jobFullDetails});    
+    }
   
-    JobModel.findById(jobId, function(err , jobObj){
+    /*JobModel.findById(jobId, function(err , jobObj){
       if(err){
         res.send({message:'Unable to fetch Object'});
       }else{
         res.send({message: 'Job fetched', job: jobObj});
       }
-    });
+    });*/
   });
 
 /* Delete Job details */
