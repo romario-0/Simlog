@@ -44,7 +44,7 @@ router.post('/upload', function(req, res, next){
       // Everything went fine.
       if(req.file){
         LogModelObj = new LogModel({
-          logName : req.body.fileName,
+          logName : req.body.logName,
           logTypeId : req.body.logTypeId,
           logLink : req.file.path,
           logSize :  req.file.size,

@@ -74,11 +74,11 @@ router.delete('/remove/:logTypeId', function(req, res, next) {
   /* List all Log Types */
 router.get('/', function(req, res, next) {
 
-    LogTypeModel.find(function(err , logList){
+    LogTypeModel.find(function(err , logTypeList){
     if(err){
       res.send({message:'Unable to fetch List'});
     }else{
-      res.send({message: 'Log Type List fetched', logList: logList});
+      res.send({message: 'Log Type List fetched', logTypeList: logTypeList});
     }
   });
 });
