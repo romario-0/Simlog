@@ -25,7 +25,7 @@ const AccountNavigator = () => {
           <Route path='/logTypes' element={<LogTypeList />} />
           <Route path='/logType/:id' element={<LogTypeDetails />} />
           <Route path='/jobs' element={<JobList />} />
-          <Route path='/jobUpdate' element={<JobDetails />} />
+          <Route path='/job/:id' element={<JobDetails />} />
           <Route path='/sources' element={<SourceList />} />
           <Route path='/source/:id' element={<SourceDetails />} />
           <Route path='/collectors' element={<CollectorList />} />
