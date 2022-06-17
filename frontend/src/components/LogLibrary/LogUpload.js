@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const LogUpload = () => {
 
 	useEffect(() => {
-		fetch(`http://localhost:8000/logTypes`).then( res => res.json() ).then( data => {setTypeOptions(data.logTypeList)});
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then( res => res.json() ).then( data => {setTypeOptions(data.logTypeList)});
 	},[]);
 
 	const [file, setFile] = useState(null);
@@ -28,7 +28,7 @@ const LogUpload = () => {
             body: data
         };
 
-        fetch('http://localhost:8000/logs/upload', requestOptions).then( res => res.json() ).then( data => handleUpload(data));
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/logs/upload`, requestOptions).then( res => res.json() ).then( data => handleUpload(data));
 	}
 
 	const handleUpload = (data) => {
@@ -44,7 +44,7 @@ const LogUpload = () => {
 	const createLogTypeOptions = () =>{
 		if(typeOptions){
 			return typeOptions.map(ele => (
-				<option value={ele._id}>{ele.logTypeName}</option>
+				<option key={ele._id} value={ele._id}>{ele.logTypeName}</option>
 			));
 		}
 	}

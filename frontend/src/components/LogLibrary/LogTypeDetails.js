@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const LogTypeDetails = () => {
 	useEffect(() => {
 		if(id !== 0){
-        	fetch(`http://localhost:8000/logTypes/view/${id}`).then( res => res.json() ).then( data => {setLogTypeValue(data.logType)});
+        	fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/view/${id}`).then( res => res.json() ).then( data => {setLogTypeValue(data.logType)});
 		}
     },[]);
     const {id} = useParams();
@@ -42,9 +42,9 @@ const LogTypeDetails = () => {
         };
 
 		if(logTypeId){
-			fetch('http://localhost:8000/logTypes/update', requestOptions).then( res => res.json() ).then( data => handleData(data));
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}else{
-			fetch('http://localhost:8000/logTypes/save', requestOptions).then( res => res.json() ).then( data => handleData(data));
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}
 	}
 
