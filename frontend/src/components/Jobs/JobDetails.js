@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 const JobDetails = () => {
 
@@ -21,6 +23,10 @@ const JobDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
+	const radios = [
+		{ name: 'Yes', value: true, prop: 'success' },
+		{ name: 'No', value: false, prop: 'danger' },
+	  ];
 
 	const handleOnChange = (prop, value) => {
 		setJob(prevState=>({...prevState, [prop]: value}))	
@@ -67,7 +73,7 @@ const JobDetails = () => {
             body: JSON.stringify(job)
         };
 
-		if(job.hasOwnProperty('_id')){
+		if(job._id){
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}else{
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
@@ -189,14 +195,22 @@ const JobDetails = () => {
 						</div>
 						
 						<div className="form-group"><label for="date">Schedule</label></div>
-						<div className="form-group">
-							
-								<label for="date">Yes</label>
-								<input type="radio"  name="isScheculed" className="custom-control-input" value="Yes"  />
-         						<label for="date">No</label>
-								<input type="radio"  name="isScheculed" className="custom-control-input" value="No"  />
-      						
-							</div>
+						<ButtonGroup>
+							{radios.map((radio, idx) => (
+							<ToggleButton
+								key={idx}
+								id={`radio-${idx}`}
+								type="radio"
+								variant={radio.value ? 'outline-success' : 'outline-danger'}
+								name="radio"
+								value={radio.value}
+								checked={job.schedule === radio.value}
+								onChange={(e) => handleOnChange('schedule',e.currentTarget.value)}
+							>
+								{radio.name}
+							</ToggleButton>
+							))}
+						</ButtonGroup>
 						
 						<div className="form-group">
 							<label for="date">Date:</label>
@@ -248,7 +262,7 @@ const JobDetails = () => {
 							</div>
 
 						<div className = "box-footer">
-							<button className = "btn btn-primary">
+							<button className = "btn btn-primary" onClick={saveJob}>
 								Submit
 							</button>
 							<button className="btn btn-outline-warning" >Back</button>
