@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 const JobDetails = () => {
 
@@ -14,13 +16,27 @@ const JobDetails = () => {
 		}
     },[]);
 
-	const [job, setJob] = useState('');
+	const [job, setJob] = useState({
+		jobName : '',
+          logId : '',
+          frequency : '',
+          volume :  '',
+          schedule : '',
+          date : '',
+          time : '',
+          sourceId : '',
+          collectorId : ''
+	});
 	const [logOptions, setlogOptions] = useState('');
 	const [sourceOptions, setSourceOptions] = useState('');
 	const [collectorOptions, setCollectorOptions] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
+	const radios = [
+		{ name: 'Yes', value: true, prop: 'success' },
+		{ name: 'No', value: false, prop: 'danger' },
+	  ];
 
 	const handleOnChange = (prop, value) => {
 		setJob(prevState=>({...prevState, [prop]: value}))	
@@ -67,7 +83,7 @@ const JobDetails = () => {
             body: JSON.stringify(job)
         };
 
-		if(job.hasOwnProperty('_id')){
+		if(job._id){
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
 		}else{
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
@@ -189,24 +205,32 @@ const JobDetails = () => {
 						</div>
 						
 						<div className="form-group"><label for="date">Schedule</label></div>
-						<div className="form-group">
-							
-								<label for="date">Yes</label>
-								<input type="radio"  name="isScheculed" className="custom-control-input" value="Yes"  />
-         						<label for="date">No</label>
-								<input type="radio"  name="isScheculed" className="custom-control-input" value="No"  />
-      						
-							</div>
+						<ButtonGroup>
+							{radios.map((radio, idx) => (
+							<ToggleButton
+								key={idx}
+								id={`radio-${idx}`}
+								type="radio"
+								variant={radio.value ? 'outline-success' : 'outline-danger'}
+								name="radio"
+								value={radio.value}
+								checked={job.schedule === radio.value}
+								onChange={(e) => handleOnChange('schedule',e.currentTarget.value)}
+							>
+								{radio.name}
+							</ToggleButton>
+							))}
+						</ButtonGroup>
 						
 						<div className="form-group">
-							<label for="date">Date:</label>
+							<label >Date:</label>
 							
          						<input name="scheculedDate"   type='date' className="form-control" value={job.date}
 							onChange={e => handleOnChange('date', e.target.value)} />
       						
 							</div>
 							<div className="form-group">
-							<label for="date">Time:</label>
+							<label >Time:</label>
 							
          						<input name="scheduledTime" type='time' className="form-control" value={job.time}
 							onChange={e => handleOnChange('time', e.target.value)} />
@@ -248,7 +272,7 @@ const JobDetails = () => {
 							</div>
 
 						<div className = "box-footer">
-							<button className = "btn btn-primary">
+							<button className = "btn btn-primary" onClick={saveJob}>
 								Submit
 							</button>
 							<button className="btn btn-outline-warning" >Back</button>
