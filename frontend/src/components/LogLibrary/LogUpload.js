@@ -89,10 +89,10 @@ const LogUpload = () => {
 						}
 						
 						<div className = "box-footer">
-							<button type="button" onClick={uploadLog} className = "btn btn-primary" disabled={isUploading}>
+							<button onClick={uploadLog} className = "btn btn-primary" disabled={isUploading}>
 								Submit
 							</button>
-							<button type="button" className="btn btn-outline-warning">Back</button>
+							<button className="btn btn-outline-warning" onClick={() => navigate('/logLibrary')} >Back</button>
 						</div>
 					</form>
 				

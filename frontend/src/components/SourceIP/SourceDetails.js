@@ -107,7 +107,7 @@ const SourceDetails = () => {
 							<button className = "btn btn-primary" onClick={saveSource}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" >Back</button>
+							<button className="btn btn-outline-warning" onClick={() => navigate('/sources')}>Back</button>
 						</div>
 				</div>
 			</div>

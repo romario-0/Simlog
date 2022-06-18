@@ -109,7 +109,7 @@ const CollectorDetails = () => {
 							<button className = "btn btn-primary" onClick={saveCollector}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning">Back</button>
+							<button className="btn btn-outline-warning" onClick={() => navigate('/collectors')}>Back</button>
 						</div>
 				</div>
 			</div>

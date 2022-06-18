@@ -53,7 +53,7 @@ const JobDetails = () => {
 	const createLogOptions = () =>{
 		if(logOptions){
 			return logOptions.map(ele => (
-				<option key={ele._id} value={ele._id}>{ele.logName}</option>
+				<option selected={ele._id === job.logId} key={ele._id} value={ele._id}>{ele.logName}</option>
 			));
 		}
 	}
@@ -61,7 +61,7 @@ const JobDetails = () => {
 	const createSourceOptions = () =>{
 		if(sourceOptions){
 			return sourceOptions.map(ele => (
-				<option key={ele._id} value={ele._id}>{ele.sourceName}</option>
+				<option key={ele._id} selected={ele._id === job.sourceId} value={ele._id}>{ele.sourceName}</option>
 			));
 		}
 	}
@@ -69,7 +69,7 @@ const JobDetails = () => {
 	const createCollectorOptions = () =>{
 		if(collectorOptions){
 			return collectorOptions.map(ele => (
-				<option key={ele._id} value={ele._id} >{ele.collectorName}</option>
+				<option key={ele._id} selected={ele._id === job.collectorId} value={ele._id} >{ele.collectorName}</option>
 			));
 		}
 	}
@@ -214,7 +214,7 @@ const JobDetails = () => {
 								variant={radio.value ? 'outline-success' : 'outline-danger'}
 								name="radio"
 								value={radio.value}
-								checked={job.schedule === radio.value}
+								checked={job.schedule == radio.value}
 								onChange={(e) => handleOnChange('schedule',e.currentTarget.value)}
 							>
 								{radio.name}
@@ -275,7 +275,7 @@ const JobDetails = () => {
 							<button className = "btn btn-primary" onClick={saveJob}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" >Back</button>
+							<button className="btn btn-outline-warning" onClick={() => navigate('/jobs')} >Back</button>
 						</div>
 
 			</div>
