@@ -16,7 +16,17 @@ const JobDetails = () => {
 		}
     },[]);
 
-	const [job, setJob] = useState('');
+	const [job, setJob] = useState({
+		jobName : '',
+          logId : '',
+          frequency : '',
+          volume :  '',
+          schedule : '',
+          date : '',
+          time : '',
+          sourceId : '',
+          collectorId : ''
+	});
 	const [logOptions, setlogOptions] = useState('');
 	const [sourceOptions, setSourceOptions] = useState('');
 	const [collectorOptions, setCollectorOptions] = useState('');
@@ -213,14 +223,14 @@ const JobDetails = () => {
 						</ButtonGroup>
 						
 						<div className="form-group">
-							<label for="date">Date:</label>
+							<label >Date:</label>
 							
          						<input name="scheculedDate"   type='date' className="form-control" value={job.date}
 							onChange={e => handleOnChange('date', e.target.value)} />
       						
 							</div>
 							<div className="form-group">
-							<label for="date">Time:</label>
+							<label >Time:</label>
 							
          						<input name="scheduledTime" type='time' className="form-control" value={job.time}
 							onChange={e => handleOnChange('time', e.target.value)} />

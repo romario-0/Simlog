@@ -7,7 +7,7 @@ const LogTypeModel = require('../models/logType.model');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/logs");
+    cb(null, process.env.LOG_STORE_PATH);
   },
   filename: function (req, file, cb) {
     cb(

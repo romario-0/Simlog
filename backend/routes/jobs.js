@@ -4,6 +4,7 @@ const JobModel = require('../models/job.model');
 const CollectorModel = require('../models/collector.model');
 const SourceModel = require('../models/source.model');
 
+const states = ["NEW", "RUNNING", "STOPPED", "COMPLETED"]
 /* Create new Job*/
 router.post('/save', async function(req, res, next){
 
@@ -19,6 +20,7 @@ router.post('/save', async function(req, res, next){
           time : req.body.time,
           sourceId : req.body.sourceId,
           collectorId : req.body.collectorId,
+          state : 0
         });
   
         jobModelObj.save(function(err , jobDetails){
@@ -75,7 +77,7 @@ router.get('/view/:jobId', async function(req, res, next) {
       const collector = await CollectorModel.findById(jobObj.collectorId);
       jobFullDetails.source = source;
       jobFullDetails.collector = collector;
-      res.send({message: 'Log fetched', log: jobFullDetails});    
+      res.send({message: 'Log fetched', job: jobFullDetails});    
     }
   
     /*JobModel.findById(jobId, function(err , jobObj){
@@ -105,6 +107,18 @@ router.delete('/remove/:jobId', function(req, res, next) {
 router.get('/', function(req, res, next) {
 
     JobModel.find(function(err , jobList){
+    if(err){
+      res.send({message:'Unable to fetch List'});
+    }else{
+      res.send({message: 'Job List fetched', jobList: jobList});
+    }
+  });
+});
+
+  /* List all active Jobs */
+  router.get('/', function(req, res, next) {
+
+    JobModel.find({state : 0},function(err , jobList){
     if(err){
       res.send({message:'Unable to fetch List'});
     }else{
