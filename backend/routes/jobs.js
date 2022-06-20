@@ -4,7 +4,13 @@ const JobModel = require('../models/job.model');
 const CollectorModel = require('../models/collector.model');
 const SourceModel = require('../models/source.model');
 
-const states = ["NEW", "RUNNING", "STOPPED", "COMPLETED"]
+const states = {
+  NEW : "NEW",
+  RUNNING : "RUNNING",
+  STOPPED : "STOPPED",
+  COMPLETED : "COMPLETED"
+} // PENDING, STOPPED
+
 /* Create new Job*/
 router.post('/save', async function(req, res, next){
 
@@ -20,7 +26,7 @@ router.post('/save', async function(req, res, next){
           time : req.body.time,
           sourceId : req.body.sourceId,
           collectorId : req.body.collectorId,
-          state : 0
+          state : states.NEW
         });
   
         jobModelObj.save(function(err , jobDetails){
@@ -72,6 +78,7 @@ router.get('/view/:jobId', async function(req, res, next) {
         time : jobObj.time,
         sourceId : jobObj.sourceId,
         collectorId : jobObj.collectorId,
+        state : jobObj.state
       };
       const source = await SourceModel.findById(jobObj.sourceId);
       const collector = await CollectorModel.findById(jobObj.collectorId);

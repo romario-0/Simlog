@@ -9,7 +9,8 @@ const JobSchema = mongoose.Schema({
     date : Date,
     time : String,
     sourceId : String,
-    collectorId : String
+    collectorId : String,
+    state : String
 },
 {
     timestamps: true

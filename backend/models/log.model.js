@@ -5,6 +5,7 @@ const LogSchema = mongoose.Schema({
     logTypeId : String,
     logLink : String,
     logSize :  String,
+    sampleLog : String
     //uploadedBy : mongoose.SchemaTypes.ObjectId,
 },
 {
