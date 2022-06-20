@@ -92,7 +92,6 @@ const LogUpload = () => {
 							<button onClick={uploadLog} className = "btn btn-primary" disabled={isUploading}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" onClick={() => navigate('/logLibrary')} >Back</button>
 						</div>
 					</form>
 				

@@ -4,6 +4,7 @@ const router = express.Router();
 const path = require("path");
 const LogModel = require('../models/log.model');
 const LogTypeModel = require('../models/logType.model');
+const firstLine = require('firstline');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -33,7 +34,7 @@ const upload = multer(
 /* Create image (store image data)*/
 router.post('/upload', function(req, res, next){
   //req.body.data
-  upload(req, res, function (err) {
+  upload(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
       res.send({ message : 'File type mismatch' });
@@ -41,13 +42,15 @@ router.post('/upload', function(req, res, next){
       // An unknown error occurred when uploading.
       res.send({ message : 'File type mismatch' });
     } else{
+      const sample = await firstLine(req.file.path);
       // Everything went fine.
       if(req.file){
         LogModelObj = new LogModel({
           logName : req.body.logName,
           logTypeId : req.body.logTypeId,
           logLink : req.file.path,
-          logSize :  req.file.size,
+          logSize :  req.file.size/(1000000),
+          sampleLog : sample
         });
   
         LogModelObj.save(function(err , logDetails){
@@ -80,6 +83,7 @@ router.get('/view/:logId', async function(req, res, next) {
         logTypeId : logObj.logTypeId,
         logLink : logObj.logLink,
         logSize :  logObj.logSize,
+        sampleLog : logObj.sampleLog
       };
       const logType = await LogTypeModel.findById(logObj.logTypeId);
       logFullDetails.logType = logType;
