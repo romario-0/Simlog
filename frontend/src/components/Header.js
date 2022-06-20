@@ -10,8 +10,9 @@ const Header = () => {
     const {user, onLogout} = useContext(AuthenticationContext);
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="white" variant="white">
             <Container>
+            <Navbar.Brand><img src="/small_logo.png"></img> </Navbar.Brand>
             <Navbar.Brand>Simlog</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
