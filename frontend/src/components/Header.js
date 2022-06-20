@@ -2,8 +2,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
+import { useContext } from 'react';
+import { AuthenticationContext } from '../services/AuthenticationContext';
 
 const Header = () => {
+
+    const {user, onLogout} = useContext(AuthenticationContext);
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
@@ -13,11 +18,11 @@ const Header = () => {
                 <Nav className="me-auto"></Nav>
                 <Nav>
                 <Nav.Link href="#deets">About</Nav.Link>
-                <NavDropdown title="SignIn" id="collasible-nav-dropdown">
+                <NavDropdown title={user ? user.firstName : 'Sign In'} id="collasible-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">Sign Out</NavDropdown.Item>
+                    <NavDropdown.Item onClick={onLogout}>Sign Out</NavDropdown.Item>
                 </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
