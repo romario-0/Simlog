@@ -149,138 +149,126 @@ const JobDetails = () => {
 	}
 
     return (
-        <div className="col-sm-9">
-		<div className = "row">
-			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-				<h2 className = "text-center"> Create New Jobs </h2>
-				<div className = "card-body">
-						<div className ="form-group">
-							<label> Job Name </label>
-							<input
-							type = "text"
-							name = "name"
-							value={job.jobName}
-							onChange={e => handleOnChange('jobName', e.target.value)}
-							className = "form-control"
-							placeholder="Enter Job Name" 
-							/>
-						</div>
-						
-						
-						<div className ="form-group">
-							<label> Log Source Name </label><br/>
-							
-							<select className="form-select" 
-							name="logSourceId"
-							onChange={e => handleOnSelect('logId', e.target.value)} >
-							    <option value={0}>-- Select Log Type --</option>
-								{logOptions && createLogOptions()}
-							</select>
-							
-						</div>
-						
-						<div className ="form-group">
-							<label> Frequency(in Minutes) </label>
-							<input
-							type = "text"
-							name = "frequency"
-							value={job.frequency}
-							onChange={e => handleOnChange('frequency', e.target.value)}
-							className = "form-control"
-							placeholder="Enter Frequency" 
-							/>
-						</div>
-						
-						
-						<div className ="form-group">
-							<label> Volume(MB) </label>
-							<input
-							type = "text"
-							name = "volume"
-							value={job.volume}
-							onChange={e => handleOnChange('volume', e.target.value)}
-							className = "form-control"
-							placeholder="Enter Volume" 
-							/>
-						</div>
-						
-						<div className="form-group"><label for="date">Schedule</label></div>
-						<ButtonGroup>
-							{radios.map((radio, idx) => (
-							<ToggleButton
-								key={idx}
-								id={`radio-${idx}`}
-								type="radio"
-								variant={radio.value ? 'outline-success' : 'outline-danger'}
-								name="radio"
-								value={radio.value}
-								checked={job.schedule == radio.value}
-								onChange={(e) => handleOnChange('schedule',e.currentTarget.value)}
-							>
-								{radio.name}
-							</ToggleButton>
-							))}
-						</ButtonGroup>
-						
-						<div className="form-group">
-							<label >Date:</label>
-							
-         						<input name="scheculedDate"   type='date' className="form-control" value={job.date}
-							onChange={e => handleOnChange('date', e.target.value)} />
-      						
-							</div>
-							<div className="form-group">
-							<label >Time:</label>
-							
-         						<input name="scheduledTime" type='time' className="form-control" value={job.time}
-							onChange={e => handleOnChange('time', e.target.value)} />
-      						
-							</div>
-				
+		<div className="container">
+		<h2 className="text-center"> Create New Jobs </h2>
+		<div className="container">
+		<div className="row align-items-center">
+			<div className="row col-md-4">
+				<div className="col-md-4">
+					<label > Job Name </label>
+				</div>
+				<div className="col-md-4">
+					<label > Log Source Name </label><br />
+				</div>
+				<div className="col-md-4">
+					<label > Frequency(in Minutes) </label>
+				</div>
+			</div>
+			<div className="row col-md-8">
+				<div className="col-md-1">
+					<label> Volume(MB) </label>
+				</div>
+				<div className="col-md-2">
+					<label> Date & Time </label>
+				</div>
+				<div className="col-md-3">
+					<label>Source IP</label>
+				</div>
+				<div className="col-md-3">
+					<label>Collector IP</label>
+				</div>
+			</div>
+			<div className="row col-md-4">
+				<div className="col-md-4">
+					<input type="text"
+						name="name"
+						value={job.jobName}
+						onChange={e => handleOnChange('jobName', e.target.value)}
+						className="form-control"
+						placeholder="Enter Job Name"
+					/>
+				</div>
+				<div className="col-md-4">
+					<select className="form-select"
+						name="logSourceId"
+						onChange={e => handleOnSelect('logId', e.target.value)} >
+						<option value={0}>-- Select Log Type --</option>
+						{logOptions && createLogOptions()}
+					</select>
+
 				</div>
 
-                <div className ="container">
-								<div className ="form-group">
-									<label> Source IP </label><br/>
-									<select className="form-select" 
-									onChange={e => handleOnSelect('sourceId', e.target.value)} >
-										<option value={0}>-- Select Source --</option>
-										{sourceOptions && createSourceOptions()}
-									</select>		
-								</div>
+				<div className="col-md-4">
+					<input
+						type="text"
+						name="frequency"
+						value={job.frequency}
+						onChange={e => handleOnChange('frequency', e.target.value)}
+						className="form-control"
+						placeholder="Enter Frequency"
+					/>
+				</div>
+			</div>
+			<div className="row col-md-8">
+				<div className="col-md-1">
+					<input
+						type="text"
+						name="volume"
+						value={job.volume}
+						onChange={e => handleOnChange('volume', e.target.value)}
+						className="form-control"
+						placeholder="Enter Volume"
+					/>
+	</div>
 
-								<br/>
-								{job.sourceId && displaySourceTable(job.sourceId)}
-								
-							</div>
-				
-				
-				
-							<div className ="container">
-							<div className ="form-group">
-									<label> Collector IP </label><br/>
-									<select className="form-select" 
-									onChange={e => {handleOnSelect('collectorId', e.target.value)}} >
-										<option value={0}>-- Select Collector --</option>
-										{collectorOptions && createCollectorOptions()}
-									</select>		
-								</div>
-								<br/>
-								{
-									job.collectorId && displayCollectorTable(job.collectorId)
-								}
-							</div>
+				<div className="col-md-2">
+					<input name="scheculedDate" type='datetime-local' className="form-control" value={job.date}
+						onChange={e => handleOnChange('date', e.target.value)} />
+				</div>
+				{/* <div className="form-group">
+					<label >Time:</label>
+					<input name="scheduledTime" type='time' className="form-control" value={job.time}
+						onChange={e => handleOnChange('time', e.target.value)} />
+				</div> */}
+				<div className=" col-md-3">
+					<select className="form-select" >
+						// onChange={e => handleOnSelect('sourceId', e.target.value)} >
+						<option value={0}>-- Select Source --</option>
+						{sourceOptions && createSourceOptions()}
+					</select>
+					{job.sourceId && displaySourceTable(job.sourceId)}
+				</div>
+				<div className="col-md-3 ">
+					<select className="form-select" >
+						// onChange={e => { handleOnSelect('collectorId', e.target.value) }} >
+						<option value={0}>-- Select Collector --</option>
+						{collectorOptions && createCollectorOptions()}
+					</select>
 
-						<div className = "box-footer">
-							<button className = "btn btn-primary" onClick={saveJob}>
-								Submit
-							</button>
-							<button className="btn btn-outline-warning" onClick={() => navigate('/jobs')} >Back</button>
-						</div>
+					{
+						job.collectorId && displayCollectorTable(job.collectorId)
+					}
+				</div>
+				<div className="col-md-1">
+					<button className="btn btn-primary" onClick={saveJob}>
+						Submit
+					</button>
+
+				</div>
+				<div className="col-md-1">
+					<button className="btn btn-outline-warning" onClick={() => navigate('/jobs')} >Back</button>
+				</div>
+
 
 			</div>
+
+		</div>
+		{/* <Link to={'/job/0'}>Add new Job</Link> */}
+		{/* <List data={jobList} headers={headers} ></List> */}
+
 		</div>
 	</div>
+
     );
 }
 
