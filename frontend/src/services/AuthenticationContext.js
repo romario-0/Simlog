@@ -6,46 +6,43 @@ export const AuthenticationContextProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [userToken, setUserToken] = useState(null);
     const path = "";
 
     const checkLoggedUser = () => {
         setIsLoading(true);
 
-          if(userToken !== null){
+          //if(userToken !== null){
             const requestOptions = {
               method: 'GET',
-              headers: { 'Content-Type': 'application/json', 'authorization' : userToken }
+              headers: { 'Content-Type': 'application/json', 'authorization' : localStorage.getItem('token') }
             };
-            return fetch(path+'user/userGet', requestOptions).then(res => res.json()).then(async data => {
-              if(data.userDetail !== undefined && data.userDetail !== null){
-                setUser(data.userDetail);
-                return true;
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/users/validate`, requestOptions).then(res => res.json()).then(async data => {
+              if(data.user){
+                setUser(data.user);
               }else{
+                setUser(null);
                 setError(data.message);
               }
-              return false;
             });
-          }
-          return false;
+         // }
+          //return false;
         
     }
 
-    const onLogin = (email, password) => {
+    const onLogin = (username, password) => {
         setIsLoading(true);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({email : email,password : password})
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({username : username,password : password})
           };
-          fetch(path+'user/userLogin', requestOptions).then(res => res.json()).then(async data => {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`, requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
               setUser(data.user);
-              setUserToken(data.userToken);
+              localStorage.setItem('token', data.userToken);
             }else{
               setError(data.message);
             }
-            
             setIsLoading(false);
           });
     }
@@ -60,7 +57,6 @@ export const AuthenticationContextProvider = ({children}) => {
           fetch(path+'user/userAdd', requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
               setUser(data.user);
-              //setUserToken(data.userToken);
             }else{
               setError(data.message);
             }
@@ -69,15 +65,28 @@ export const AuthenticationContextProvider = ({children}) => {
     }
 
     const onLogout = () => {
-        setUser(null);
-        setUserToken(null);
+      setIsLoading(true);
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'authorization' : localStorage.getItem('token') }
+        };
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/users/logout`, requestOptions).then(res => res.json()).then(async data => {
+          if(data.isSuccess){
+            setUser(null);
+            localStorage.removeItem('token');
+          }else{
+            setError(data.message);
+          }
+          
+          setIsLoading(false);
+        });
     }
 
     const updateUser = (userDetails) => {
       setIsLoading(true);
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization' : userToken },
+            headers: { 'Content-Type': 'application/json', 'authorization' : localStorage.getItem('token') },
             body: JSON.stringify(userDetails)
           };
           fetch(path+'user/userUpdate', requestOptions).then(res => res.json()).then(async data => {
@@ -97,7 +106,6 @@ export const AuthenticationContextProvider = ({children}) => {
             isLoading,
             user,
             error,
-            userToken,
             onLogin,
             onRegister,
             onLogout,
