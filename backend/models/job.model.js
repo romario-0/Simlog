@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const JobSchema = mongoose.Schema({
     jobName : String,
     logId : mongoose.Schema.ObjectId,
-    frequency : String,
+    duration : String,
     volume :  String,
     date : Date,
     sourceId : mongoose.Schema.ObjectId,
