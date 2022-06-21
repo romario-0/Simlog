@@ -6,15 +6,18 @@ const JobList = ({jobList}) => {
 
     const headers = [
         {prop : 'jobName', value : 'Job Name'},
+        {prop : 'logs', value : 'Log Source Name', subProps : {props : ['logName'], format : '##prop0##'}},
         {prop : 'date', value : 'Date'},
-        {prop : 'time', value : 'Time'},
-        //{prop : 'state', value : 'Status'},
-        {prop : 'frequency', value : 'Frequency'},
-        {prop : 'volume', value : 'Volume'}
+        {prop : 'status', value : 'Status'},
+        {prop : 'duration', value : 'Duration'},
+        {prop : 'volume', value : 'Volume'},
+        {prop : 'sources', value : 'Source IP', subProps : {props : ['fromIP', 'toIP'], format : '##prop0## - ##prop1##'}},
+        {prop : 'collectors', value : 'Collector IP', subProps : {props : ['collectorIP','collectorPort'], format : '##prop0##:##prop1##'}}
     ];
 
     const listOptions = {
-        editLink : 'jobs'
+        editLink : 'jobs',
+        editCondition : {field : 'status', value : 'NEW'}
     };
     
     return (

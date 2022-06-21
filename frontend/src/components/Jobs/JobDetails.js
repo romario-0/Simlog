@@ -22,9 +22,8 @@ const JobDetails = () => {
 	const [job, setJob] = useState({
 		jobName : '',
           logId : '',
-          frequency : '',
+          duration : '',
           volume :  '',
-          schedule : '',
           date : '',
           time : '',
           sourceId : '',
@@ -37,10 +36,6 @@ const JobDetails = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [jobList, setJobList] = useState([]);
 	const navigate = useNavigate();
-	const radios = [
-		{ name: 'Yes', value: true, prop: 'success' },
-		{ name: 'No', value: false, prop: 'danger' },
-	  ];
 
 	const handleOnChange = (prop, value) => {
 		setJob(prevState=>({...prevState, [prop]: value}))	
@@ -109,9 +104,8 @@ const JobDetails = () => {
 		setJob({
 			jobName : '',
 			  logId : '',
-			  frequency : '',
+			  duration : '',
 			  volume :  '',
-			  schedule : '',
 			  date : '',
 			  time : '',
 			  sourceId : '',
@@ -119,6 +113,26 @@ const JobDetails = () => {
 		});
 		navigate('/jobs/0');
 	}
+
+	function padTo2Digits(num) {
+		return num.toString().padStart(2, '0');
+	  }
+	  
+	  function formatDate(date) {
+		return (
+		  [
+			date.getFullYear(),
+			padTo2Digits(date.getMonth() + 1),
+			padTo2Digits(date.getDate()),
+		  ].join('-') +
+		  'T' +
+		  [
+			padTo2Digits(date.getHours()),
+			padTo2Digits(date.getMinutes()),
+			padTo2Digits(date.getSeconds()),
+		  ].join(':')
+		);
+	  }
 
     return (
 		<div className="container">
@@ -133,7 +147,7 @@ const JobDetails = () => {
 					<label > Log Source Name </label><br />
 				</div>
 				<div className="col-md-4">
-					<label > Frequency(in Minutes) </label>
+					<label > Duration(in Minutes) </label>
 				</div>
 			</div>
 			<div className="row col-md-7">
@@ -174,11 +188,11 @@ const JobDetails = () => {
 				<div className="col-md-4">
 					<input
 						type="text"
-						name="frequency"
-						value={job.frequency}
-						onChange={e => handleOnChange('frequency', e.target.value)}
+						name="duration"
+						value={job.duration}
+						onChange={e => handleOnChange('duration', e.target.value)}
 						className="form-control"
-						placeholder="Enter Frequency"
+						placeholder="Enter Duration"
 					/>
 				</div>
 			</div>
@@ -195,7 +209,7 @@ const JobDetails = () => {
 	</div>
 
 				<div className="col-md-2">
-					<input name="scheculedDate" type='datetime-local' className="form-control" value={job.date}
+					<input name="scheculedDate" type='datetime-local' className="form-control" value={formatDate(new Date(job.date))}
 						onChange={e => handleOnChange('date', e.target.value)} />
 				</div>
 				<div className=" col-md-3">

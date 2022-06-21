@@ -21,7 +21,7 @@ router.post('/save', async function(req, res, next){
         jobModelObj = new JobModel({
           jobName : req.body.jobName,
           logId : req.body.logId,
-          frequency : req.body.frequency,
+          duration : req.body.duration,
           volume :  req.body.volume,
           date : date,
           sourceId : req.body.sourceId,
@@ -75,7 +75,7 @@ router.get('/view/:jobId', async function(req, res, next) {
         _id : jobObj._id,
         jobName : jobObj.jobName,
         logId : jobObj.logId,
-        frequency : jobObj.frequency,
+        duration : jobObj.duration,
         volume :  jobObj.volume,
         schedule : jobObj.schedule,
         date : jobObj.date,
@@ -168,6 +168,40 @@ router.post('/stop', function(req, res, next) {
       // executed Stop command
       res.send({ message : "Job Stopped" });
     }
+  });
+});
+
+ /* List filtered Jobs */
+ router.get('/filter', function(req, res, next) {
+  JobModel.aggregate([{ 
+    $match: { status : req.query.status }},
+    {
+        $lookup: {
+            from: "sources",
+            localField: "sourceId",
+            foreignField: "_id",
+            as: "sources"
+        }
+    }, {
+        $lookup: {
+            from: "collectors",
+            localField: "collectorId",
+            foreignField: "_id",
+            as: "collectors"
+        }
+    }, {
+      $lookup: {
+          from: "logs",
+          localField: "logId",
+          foreignField: "_id",
+          as: "logs"
+      }
+  }]).exec(function (error, jobList) {
+      if(error){
+        res.send({message:'Unable to fetch List'});
+      }else{
+        res.send({message: 'Job List fetched', jobList: jobList});
+      }
   });
 });
 
