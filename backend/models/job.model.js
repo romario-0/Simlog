@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 
 const JobSchema = mongoose.Schema({
     jobName : String,
-    logId : String,
+    logId : mongoose.Schema.ObjectId,
     frequency : String,
     volume :  String,
     date : Date,
-    sourceId : String,
-    collectorId : String,
-    state : String
+    sourceId : mongoose.Schema.ObjectId,
+    collectorId : mongoose.Schema.ObjectId,
+    status : String,
+    progress : Number
 },
 {
     timestamps: true

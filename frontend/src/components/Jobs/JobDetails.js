@@ -117,6 +117,7 @@ const JobDetails = () => {
 			  sourceId : '',
 			  collectorId : ''
 		});
+		navigate('/jobs/0');
 	}
 
     return (
@@ -157,6 +158,7 @@ const JobDetails = () => {
 						onChange={e => handleOnChange('jobName', e.target.value)}
 						className="form-control"
 						placeholder="Enter Job Name"
+						disabled={job._id}
 					/>
 				</div>
 				<div className="col-md-4">

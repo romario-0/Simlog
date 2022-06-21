@@ -72,6 +72,7 @@ const CollectorDetails = () => {
 		setCollectorIP('');
 		setCollectorPort('');
 		setCollectorId(0);
+		navigate('/collectors/0');
 	}
 
     return (
@@ -90,6 +91,7 @@ const CollectorDetails = () => {
 							onChange={e => setCollectorName(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Log Collector Name" 
+							disabled={collectorId}
 							/>
 						</div>
 						
