@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import SourceList from "./SourceList";
 
 const SourceDetails = () => {
 	const {id} = useParams();
 	useEffect(() => {
-		if(id !== 0){
+		if(id != 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/view/${id}`).then( res => res.json() ).then( data => {setSourceValue(data.source)});
+		}else{
+			resetForm();
 		}
-    },[]);
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
+    },[id]);
 
 	const [sourceId, setSourceId] = useState('');
 	const [sourceName, setSourceName] = useState('');
@@ -15,6 +19,7 @@ const SourceDetails = () => {
 	const [toIP, setToIP] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
+	const [sourceList, setSourceList] = useState([]);
 	const navigate = useNavigate();
 
 	const setSourceValue = (data) => {
@@ -54,13 +59,23 @@ const SourceDetails = () => {
 	const handleData = (data) => {
 		if(data.source){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			navigate('/sources');
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
+			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
+
+	const resetForm = () => {
+		setSourceName('');
+		setFromIP('');
+		setToIP('');
+		setSourceId(0); 
+	}
+
     return (
+		<div>
         <div className="col-sm-9">
 		<div className = "row">
 			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
@@ -107,11 +122,13 @@ const SourceDetails = () => {
 							<button className = "btn btn-primary" onClick={saveSource}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" onClick={() => navigate('/sources')}>Back</button>
+							<button className = "btn btn-outline-warning" onClick={() => navigate('/sources/0')}>New</button>
 						</div>
 				</div>
 			</div>
 		</div>
+	</div>
+		<SourceList sourceList={sourceList} />
 	</div>
     );
 }

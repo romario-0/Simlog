@@ -5,12 +5,11 @@ import Header from '../components/Header';
 import Home from '../components/Home';
 import JobDetails from '../components/Jobs/JobDetails';
 import JobList from '../components/Jobs/JobList';
-import LogList from '../components/LogLibrary/LogList';
-import LogTypeDetails from '../components/LogLibrary/LogTypeDetails';
-import LogTypeList from '../components/LogLibrary/LogTypeList';
+import LogUpload from '../components/LogLibrary/LogUpload';
 import NavBar from '../components/NavBar';
 import SourceDetails from '../components/SourceIP/SourceDetails';
 import SourceList from '../components/SourceIP/SourceList';
+import LogTypeDetails from '../components/LogLibrary/LogTypeDetails';
 
 const AppNavigator = () => {
     return (
@@ -19,15 +18,11 @@ const AppNavigator = () => {
         <NavBar />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/logLibrary' element={<LogList />} />
-          <Route path='/logTypes' element={<LogTypeList />} />
-          <Route path='/logType/:id' element={<LogTypeDetails />} />
-          <Route path='/jobs' element={<JobList />} />
-          <Route path='/job/:id' element={<JobDetails />} />
-          <Route path='/sources' element={<SourceList />} />
-          <Route path='/source/:id' element={<SourceDetails />} />
-          <Route path='/collectors' element={<CollectorList />} />
-          <Route path='/collector/:id' element={<CollectorDetails />} />
+          <Route path='/logLibrary' element={<LogUpload />} />
+          <Route path='/logTypes/:id' element={<LogTypeDetails />} />
+          <Route path='/jobs/:id' element={<JobDetails />} />
+          <Route path='/sources/:id' element={<SourceDetails />} />
+          <Route path='/collectors/:id' element={<CollectorDetails />} />
         </Routes>
     </div>
     );

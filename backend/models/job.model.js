@@ -5,9 +5,7 @@ const JobSchema = mongoose.Schema({
     logId : String,
     frequency : String,
     volume :  String,
-    schedule : Boolean,
     date : Date,
-    time : String,
     sourceId : String,
     collectorId : String,
     state : String
