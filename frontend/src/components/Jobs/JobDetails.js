@@ -97,6 +97,7 @@ const JobDetails = () => {
 	const handleData = (data) => {
 		if(data.job){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`).then( res => res.json() ).then( data => {setJobList(data.jobList)});
 			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
