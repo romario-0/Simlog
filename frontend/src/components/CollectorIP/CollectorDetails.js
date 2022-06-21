@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import CollectorList from "./CollectorList";
 
 const CollectorDetails = () => {
     const {id} = useParams();
 	useEffect(() => {
 		if(id !== 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/view/${id}`).then( res => res.json() ).then( data => {setCollectorValue(data.collector)});
+		}else{
+			resetForm();
 		}
-    },[]);
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then( res => res.json() ).then( data => {setCollectorList(data.collectorList)});
+    },[id]);
 
 	const [collectorId, setCollectorId] = useState('');
 	const [collectorName, setCollectorName] = useState('');
@@ -15,6 +19,7 @@ const CollectorDetails = () => {
 	const [collectorPort, setCollectorPort] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
+	const [collectorList, setCollectorList] = useState([]);
 	const navigate = useNavigate();
 
 	const setCollectorValue = (data) => {
@@ -54,14 +59,23 @@ const CollectorDetails = () => {
 	const handleData = (data) => {
 		if(data.collector){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			navigate('/collectors');
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then( res => res.json() ).then( data => {setCollectorList(data.collectorList)});
+			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
 
+	const resetForm = () => {
+		setCollectorName('');
+		setCollectorIP('');
+		setCollectorPort('');
+		setCollectorId(0);
+	}
+
     return (
+		<div>
         <div className="col-sm-9">
 		<div className = "row">
 			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
@@ -109,11 +123,13 @@ const CollectorDetails = () => {
 							<button className = "btn btn-primary" onClick={saveCollector}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" onClick={() => navigate('/collectors')}>Back</button>
+							<button className="btn btn-outline-warning" onClick={() => navigate('/collectors/0')}>New</button>
 						</div>
 				</div>
 			</div>
 		</div>
+	</div>
+		<CollectorList collectorList={collectorList} />
 	</div>
     );
 }

@@ -1,13 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
 
 const List = ({listOptions, data, headers}) => {
 
-    //const [displayData, setDisplayData] = useState([]);
+    const [toogle, setToogle] = useState([]);
+
+    useEffect(() => {
+        if(listOptions.actions){
+            setToogle(listOptions.actions[0]);
+        }
+    },[])
 
     const createTableHeader = () => {
         return headers.map(ele => (<th key={ele.key}>{ele.value}</th>))
+    }
+
+    const handleAction = (objId) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id : objId})
+        };
+        //fetch(`${process.env.REACT_APP_BACKEND_URL}/${toogle.stateAction}`, requestOptions).then( res => res.json() ).then( data => {
+            if(toogle === listOptions.actions[0]){
+                setToogle(listOptions.actions[1]);
+            }else{
+                setToogle(listOptions.actions[0]);
+            }
+        //});
     }
 
     const createTableData = () => {
@@ -22,6 +43,7 @@ const List = ({listOptions, data, headers}) => {
                     }
                 })}
                 {listOptions.editLink && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
+                {listOptions.actions && <td><button onClick={() => handleAction(ele._id)}>{toogle.stateName}</button></td>}
             </tr>
         ));
     }
@@ -29,7 +51,7 @@ const List = ({listOptions, data, headers}) => {
         data &&
         <div className="container">
         <Table striped bordered hover>
-             <thead><tr>{createTableHeader()}</tr>{listOptions.editLink && <tr></tr>}</thead>
+             <thead><tr>{createTableHeader()}{listOptions.editLink && <th></th>}{listOptions.actions && <th></th>}</tr></thead>
              <tbody>{createTableData()}</tbody>
         </Table>
         </div>

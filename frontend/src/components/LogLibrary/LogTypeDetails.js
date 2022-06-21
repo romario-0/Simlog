@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import LogTypeList from "./LogTypeList";
 
 const LogTypeDetails = () => {
+	const {id} = useParams();
 	useEffect(() => {
-		if(id !== 0){
+		if(id != 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/view/${id}`).then( res => res.json() ).then( data => {setLogTypeValue(data.logType)});
 		}
-    },[]);
-    const {id} = useParams();
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then( res => res.json() ).then( data => {setLogTypeList(data.logTypeList)});
+    },[id]);
 
 	const [logTypeId, setLogTypeId] = useState('');
 	const [typeName, setTypeName] = useState('');
 	const [grokPattern, setGrokPattern] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
-	const navigate = useNavigate();
+    const [logTypeList, setLogTypeList] = useState([]);
 
 	const setLogTypeValue = (data) => {
 		setTypeName(data.logTypeName);
@@ -51,7 +53,7 @@ const LogTypeDetails = () => {
 	const handleData = (data) => {
 		if(data.logType){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			navigate('/logTypes');
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then( res => res.json() ).then( data => {setLogTypeList(data.logTypeList)});
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
@@ -59,6 +61,7 @@ const LogTypeDetails = () => {
 	}
 
     return (
+		<div>
         <div className="col-sm-9">
 		<div className = "row">
 			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
@@ -95,13 +98,14 @@ const LogTypeDetails = () => {
 							<button type="button" className = "btn btn-primary" onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
-							<button type="button" className="btn btn-outline-warning" onClick={() => navigate('/logTypes')} >Back</button>
 						</div>
 					</form>
 				
 				</div>
 			</div>
 		</div>
+	</div>
+		<LogTypeList logTypeList={logTypeList} />
 	</div>
     );
 }
