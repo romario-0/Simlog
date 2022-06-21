@@ -151,9 +151,9 @@ const JobDetails = () => {
     return (
 		<div className="container">
 		<h2 className="text-center"> Create New Jobs </h2>
-		<div className="container">
+		<div className="container jobdetails">
 		<div className="row align-items-center">
-			<div className="row col-md-4">
+			<div className="row col-md-5">
 				<div className="col-md-4">
 					<label > Job Name </label>
 				</div>
@@ -164,7 +164,7 @@ const JobDetails = () => {
 					<label > Frequency(in Minutes) </label>
 				</div>
 			</div>
-			<div className="row col-md-8">
+			<div className="row col-md-7">
 				<div className="col-md-1">
 					<label> Volume(MB) </label>
 				</div>
@@ -178,7 +178,7 @@ const JobDetails = () => {
 					<label>Collector IP</label>
 				</div>
 			</div>
-			<div className="row col-md-4">
+			<div className="row col-md-5">
 				<div className="col-md-4">
 					<input type="text"
 						name="name"
@@ -209,7 +209,7 @@ const JobDetails = () => {
 					/>
 				</div>
 			</div>
-			<div className="row col-md-8">
+			<div className="row col-md-7">
 				<div className="col-md-1">
 					<input
 						type="text"
@@ -219,7 +219,7 @@ const JobDetails = () => {
 						className="form-control"
 						placeholder="Enter Volume"
 					/>
-	</div>
+				</div>
 
 				<div className="col-md-2">
 					<input name="scheculedDate" type='datetime-local' className="form-control" value={job.date}
@@ -249,18 +249,21 @@ const JobDetails = () => {
 						job.collectorId && displayCollectorTable(job.collectorId)
 					}
 				</div>
-				<div className="col-md-1">
+				</div>
+			<div Class="flex-container">
+				<div Class="submitbutton">
 					<button className="btn btn-primary" onClick={saveJob}>
 						Submit
 					</button>
 
 				</div>
-				<div className="col-md-1">
+				<div Class="backbutton">
 					<button className="btn btn-outline-warning" onClick={() => navigate('/jobs')} >Back</button>
 				</div>
 
-
 			</div>
+
+			
 
 		</div>
 		{/* <Link to={'/job/0'}>Add new Job</Link> */}

@@ -52,7 +52,7 @@
 
 }
 .container {
-  max-width: 98% !important;
+  max-width: 95% !important;
 }
 
 .form-group {
@@ -96,4 +96,41 @@
   min-width: 200px;
   white-space: wrap;
   padding: 2px;
+}
+.row {
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.container.jobdetails{
+padding-left:9%
+}
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  margin-top: 2%;
+}
+.submitbutton {
+  margin-top: 2%;
+  margin-right: 2%;
+}
+.backbutton {
+  margin-top: 2%;
+  margin-right: 2%;
+}
+.col-md-1 {
+  flex: 0 0 auto;
+  width: 17.333333%!important;
+}
+.col-md-2 {
+  flex: 0 0 auto;
+  width: 21.666667%!important;
+}
+.row.align-items-center {
+  display: flex;
+  justify-content: center;
+}
+.col-md-4 {
+padding: 0px 3px;
 }
