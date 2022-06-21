@@ -29,7 +29,7 @@ router.post('/update', async function(req, res, next){
 
     const logTypeObj = await LogTypeModel.findOne({ _id: req.body.logTypeId }); // checking for Log type
     if (logTypeObj) {
-        let typeObj = req.body;
+        let typeObj = { grokPattern : req.body.grokPattern };
   
         LogTypeModel.findOneAndUpdate({ _id: req.body.logTypeId },typeObj, function(err , logTypeDetails){
           if(err){

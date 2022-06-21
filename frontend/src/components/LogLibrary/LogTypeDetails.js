@@ -17,6 +17,7 @@ const LogTypeDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
     const [logTypeList, setLogTypeList] = useState([]);
+	const navigate = useNavigate();
 
 	const setLogTypeValue = (data) => {
 		setTypeName(data.logTypeName);
@@ -54,10 +55,17 @@ const LogTypeDetails = () => {
 		if(data.logType){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then( res => res.json() ).then( data => {setLogTypeList(data.logTypeList)});
+			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
+	}
+
+	const resetForm = () => {
+		setTypeName('');
+		setGrokPattern('');
+		navigate('/logTypes/0');
 	}
 
     return (
@@ -67,7 +75,6 @@ const LogTypeDetails = () => {
 			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h2 className = "text-left"> Create New Log Type </h2>
 				<div className = "card-body">
-					<form>
 						<div className ="form-group">
 							<label> Log Type Name</label>
 							<input
@@ -76,7 +83,8 @@ const LogTypeDetails = () => {
 							value={typeName}
 							onChange = {(e) => setTypeName(e.target.value)}
 							className = "form-control"
-							placeholder="Enter Log Type Name" 
+							placeholder="Enter Log Type Name"
+							disabled={logTypeId} 
 							/>
 						</div>
 						
@@ -98,8 +106,8 @@ const LogTypeDetails = () => {
 							<button type="button" className = "btn btn-primary" onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
+							<button className = "btn btn-outline-warning" onClick={() => navigate('/logTypes/0')}>New</button>
 						</div>
-					</form>
 				
 				</div>
 			</div>
