@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import JobList from "./JobList";
 
 const JobDetails = () => {
 
@@ -10,11 +11,13 @@ const JobDetails = () => {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logs`).then( res => res.json() ).then( data => { setlogOptions(data.logList)});
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceOptions(data.sourceList)});
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then( res => res.json() ).then( data => {setCollectorOptions(data.collectorList)});
-
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`).then( res => res.json() ).then( data => {setJobList(data.jobList)});
 		if(id != 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/view/${id}`).then( res => res.json() ).then( data => {setJob(data.job)});
+		}else{
+			resetForm();
 		}
-    },[]);
+    },[id]);
 
 	const [job, setJob] = useState({
 		jobName : '',
@@ -32,6 +35,7 @@ const JobDetails = () => {
 	const [collectorOptions, setCollectorOptions] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
+	const [jobList, setJobList] = useState([]);
 	const navigate = useNavigate();
 	const radios = [
 		{ name: 'Yes', value: true, prop: 'success' },
@@ -61,7 +65,7 @@ const JobDetails = () => {
 	const createSourceOptions = () =>{
 		if(sourceOptions){
 			return sourceOptions.map(ele => (
-				<option key={ele._id} selected={ele._id === job.sourceId} value={ele._id}>{ele.sourceName}</option>
+				<option key={ele._id} selected={ele._id === job.sourceId} value={ele._id}>{ele.sourceName+" -> "+ele.fromIP+" - "+ele.toIP}</option>
 			));
 		}
 	}
@@ -69,7 +73,7 @@ const JobDetails = () => {
 	const createCollectorOptions = () =>{
 		if(collectorOptions){
 			return collectorOptions.map(ele => (
-				<option key={ele._id} selected={ele._id === job.collectorId} value={ele._id} >{ele.collectorName}</option>
+				<option key={ele._id} selected={ele._id === job.collectorId} value={ele._id} >{ele.collectorName+" -> "+ele.collectorIP+" - "+ele.collectorPort}</option>
 			));
 		}
 	}
@@ -93,59 +97,25 @@ const JobDetails = () => {
 	const handleData = (data) => {
 		if(data.job){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			navigate('/jobs');
+			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
 
-	const displaySourceTable = (id) => {
-		if(id){
-			const selectedSource = sourceOptions.find(ele => ele._id === id);
-			return (selectedSource && <table className = "table table-striped table-bordered">
-			<thead className = "table-dark">
-				<tr>
-					<th> Log Source Name</th>
-					<th> Log Source From Ip </th>
-					<th> Log Source To Ip </th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<tr >
-					<td >{selectedSource.sourceName}</td>
-					<td >{selectedSource.fromIP}</td>
-					<td >{selectedSource.toIP}</td>
-				</tr>
-			</tbody>
-		
-		</table>)
-		}
-	}
-
-	const displayCollectorTable = (id) => {
-		if(id){
-			const selectedCollector = collectorOptions.find(ele => ele._id === id);
-			return (selectedCollector && <table className = "table table-striped table-bordered">
-			<thead className = "table-dark">
-				<tr>
-					<th> Log Collector Name</th>
-					<th> Log Collector Ip </th>
-					<th> Log Collector Port </th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<tr >
-					<td >{selectedCollector.collectorName}</td>
-					<td >{selectedCollector.collectorIP}</td>
-					<td >{selectedCollector.collectorPort}</td>
-				</tr>
-			</tbody>
-		
-		</table>)
-		}
+	const resetForm = () => {
+		setJob({
+			jobName : '',
+			  logId : '',
+			  frequency : '',
+			  volume :  '',
+			  schedule : '',
+			  date : '',
+			  time : '',
+			  sourceId : '',
+			  collectorId : ''
+		});
 	}
 
     return (
@@ -219,56 +189,42 @@ const JobDetails = () => {
 						className="form-control"
 						placeholder="Enter Volume"
 					/>
-				</div>
+	</div>
 
 				<div className="col-md-2">
 					<input name="scheculedDate" type='datetime-local' className="form-control" value={job.date}
 						onChange={e => handleOnChange('date', e.target.value)} />
 				</div>
-				{/* <div className="form-group">
-					<label >Time:</label>
-					<input name="scheduledTime" type='time' className="form-control" value={job.time}
-						onChange={e => handleOnChange('time', e.target.value)} />
-				</div> */}
 				<div className=" col-md-3">
-					<select className="form-select" >
-						// onChange={e => handleOnSelect('sourceId', e.target.value)} >
+					<select className="form-select"
+						 onChange={e => handleOnSelect('sourceId', e.target.value)} >
 						<option value={0}>-- Select Source --</option>
 						{sourceOptions && createSourceOptions()}
 					</select>
-					{job.sourceId && displaySourceTable(job.sourceId)}
 				</div>
 				<div className="col-md-3 ">
-					<select className="form-select" >
-						// onChange={e => { handleOnSelect('collectorId', e.target.value) }} >
+					<select className="form-select"
+						onChange={e => { handleOnSelect('collectorId', e.target.value) }} >
 						<option value={0}>-- Select Collector --</option>
 						{collectorOptions && createCollectorOptions()}
 					</select>
-
-					{
-						job.collectorId && displayCollectorTable(job.collectorId)
-					}
 				</div>
-				</div>
-			<div Class="flex-container">
+				<div className="flex-container">
 				<div Class="submitbutton">
 					<button className="btn btn-primary" onClick={saveJob}>
 						Submit
 					</button>
 
 				</div>
-				<div Class="backbutton">
-					<button className="btn btn-outline-warning" onClick={() => navigate('/jobs')} >Back</button>
+				<div className="backbutton">
+					<button className="btn btn-outline-warning" onClick={() => navigate('/jobs/0')} >New</button>
+				</div>
 				</div>
 
 			</div>
 
-			
-
 		</div>
-		{/* <Link to={'/job/0'}>Add new Job</Link> */}
-		{/* <List data={jobList} headers={headers} ></List> */}
-
+			<JobList jobList={jobList} />
 		</div>
 	</div>
 

@@ -17,14 +17,13 @@ router.post('/save', async function(req, res, next){
 
     const jobObj = await JobModel.findOne({ jobName: req.body.jobName }); // checking jobName is alreday existing or not
     if (!jobObj) {
+      const date = new Date(req.body.date);
         jobModelObj = new JobModel({
           jobName : req.body.jobName,
           logId : req.body.logId,
           frequency : req.body.frequency,
           volume :  req.body.volume,
-          // schedule : req.body.schedule,
-          date : req.body.date,
-//         time : req.body.time,
+          date : date,
           sourceId : req.body.sourceId,
           collectorId : req.body.collectorId,
           state : states.NEW
@@ -114,26 +113,26 @@ router.delete('/remove/:jobId', function(req, res, next) {
 
   /* List all Jobs */
 router.get('/', function(req, res, next) {
-
-    JobModel.find(function(err , jobList){
-    if(err){
-      res.send({message:'Unable to fetch List'});
+    const statusFilter = req.query.status;
+    if(statusFilter){
+      const query = statusFilter === 'COMPLETED' ? {state : 'COMPLETED'} : {state : { $ne: 'COMPLETED' }};
+      JobModel.find(query,function(err , jobList){
+          if(err){
+            res.send({message:'Unable to fetch List'});
+          }else{
+            res.send({message: 'Job List fetched', jobList: jobList});
+          }
+      });  
     }else{
-      res.send({message: 'Job List fetched', jobList: jobList});
+      JobModel.find(function(err , jobList){
+        if(err){
+          res.send({message:'Unable to fetch List'});
+        }else{
+          res.send({message: 'Job List fetched', jobList: jobList});
+        }
+    });
     }
-  });
-});
-
-  /* List all active Jobs */
-  router.get('/', function(req, res, next) {
-
-    JobModel.find({state : 0},function(err , jobList){
-    if(err){
-      res.send({message:'Unable to fetch List'});
-    }else{
-      res.send({message: 'Job List fetched', jobList: jobList});
-    }
-  });
+    
 });
 
 module.exports = router;

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LogList from "./LogList";
 
 const LogUpload = () => {
 
 	useEffect(() => {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then( res => res.json() ).then( data => {setTypeOptions(data.logTypeList)});
+		fetchLogList();
 	},[]);
 
 	const [file, setFile] = useState(null);
@@ -13,6 +15,7 @@ const LogUpload = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isUploading, setIsUploading] = useState(false);
 	const [typeOptions, setTypeOptions] = useState([]);
+	const [logList, setLogList] = useState([]);
 	const navigate = useNavigate();
 
 	const uploadLog = () => {
@@ -34,7 +37,8 @@ const LogUpload = () => {
 	const handleUpload = (data) => {
 		if(data.log){
 			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			navigate('/logLibrary');
+			fetchLogList();
+			resetForm();
 		}else{
 			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
@@ -49,7 +53,18 @@ const LogUpload = () => {
 		}
 	}
 
+	const fetchLogList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/logs`).then( res => res.json() ).then( data => {setLogList(data.logList)});
+	}
+
+	const resetForm = () => {
+		setFile(null);
+		setFileName('');
+		setLogType('');
+	}
+
     return (
+		<div>
         <div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h2 className = "text-left"> Create New Log Library </h2>
 				<div className = "card-body">
@@ -96,6 +111,8 @@ const LogUpload = () => {
 					</form>
 				
 				</div>
+			</div>
+			<LogList logList={logList} />
 			</div>
     );
 }
