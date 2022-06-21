@@ -12,6 +12,12 @@ const Login = () => {
 		onLogin(username, password);
         //checkLoggedUser()
 	}
+
+	const handleKeypress = e => {
+	  if (e.key === "Enter") {
+		onLogin(username, password);
+	  }
+	};
 	
 	return (
         <div className="container">
@@ -21,12 +27,12 @@ const Login = () => {
 				<h1>Login page</h1>
 					<div className="form-group">
 						<label>Username</label>: <input type="text"
-							className="form-control" onChange={e => setUsername(e.target.value)}
+							className="form-control" onChange={e => setUsername(e.target.value)} onKeyPress={handleKeypress}
 							autofocus="autofocus" placeholder="Username" />
 					</div>
 					<div className="form-group">
 						<label >Password</label>: <input type="password"
-							className="form-control" onChange={e => setPassword(e.target.value)}
+							className="form-control" onChange={e => setPassword(e.target.value)} onKeyPress={handleKeypress}
 							placeholder="Password" />
 					</div>
 					<div className="form-group">

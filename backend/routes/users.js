@@ -85,7 +85,8 @@ router.put('/update', function(req, res, next){
 router.get('/validate',checkUser, async function(req, res, next){
     try{
         if(!res.locals.authError){
-            const user = await userModel.find({_id : res.locals.user.id });
+            const userId = res.locals.user.id;
+            const user = await userModel.findOne({_id : userId });
             const userObj = getUserData(user);
             res.send({message : "User fetched", user : userObj});
         }else{
