@@ -48,7 +48,7 @@ router.post('/upload', function(req, res, next){
         LogModelObj = new LogModel({
           logName : req.body.logName,
           logTypeId : req.body.logTypeId,
-          logLink : req.file.path,
+          logLink : process.env.PROJECT_PATH + req.file.path,
           logSize :  req.file.size/(1000000),
           sampleLog : sample
         });
@@ -107,13 +107,15 @@ router.delete('/remove/:logId', function(req, res, next) {
 
   /* List all logs */
 router.get('/', function(req, res, next) {
-
-  LogModel.find(function(err , logList){
-    if(err){
-      res.send({message:'Unable to fetch List'});
-    }else{
-      res.send({message: 'Log List fetched', logList: logList});
+  LogModel.aggregate([{
+    $lookup: {
+        from: "logtypes",
+        localField: "logTypeId",
+        foreignField: "_id",
+        as: "logTypes"
     }
+  }]).exec(function(err, logList) {
+    res.send({message: 'Log List fetched', logList: logList});
   });
 });
 

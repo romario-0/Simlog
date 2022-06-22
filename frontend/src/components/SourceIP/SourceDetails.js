@@ -72,6 +72,7 @@ const SourceDetails = () => {
 		setFromIP('');
 		setToIP('');
 		setSourceId(0); 
+		navigate('/sources/0');
 	}
 
     return (
@@ -90,6 +91,7 @@ const SourceDetails = () => {
 							onChange={e => setSourceName(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Source Name"
+							disabled={sourceId}
 							/>
 						</div>
 						

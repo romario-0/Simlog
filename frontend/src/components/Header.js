@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 import { useContext } from 'react';
 import { AuthenticationContext } from '../services/AuthenticationContext';
 
+
+
 const Header = () => {
 
     const {user, onLogout} = useContext(AuthenticationContext);
@@ -12,7 +14,7 @@ const Header = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="white" variant="white">
             <Container>
-            <Navbar.Brand><img src="small_logo.png"></img> </Navbar.Brand>
+            <Navbar.Brand><img Class="Image" src="small_logo.png"></img></Navbar.Brand>
             <Navbar.Brand>Simlog</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
