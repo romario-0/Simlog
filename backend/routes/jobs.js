@@ -160,13 +160,13 @@ router.post('/start', async function(req, res, next){
 router.post('/stop', function(req, res, next) {
 
   const jobId = req.body.jobId;
-  exec(`echo "stop ${jobId}"`, (err, stdout, stderr) => {
+  exec(`/bin/python3 /home/saurabh/pweb/controller.py stop ${jobId}"`, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
       res.send({ message : "Couldn't stop job" });
     }else{
       // executed Stop command
-      res.send({ message : "Job Stopped" });
+      res.send({ message : "Job Stop requested" });
     }
   });
 });
