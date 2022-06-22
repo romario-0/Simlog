@@ -3,7 +3,7 @@ import List from "./List";
 
 const Home = () => {
     const [jobList, setJobList] = useState([]);
-    const [filter, setFilter] = useState('ONGOING');
+    const [filter, setFilter] = useState('Running');
     const [listOptions, setListOptions] = useState({
         actions : { stateName : 'Stop', stateAction : 'job/stop'}
     })
@@ -21,10 +21,7 @@ const Home = () => {
 
     const handleFilterChange = (value) => {
         setFilter(value);
-        if(value === 'COMPLETED'){
-            setListOptions({
-            });
-        }else if(value === 'ONGOING'){
+        if(value.toUpperCase() === 'RUNNING' || value.toUpperCase() === 'PROCESSING'){
             setListOptions({
                 actions : { stateName : 'Stop', stateAction : 'jobs/stop', prop : 'jobId'}
             });
@@ -32,15 +29,20 @@ const Home = () => {
             setListOptions({
                 actions : { stateName : 'Start', stateAction : 'jobs/start', prop : 'jobId'}
             });
+        }else{
+            setListOptions({});
         }
     }
 
     return (
         <div>
             <select onChange={e => handleFilterChange(e.target.value)}>
-                <option selected={filter === 'NEW'} value="NEW">NEW</option>
-                <option selected={filter === 'ONGOING'} value="ONGOING">ON GOING</option>
-                <option selected={filter === 'COMPLETED'} value="COMPLETED">COMPLETED</option>
+                <option selected={filter.toUpperCase() === 'NEW'} value="NEW">NEW</option>
+                <option selected={filter.toUpperCase() === 'PROCESSING'} value="Processing">PROCESSING</option>
+                <option selected={filter.toUpperCase() === 'RUNNING'} value="Running">RUNNING</option>
+                <option selected={filter.toUpperCase() === 'CANCELLED'} value="Cancelled">CANCELLED</option>
+                <option selected={filter.toUpperCase() === 'STOPPED'} value="Stopped">STOPPED</option>
+                <option selected={filter.toUpperCase() === 'COMPLETED'} value="Completed">COMPLETED</option>
             </select>
             <List data={jobList} headers={headers} listOptions={listOptions}></List>
         </div>

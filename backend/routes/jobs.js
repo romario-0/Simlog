@@ -6,11 +6,14 @@ const SourceModel = require('../models/source.model');
 const { exec } = require('child_process');
 
 const states = {
-  NEW : "NEW",
-  RUNNING : "RUNNING",
-  STOPPED : "STOPPED",
-  COMPLETED : "COMPLETED"
-} // PENDING, STOPPED
+  NEW : "New",
+  PROCESSING : "Processing",
+  RUNNING : "Running",
+  CANCELLED : "Cancelled",
+  STOPPED : "Stopped",
+  COMPLETED : "Completed"
+  //New, Processing, Running, Cancelled, Stopped
+} 
 
 /* Create new Job*/
 router.post('/save', async function(req, res, next){
@@ -27,7 +30,8 @@ router.post('/save', async function(req, res, next){
           date : date,
           sourceId : req.body.sourceId,
           collectorId : req.body.collectorId,
-          status : states.NEW
+          status : states.NEW,
+          progress : 0
         });
   
         jobModelObj.save(function(err , jobDetails){
@@ -83,7 +87,8 @@ router.get('/view/:jobId', async function(req, res, next) {
         date : jobObj.date,
         sourceId : jobObj.sourceId,
         collectorId : jobObj.collectorId,
-        status : jobObj.status
+        status : jobObj.status,
+        progress : jobObj.progress
       };
       const source = await SourceModel.findById(jobObj.sourceId);
       const collector = await CollectorModel.findById(jobObj.collectorId);
@@ -176,7 +181,7 @@ router.post('/stop', function(req, res, next) {
  /* List filtered Jobs */
  router.get('/filter', function(req, res, next) {
   JobModel.aggregate([{ 
-    $match: { status : req.query.status }},
+    $match: { status : req.query.status.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase()) }},
     {
         $lookup: {
             from: "sources",
