@@ -8,15 +8,17 @@ const List = ({listOptions, data, headers}) => {
         return headers.map(ele => (<th key={ele.key}>{ele.value}</th>))
     }
 
-    const handleAction = (objId) => {
+    const handleAction = (objId, action) => {
         const obj = {};
-        obj[listOptions.actions.prop] = objId;
+        obj[action.prop] = objId;
+        obj['action'] = action.stateAction;
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(obj)
         };
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/${listOptions.actions.stateAction}`, requestOptions).then( res => res.json() ).then( data => {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/${action.actionUrl}`, requestOptions).then( res => res.json() ).then( data => {
+            //Handle success or failure
         });
     }
 
@@ -26,7 +28,7 @@ const List = ({listOptions, data, headers}) => {
                 {headers.map(key => {
                     if(key.subProps){
                         return (<td key={`${ele._id}_${key.prop}`}>{formatData(ele, key.prop, key.subProps)}</td>)
-                    }else if(key.prop === 'date'){
+                    }else if(key.prop === 'date' || key.prop === 'createdAt' || key.prop === 'updatedAt'){
                         const date = new Date(ele[key.prop]);
                         return (<td key={`${ele._id}_${key.prop}`}>{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}</td>)
                     }else{
@@ -34,8 +36,10 @@ const List = ({listOptions, data, headers}) => {
                     }
                 })}
                 {listOptions.editLink && !listOptions.editCondition && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
-                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field] === listOptions.editCondition.value && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
-                {listOptions.actions && <td><button onClick={() => handleAction(ele._id)}>{listOptions.actions.stateName}</button></td>}
+                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() === listOptions.editCondition.value.toUpperCase() && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
+                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() !== listOptions.editCondition.value.toUpperCase() && <td></td>}
+                {listOptions.actions && <td> {listOptions.actions.map(action => (<td key={`${ele._id}_${action.stateName}`}><button onClick={() => handleAction(ele._id, action)}>{action.stateName}</button></td>))}</td>
+                 }
             </tr>
         ));
     }
@@ -53,7 +57,7 @@ const List = ({listOptions, data, headers}) => {
         data &&
         <div className="container">
         <Table striped bordered hover>
-             <thead><tr>{createTableHeader()}{listOptions.editLink && <th></th>}{listOptions.actions && <th></th>}</tr></thead>
+             <thead><tr>{createTableHeader()}{listOptions.editLink && <th>Actions</th>}{listOptions.actions && <th>Actions</th>}</tr></thead>
              <tbody>{createTableData()}</tbody>
         </Table>
         </div>
