@@ -125,7 +125,7 @@ const CollectorDetails = () => {
 							<button className = "btn btn-primary" onClick={saveCollector}>
 								Submit
 							</button>
-							<button className="btn btn-outline-warning" onClick={() => navigate('/collectors/0')}>New</button>
+							<button className="btn btn-outline-warning" onClick={() => {resetForm(); navigate('/collectors/0')}}>Cancel</button>
 						</div>
 				</div>
 			</div>

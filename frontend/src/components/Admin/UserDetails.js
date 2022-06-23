@@ -164,7 +164,7 @@ const UserDetails = () => {
 							<button className = "btn btn-primary" onClick={saveUser}>
 								Submit
 							</button>
-							<button className = "btn btn-outline-warning" onClick={() => navigate('/users/0')}>Cancel</button>
+							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
 						</div>
 				</div>
 			</div>
