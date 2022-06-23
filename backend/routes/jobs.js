@@ -143,8 +143,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-/* Start Job*/
-router.post('/start', async function(req, res, next){
+async function startJob(req, res, next){
 
   const jobObj = await JobModel.findOne({ _id: req.body.jobId }); // checking for Job
   if (jobObj) {
@@ -159,21 +158,27 @@ router.post('/start', async function(req, res, next){
     }else{
       res.send({ message : "Job doesn't exists" });
     }
-});
+};
 
 /* Stop Job */
-router.post('/stop', function(req, res, next) {
+router.post('/action', function(req, res, next) {
 
   const jobId = req.body.jobId;
-  exec(`/bin/python3 /home/saurabh/pweb/controller.py stop ${jobId}"`, (err, stdout, stderr) => {
-    if (err) {
-      // node couldn't execute the command
-      res.send({ message : "Couldn't stop job" });
-    }else{
-      // executed Stop command
-      res.send({ message : "Job Stop requested" });
-    }
-  });
+  const action = req.body.action.toLowerCase();
+  if(action === 'start'){
+    startJob(req, res, next);
+  }else{
+    const command = `${process.env.PYTHON_ENV_VAR} ${process.env.PYTHON_FILE_PATH}/controller.py ${action} ${jobId}`;
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.log(err);
+        res.send({ message : `Couldn't ${action} job` });
+      }else{
+        // executed Stop command
+        res.send({ message : `Job ${action} requested` });
+      }
+    }); 
+  }
 });
 
  /* List filtered Jobs */
