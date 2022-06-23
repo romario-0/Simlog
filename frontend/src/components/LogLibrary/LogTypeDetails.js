@@ -106,7 +106,7 @@ const LogTypeDetails = () => {
 							<button type="button" className = "btn btn-primary" onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
-							<button className = "btn btn-outline-warning" onClick={() => navigate('/logTypes/0')}>New</button>
+							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/logTypes/0');}}>Cancel</button>
 						</div>
 				
 				</div>
