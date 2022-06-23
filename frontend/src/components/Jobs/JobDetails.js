@@ -68,24 +68,26 @@ const JobDetails = () => {
 	const createCollectorOptions = () =>{
 		if(collectorOptions){
 			return collectorOptions.map(ele => (
-				<option key={ele._id} selected={ele._id === job.collectorId} value={ele._id} >{ele.collectorName+" -> "+ele.collectorIP+" - "+ele.collectorPort}</option>
+				<option key={ele._id} selected={ele._id === job.collectorId} value={ele._id} >{ele.collectorName+" -> "+ele.collectorIP+":"+ele.collectorPort}</option>
 			));
 		}
 	}
 
 	const saveJob = () => {
-		setIsLoading(true);
+		if(validateForm()){
+			setIsLoading(true);
 
-		const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(job)
-        };
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(job)
+			};
 
-		if(job._id){
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
-		}else{
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			if(job._id){
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}else{
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}
 		}
 	}
 
@@ -112,6 +114,16 @@ const JobDetails = () => {
 			  collectorId : ''
 		});
 		navigate('/jobs/0');
+	}
+
+	const validateForm = () => {
+		const date = Date.now();
+		const selectedDate = new Date(job.date);
+		if(selectedDate < date){
+			setMessage({color : 'red', text : 'Invalid date'});
+			return false;
+		}
+		return true;
 	}
 
 	function padTo2Digits(num) {
@@ -226,6 +238,9 @@ const JobDetails = () => {
 						{collectorOptions && createCollectorOptions()}
 					</select>
 				</div>
+				{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 				<div className="flex-container">
 				<div Class="submitbutton">
 					<button className="btn btn-primary" onClick={saveJob}>
@@ -234,7 +249,7 @@ const JobDetails = () => {
 
 				</div>
 				<div className="backbutton">
-					<button className="btn btn-outline-warning" onClick={() => navigate('/jobs/0')} >New</button>
+					<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/jobs/0');}} >Cancel</button>
 				</div>
 				</div>
 
