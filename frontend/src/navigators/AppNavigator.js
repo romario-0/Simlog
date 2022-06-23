@@ -10,6 +10,7 @@ import NavBar from '../components/NavBar';
 import SourceDetails from '../components/SourceIP/SourceDetails';
 import SourceList from '../components/SourceIP/SourceList';
 import LogTypeDetails from '../components/LogLibrary/LogTypeDetails';
+import UserDetails from '../components/Admin/UserDetails';
 
 const AppNavigator = () => {
     return (
@@ -23,6 +24,7 @@ const AppNavigator = () => {
           <Route path='/jobs/:id' element={<JobDetails />} />
           <Route path='/sources/:id' element={<SourceDetails />} />
           <Route path='/collectors/:id' element={<CollectorDetails />} />
+          <Route path='/users/:id' element={<UserDetails />} />
         </Routes>
     </div>
     );
