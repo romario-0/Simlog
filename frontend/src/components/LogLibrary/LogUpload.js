@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogList from "./LogList";
 
@@ -10,28 +10,31 @@ const LogUpload = () => {
 	},[]);
 
 	const [file, setFile] = useState(null);
-	const [fileName, setFileName] = useState('');
+	const [logName, setLogName] = useState('');
 	const [logType, setLogType] = useState('');
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isUploading, setIsUploading] = useState(false);
 	const [typeOptions, setTypeOptions] = useState([]);
 	const [logList, setLogList] = useState([]);
+	const inputRef = useRef(null);
 	const navigate = useNavigate();
 
 	const uploadLog = () => {
-		setIsUploading(true);
-		const data = new FormData();
-        data.append('upload_file', file );
-        data.append('logName', fileName);
-        data.append('logTypeId', logType);
+		if(validateForm()){
+			setIsUploading(true);
+			const data = new FormData();
+			data.append('upload_file', file );
+			data.append('logName', logName.trim());
+			data.append('logTypeId', logType);
 
-		const requestOptions = {
-            method: 'POST',
-            //headers: { 'Content-Type': 'multipart/form-data' },
-            body: data
-        };
+			const requestOptions = {
+				method: 'POST',
+				//headers: { 'Content-Type': 'multipart/form-data' },
+				body: data
+			};
 
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/logs/upload`, requestOptions).then( res => res.json() ).then( data => handleUpload(data));
+			fetch(`${process.env.REACT_APP_BACKEND_URL}/logs/upload`, requestOptions).then( res => res.json() ).then( data => handleUpload(data));
+		}
 	}
 
 	const handleUpload = (data) => {
@@ -48,7 +51,7 @@ const LogUpload = () => {
 	const createLogTypeOptions = () =>{
 		if(typeOptions){
 			return typeOptions.map(ele => (
-				<option key={ele._id} value={ele._id}>{ele.logTypeName}</option>
+				<option key={ele._id} selected={ele._id === logType} value={ele._id}>{ele.logTypeName}</option>
 			));
 		}
 	}
@@ -59,8 +62,25 @@ const LogUpload = () => {
 
 	const resetForm = () => {
 		setFile(null);
-		setFileName('');
-		setLogType('');
+		inputRef.current.value = null;
+		setLogName('');
+		setLogType(0);
+	}
+
+	const validateForm = () => {
+		if(!logName.trim()){
+			setMessage({color : 'red', text : 'Enter Log Name'});
+			return false;
+		}
+		if(!logType){
+			setMessage({color : 'red', text : 'Select Log Type'});
+			return false;
+		}
+		if(!file){
+			setMessage({color : 'red', text : 'Select a file'});
+			return false;
+		}
+		return true;
 	}
 
     return (
@@ -68,14 +88,13 @@ const LogUpload = () => {
         <div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h2 className = "text-left"> Create New Log Library </h2>
 				<div className = "card-body">
-					<form >
 						<div className ="form-group">
 							<label> Log Upload Name </label>
 							<input
 							type = "text"
 							name = "name"
-							value={fileName}
-							onChange={(e) =>{setFileName(e.target.value)}}
+							value={logName}
+							onChange={(e) =>{setLogName(e.target.value)}}
 							className = "form-control"
 							placeholder="Enter Log Source Name"
 							/>
@@ -83,7 +102,7 @@ const LogUpload = () => {
 						<div className ="form-group">
 							<label> Log Upload Type </label>
 							<select className = "form-control" onChange={(e) => setLogType(e.target.value)}>
-								<option>-- Select Log Type --</option>
+								<option value={0}>-- Select Log Type --</option>
 								{typeOptions && createLogTypeOptions()}
 							</select>
 						</div>
@@ -92,7 +111,7 @@ const LogUpload = () => {
 							<label> Upload File </label>
 							<input
 							type = "file"
-							name = "file_l"
+							ref={inputRef}
 							onChange = {(e) => {setFile(e.target.files[0]);setIsUploading(false);}}
 							className = "form-control"
 							placeholder="" 
@@ -108,7 +127,6 @@ const LogUpload = () => {
 								Submit
 							</button>
 						</div>
-					</form>
 				
 				</div>
 			</div>

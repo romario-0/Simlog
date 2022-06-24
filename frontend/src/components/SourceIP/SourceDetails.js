@@ -124,7 +124,7 @@ const SourceDetails = () => {
 							<button className = "btn btn-primary" onClick={saveSource}>
 								Submit
 							</button>
-							<button className = "btn btn-outline-warning" onClick={() => navigate('/sources/0')}>New</button>
+							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/sources/0')}}>Cancel</button>
 						</div>
 				</div>
 			</div>

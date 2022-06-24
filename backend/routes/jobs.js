@@ -21,6 +21,7 @@ router.post('/save', async function(req, res, next){
 
     const jobObj = await JobModel.findOne({ jobName: req.body.jobName }); // checking jobName is alreday existing or not
     if (!jobObj) {
+      if(validateData(req.body)){
       const date = new Date(req.body.date);
         jobModelObj = new JobModel({
           jobName : req.body.jobName,
@@ -43,6 +44,9 @@ router.post('/save', async function(req, res, next){
           }
         });
       }else{
+        res.send({message:'Required details not provided'});
+      }
+      }else{
         res.send({ message : 'Job name already exists' });
       }
 });
@@ -53,16 +57,21 @@ router.post('/update', async function(req, res, next){
     const jobObj = await JobModel.findOne({ _id: req.body._id }); // checking for Job
     if (jobObj) {
       let job = req.body;
-        if(job.hasOwnProperty('jobName')){
-            delete job.jobName;
-        }
-      const jobObj = JobModel.findOneAndUpdate({  _id: req.body._id }, job, function(err, jobDetails){
-            if(err){
-              res.send({message:'Unable to add Object'});
-            }else{
-              res.send({ message : 'Job Updated', job : jobDetails });
-            }
-        });        
+          if(validateDataForUpdate(job)){
+            if(job.hasOwnProperty('jobName')){
+              delete job.jobName;
+             }
+            const jobObj = JobModel.findOneAndUpdate({  _id: req.body._id }, job, function(err, jobDetails){
+              if(err){
+                console.log(err);
+                res.send({message:'Unable to add Object'});
+              }else{
+                res.send({ message : 'Job Updated', job : jobDetails });
+              }
+          });  
+        }else{
+          res.send({message:'Required details not proper'});
+        }      
       }else{
         res.send({ message : "Job doesn't exists" });
       }
@@ -145,8 +154,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-/* Start Job*/
-router.post('/start', async function(req, res, next){
+async function startJob(req, res, next){
 
   const jobObj = await JobModel.findOne({ _id: req.body.jobId }); // checking for Job
   if (jobObj) {
@@ -161,21 +169,27 @@ router.post('/start', async function(req, res, next){
     }else{
       res.send({ message : "Job doesn't exists" });
     }
-});
+};
 
 /* Stop Job */
-router.post('/stop', function(req, res, next) {
+router.post('/action', function(req, res, next) {
 
   const jobId = req.body.jobId;
-  exec(`/bin/python3 /home/saurabh/pweb/controller.py stop ${jobId}"`, (err, stdout, stderr) => {
-    if (err) {
-      // node couldn't execute the command
-      res.send({ message : "Couldn't stop job" });
-    }else{
-      // executed Stop command
-      res.send({ message : "Job Stop requested" });
-    }
-  });
+  const action = req.body.action.toLowerCase();
+  if(action === 'start'){
+    startJob(req, res, next);
+  }else{
+    const command = `${process.env.PYTHON_ENV_VAR} ${process.env.PYTHON_FILE_PATH}/controller.py ${action} ${jobId}`;
+    exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.log(err);
+        res.send({ message : `Couldn't ${action} job` });
+      }else{
+        // executed Stop command
+        res.send({ message : `Job ${action} requested` });
+      }
+    }); 
+  }
 });
 
  /* List filtered Jobs */
@@ -211,5 +225,26 @@ router.post('/stop', function(req, res, next) {
       }
   });
 });
+
+function validateData(job){
+  if(!job.jobName || !job.logId || !job.duration || !job.volume || !job.date || !job.sourceId || !job.collectorId){
+    return false;
+  }else if(validateDataForUpdate(job)){
+    return false
+  }
+  return true;
+}
+
+function validateDataForUpdate(job){
+  if((job.logId !== undefined && !job.logId.trim()) 
+  || (job.duration !== undefined && !Number(job.duration)) 
+  || (job.volume !== undefined && !Number(job.volume)) 
+  || (!job.date) 
+  || (job.sourceId !== undefined && !job.sourceId.trim()) 
+  || (job.collectorId !== undefined && !job.collectorId.trim())){
+    return false;
+  }
+  return true;
+}
 
 module.exports = router;

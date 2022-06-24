@@ -36,12 +36,13 @@ export const AuthenticationContextProvider = ({children}) => {
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({username : username,password : password})
           };
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`, requestOptions).then(res => res.json()).then(async data => {
+          return fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`, requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
               setUser(data.user);
               localStorage.setItem('token', data.userToken);
             }else{
               setError(data.message);
+              return data.message;
             }
             setIsLoading(false);
           });

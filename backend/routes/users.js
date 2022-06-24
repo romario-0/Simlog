@@ -15,20 +15,18 @@ router.post('/signup', function(req, res, next){
                 userModelObj = new userModel({
                     firstName : userObj.firstName,
                     lastName : userObj.lastName,
-                    age : userObj.age,
-                    nationality : userObj.nationality,
+                    email : userObj.email,
+                    mobile : userObj.mobile,
                     username : userObj.username,
                     password :  userObj.password,
                 });
             
                 userModelObj.save(function(err, user){
                     if(err){
+                        console.log(err);
                         res.send({message:'Unable to add Object'});
                     }else{
                         const newUser = getUserData(userObj);
-                        const token = createToken(newUser.id);
-                        //res.cookie('jwt', token, {sameSite: 'none', secure: true, httpOnly : true,  maxAge : 3*24*60*60*1000});
-                        req.session.token = token;
                         res.send({message:'User added successfully', user : newUser});
                     }
                 });
@@ -62,16 +60,21 @@ router.post('/logout',checkUser, function(req, res, next){
     } 
 });
 
-router.put('/update', function(req, res, next){
+router.post('/update', function(req, res, next){
     const userObj = req.body;
     userUpdateObj = {
+        password : userObj.password,
         firstName : userObj.firstName,
         lastName : userObj.lastName,
-        age : userObj.age,
-        nationality : userObj.nationality
+        email : userObj.email,
+        mobile : userObj.mobile,
     };
 
-    userModel.findOneAndUpdate({ username : userObj.username }, userUpdateObj, function(err, user){
+    if(!userUpdateObj.password){
+        delete userUpdateObj.password;
+    }
+
+    userModel.findOneAndUpdate({ _id : userObj.userId }, userUpdateObj, function(err, user){
         if(err){
             res.send({ message : "User update failed" });
             console.log(err);
@@ -97,13 +100,40 @@ router.get('/validate',checkUser, async function(req, res, next){
     } 
 });
 
+  /* List all Users */
+  router.get('/', function(req, res, next) {
+
+    userModel.find(function(err , userList){
+    if(err){
+      res.send({message:'Unable to fetch List'});
+    }else{
+      res.send({message: 'User List fetched', userList: userList});
+    }
+  });
+});
+
+  /* Get single User details */
+  router.get('/view/:userId', function(req, res, next) {
+
+    const userId = req.params.userId;
+
+    userModel.findById(userId, function(err , user){
+    if(err){
+      res.send({message:'Unable to fetch List'});
+    }else{
+        const userObj = getUserData(user);
+      res.send({message: 'User List fetched', user: userObj});
+    }
+  });
+});
+
 function getUserData(user){
     const userObj = {
         id : user._id,
         firstName : user.firstName,
         lastName : user.lastName,
-        age : user.age,
-        nationality : user.nationality,
+        email : user.email,
+        mobile : user.mobile,
         username : user.username
     }
     return userObj;

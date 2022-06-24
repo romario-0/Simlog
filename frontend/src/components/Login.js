@@ -5,12 +5,13 @@ const Login = () => {
     
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [message, setMessage] = useState('');
 
 	const {onLogin} = useContext(AuthenticationContext);
 
-	const handleLogin = () => {
-		onLogin(username, password);
-        //checkLoggedUser()
+	const handleLogin = async () => {
+		const msg = await onLogin(username, password);
+		setMessage(msg);
 	}
 
 	const handleKeypress = e => {
@@ -35,6 +36,10 @@ const Login = () => {
 							className="form-control" onChange={e => setPassword(e.target.value)} onKeyPress={handleKeypress}
 							placeholder="Password" />
 					</div>
+
+					{ message &&
+							<div style={{color:'red'}}>{message}</div>
+						}
 					<div className="form-group">
 						<div className="row">
 							<div className="col-sm-6 col-sm-offset-3">
