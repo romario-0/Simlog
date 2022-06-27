@@ -23,6 +23,8 @@ const UserDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const [userList, setuserList] = useState([]);
+	const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	const MOBILE_REGEX = /^\d{10}$/;
 	const navigate = useNavigate();
 
 	const setUserValue = (data) => {
@@ -36,31 +38,33 @@ const UserDetails = () => {
 	}
 
 	const saveUser = () => {
-		setIsLoading(true);
+		if(validateForm()){
+			setIsLoading(true);
 
-		const userObj = {
-			username, 
-			password,
-			firstName,
-            lastName,
-            email,
-            mobile
-		}
+			const userObj = {
+				username, 
+				password,
+				firstName,
+				lastName,
+				email,
+				mobile
+			}
 
-		if(userId){
-			userObj.userId = userId;
-		}
+			if(userId){
+				userObj.userId = userId;
+			}
 
-		const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userObj)
-        };
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(userObj)
+			};
 
-		if(userId){
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/users/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
-		}else{
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			if(userId){
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}else{
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}
 		}
 	}
 
@@ -84,6 +88,30 @@ const UserDetails = () => {
 		setMobile('');
 		setuserId(0); 
 		navigate('/users/0');
+	}
+
+	const validateForm = () => {
+		if(!username.trim()){
+			setMessage({color : 'red', text : 'Enter username'});
+			return false;
+		}
+		if(!password){
+			setMessage({color : 'red', text : 'Enter password'});
+			return false;
+		}
+		if(!firstName.trim()){
+			setMessage({color : 'red', text : 'Enter First Name'});
+			return false;
+		}
+		if(!EMAIL_REGEX.test(email)){
+			setMessage({color : 'red', text : 'Invalid email address'});
+			return false;
+		}
+		if(!MOBILE_REGEX.test(mobile)){
+			setMessage({color : 'red', text : 'Invalid Mobile No.'});
+			return false;
+		}
+		return true;
 	}
 
     return (
@@ -159,6 +187,9 @@ const UserDetails = () => {
 							placeholder="Enter Mobile Number" 
 							/>
 						</div>
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 						
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveUser}>

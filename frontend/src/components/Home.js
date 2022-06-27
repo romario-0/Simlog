@@ -40,6 +40,10 @@ const Home = () => {
             setListOptions({
                 actions : [JOB_ACTION.STOP, JOB_ACTION.CANCEL]
             });
+        }else if(value.toUpperCase() === 'STOPPED'){
+            setListOptions({
+                actions : [JOB_ACTION.RESUME]
+            });
         }else if(value === 'NEW'){
             setListOptions({
                 actions : [JOB_ACTION.START]

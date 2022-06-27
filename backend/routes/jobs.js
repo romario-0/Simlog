@@ -26,8 +26,8 @@ router.post('/save', async function(req, res, next){
         jobModelObj = new JobModel({
           jobName : req.body.jobName,
           logId : req.body.logId,
-          duration : req.body.duration,
-          volume :  req.body.volume,
+          duration : Number(req.body.duration),
+          volume :  Number(req.body.volume),
           date : date,
           sourceId : req.body.sourceId,
           collectorId : req.body.collectorId,
@@ -60,6 +60,12 @@ router.post('/update', async function(req, res, next){
           if(validateDataForUpdate(job)){
             if(job.hasOwnProperty('jobName')){
               delete job.jobName;
+             }
+             if(job.duration){
+              job.duration = Number(job.duration);
+             }
+             if(job.volume){
+              job.volume = Number(job.volume);
              }
             const jobObj = JobModel.findOneAndUpdate({  _id: req.body._id }, job, function(err, jobDetails){
               if(err){
@@ -229,7 +235,7 @@ router.post('/action', function(req, res, next) {
 function validateData(job){
   if(!job.jobName || !job.logId || !job.duration || !job.volume || !job.date || !job.sourceId || !job.collectorId){
     return false;
-  }else if(validateDataForUpdate(job)){
+  }else if(!validateDataForUpdate(job)){
     return false
   }
   return true;

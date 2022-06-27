@@ -20,6 +20,7 @@ const SourceDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const [sourceList, setSourceList] = useState([]);
+	const IP_REGEX = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 	const navigate = useNavigate();
 
 	const setSourceValue = (data) => {
@@ -31,28 +32,30 @@ const SourceDetails = () => {
 	}
 
 	const saveSource = () => {
-		setIsLoading(true);
+		if(validateForm()){
+			setIsLoading(true);
 
-		const sourceObj = {
-			sourceName, 
-			fromIP,
-			toIP
-		}
+			const sourceObj = {
+				sourceName, 
+				fromIP,
+				toIP
+			}
 
-		if(sourceId){
-			sourceObj.sourceId = sourceId;
-		}
+			if(sourceId){
+				sourceObj.sourceId = sourceId;
+			}
 
-		const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sourceObj)
-        };
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(sourceObj)
+			};
 
-		if(sourceId){
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
-		}else{
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			if(sourceId){
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}else{
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}
 		}
 	}
 
@@ -73,6 +76,22 @@ const SourceDetails = () => {
 		setToIP('');
 		setSourceId(0); 
 		navigate('/sources/0');
+	}
+
+	const validateForm = () => {
+		if(!sourceName.trim()){
+			setMessage({color : 'red', text : 'Enter source name'});
+			return false;
+		}
+		if(!IP_REGEX.test(fromIP)){
+			setMessage({color : 'red', text : 'Invalid From IP address'});
+			return false;
+		}
+		if(!IP_REGEX.test(toIP)){
+			setMessage({color : 'red', text : 'Invalid To IP address'});
+			return false;
+		}
+		return true;
 	}
 
     return (
@@ -119,6 +138,9 @@ const SourceDetails = () => {
 							/>
 						</div>
 						
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 						
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveSource}>

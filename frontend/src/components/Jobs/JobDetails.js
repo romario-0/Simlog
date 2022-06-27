@@ -119,8 +119,32 @@ const JobDetails = () => {
 	const validateForm = () => {
 		const date = Date.now();
 		const selectedDate = new Date(job.date);
+		if(!job.jobName.trim()){
+			setMessage({color : 'red', text : 'Enter Job Name'});
+			return false;
+		}
+		if(!job.logId || job.logId == 0){
+			setMessage({color : 'red', text : 'Select a log'});
+			return false;
+		}
+		if(!job.duration || !Number(job.duration) || job.duration < 0){
+			setMessage({color : 'red', text : 'Invalid duration'});
+			return false;
+		}
+		if(!job.volume || !Number(job.volume) || job.volume < 0){
+			setMessage({color : 'red', text : 'Invalid volume'});
+			return false;
+		}
 		if(selectedDate < date){
 			setMessage({color : 'red', text : 'Invalid date'});
+			return false;
+		}
+		if(!job.sourceId || job.sourceId == 0){
+			setMessage({color : 'red', text : 'Select a Source IP range'});
+			return false;
+		}
+		if(!job.collectorId || job.collectorId == 0){
+			setMessage({color : 'red', text : 'Select a Collector IP'});
 			return false;
 		}
 		return true;

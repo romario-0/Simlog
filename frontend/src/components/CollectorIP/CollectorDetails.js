@@ -20,6 +20,8 @@ const CollectorDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const [collectorList, setCollectorList] = useState([]);
+	const IP_REGEX = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+	const PORT_REGEX = /^\d{4,5}$/;
 	const navigate = useNavigate();
 
 	const setCollectorValue = (data) => {
@@ -31,28 +33,30 @@ const CollectorDetails = () => {
 	}
 
 	const saveCollector = () => {
-		setIsLoading(true);
+		if(validateForm()){
+			setIsLoading(true);
 
-		const collectorObj = {
-			collectorName, 
-			collectorIP,
-			collectorPort
-		}
+			const collectorObj = {
+				collectorName, 
+				collectorIP,
+				collectorPort
+			}
 
-		if(collectorId){
-			collectorObj.collectorId = collectorId;
-		}
+			if(collectorId){
+				collectorObj.collectorId = collectorId;
+			}
 
-		const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(collectorObj)
-        };
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(collectorObj)
+			};
 
-		if(collectorId){
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
-		}else{
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			if(collectorId){
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}else{
+				fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+			}
 		}
 	}
 
@@ -73,6 +77,22 @@ const CollectorDetails = () => {
 		setCollectorPort('');
 		setCollectorId(0);
 		navigate('/collectors/0');
+	}
+
+	const validateForm = () => {
+		if(!collectorName.trim()){
+			setMessage({color : 'red', text : 'Enter collector name'});
+			return false;
+		}
+		if(!IP_REGEX.test(collectorIP)){
+			setMessage({color : 'red', text : 'Invalid IP address'});
+			return false;
+		}
+		if(!PORT_REGEX.test(collectorPort)){
+			setMessage({color : 'red', text : 'Invalid Port'});
+			return false;
+		}
+		return true;
 	}
 
     return (
@@ -119,7 +139,9 @@ const CollectorDetails = () => {
 							/>
 						</div>
 						
-						
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 						
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveCollector}>
