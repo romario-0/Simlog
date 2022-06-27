@@ -16,7 +16,7 @@ const Login = () => {
 
 	const handleKeypress = e => {
 	  if (e.key === "Enter") {
-		onLogin(username, password);
+		handleLogin();
 	  }
 	};
 	
