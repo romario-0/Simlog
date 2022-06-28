@@ -26,6 +26,7 @@ const Home = () => {
         {prop : 'status', value : 'Status'},
         {prop : 'duration', value : 'Duration'},
         {prop : 'volume', value : 'Volume'},
+        {prop : 'progress', value : 'Progress'},
         {prop : 'sources', value : 'Source IP', subProps : {props : ['fromIP', 'toIP'], format : '##prop0## - ##prop1##'}},
         {prop : 'collectors', value : 'Collector IP', subProps : {props : ['collectorIP','collectorPort'], format : '##prop0##:##prop1##'}}
     ];
