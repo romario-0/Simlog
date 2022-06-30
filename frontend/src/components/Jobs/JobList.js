@@ -17,6 +17,7 @@ const JobList = ({jobList}) => {
     ];
 
     const listOptions = {
+        tableClass : 'jobTable',
         editLink : 'jobs',
         editCondition : {field : 'status', value : 'NEW'}
     };
