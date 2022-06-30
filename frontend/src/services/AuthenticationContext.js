@@ -23,6 +23,7 @@ export const AuthenticationContextProvider = ({children}) => {
                 setUser(null);
                 setError(data.message);
               }
+              setIsLoading(false);
             });
          // }
           //return false;

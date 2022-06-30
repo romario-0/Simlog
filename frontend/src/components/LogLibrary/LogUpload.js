@@ -85,7 +85,7 @@ const LogUpload = () => {
 
     return (
 		<div>
-        <div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+        <div className ="col-lg-8 col-md-6 col-sm-6 container justify-content-center card">
 				<h2 className = "text-left"> Create New Log Library </h2>
 				<div className = "card-body">
 						<div className ="form-group">

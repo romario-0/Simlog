@@ -1,12 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import Loader from '../components/Loader';
 import Login from '../components/Login';
 import { AuthenticationContext } from '../services/AuthenticationContext';
 import AppNavigator from './AppNavigator';
 
 const AccountNavigator = () => {
   
-  const {user, checkLoggedUser} = useContext(AuthenticationContext);
+  const {isLoading, user, checkLoggedUser} = useContext(AuthenticationContext);
 
   useEffect(()=>{
     if(!user){
@@ -14,6 +15,10 @@ const AccountNavigator = () => {
     }
   },[user])
   
+  if(isLoading){
+    return (<Loader />)
+  }
+
   if(!user){
     return (<Login />)
   }

@@ -27,16 +27,15 @@ const List = ({listOptions, data, headers}) => {
             <tr key={ele._id}>
                 {headers.map(key => {
                     if(key.subProps){
-                        return (<td key={`${ele._id}_${key.prop}`}>{formatData(ele, key.prop, key.subProps)}</td>)
-                    }else if(key.prop === 'date' || key.prop === 'createdAt' || key.prop === 'updatedAt'){
-                        const date = new Date(ele[key.prop]);
-                        return (<td key={`${ele._id}_${key.prop}`}>{`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}</td>)
+                        return (<td key={`${ele._id}_${key.prop}`}>{formatSubData(ele, key.prop, key.subProps)}</td>)
+                    }else if(key.format){
+                        return (<td key={`${ele._id}_${key.prop}`}>{formatData(ele, key.prop, key.format)}</td>)
                     }else{
                         return (<td key={`${ele._id}_${key.prop}`}>{ele[key.prop]}</td>)
                     }
                 })}
-                {listOptions.editLink && !listOptions.editCondition && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
-                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() === listOptions.editCondition.value.toUpperCase() && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
+                {listOptions.editLink && !listOptions.editCondition && <td><button type="button" className="btn btn-primary"><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></button></td>}
+                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() === listOptions.editCondition.value.toUpperCase() && <td ><button type="button" className="btn btn-primary"><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></button></td>}
                 {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() !== listOptions.editCondition.value.toUpperCase() && <td></td>}
                 {listOptions.actions && <td> {listOptions.actions.map(action => (<td key={`${ele._id}_${action.stateName}`}><button onClick={() => handleAction(ele._id, action)}>{action.stateName}</button></td>))}</td>
                  }
@@ -44,13 +43,22 @@ const List = ({listOptions, data, headers}) => {
         ));
     }
 
-    const formatData = (ele, prop, subProps) => {
+    const formatSubData = (ele, prop, subProps) => {
         let data = subProps.format;
         for(let i=0; i < subProps.props.length ; i++){
             const key = subProps.props[i];
             data = data.replace(`##prop${i}##`, ele[prop][0][key]);
         }
         return data;
+    }
+
+    const formatData = (ele, prop, format) => {
+        switch(format.toUpperCase()){
+            case 'DATE' :  const date = new Date(ele[prop]);
+                return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            case 'FILE_SIZE' : const size = Math.round(ele[prop]*1000000)/1000;
+                return `${size} KB`;
+        }
     }
 
     return (

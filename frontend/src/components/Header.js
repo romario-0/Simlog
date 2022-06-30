@@ -12,19 +12,14 @@ const Header = () => {
     const {user, onLogout} = useContext(AuthenticationContext);
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="white" variant="white">
+        <Navbar collapseOnSelect fixed="top" expand="lg" bg="white" variant="white">
             <Container>
-            <Navbar.Brand><img Class="Image" src="small_logo.png"></img></Navbar.Brand>
-            <Navbar.Brand>Simlog</Navbar.Brand>
+            <Navbar.Brand><img src={require('../small_logo.png')}></img> </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="me-auto"></Nav>
+                <Nav className="me-auto my-2 my-lg-0"></Nav>
                 <Nav>
-                <Nav.Link href="#deets">About</Nav.Link>
                 <NavDropdown title={user ? user.firstName : 'Sign In'} id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
-                    <NavDropdown.Divider />
                     <NavDropdown.Item onClick={onLogout}>Sign Out</NavDropdown.Item>
                 </NavDropdown>
                 </Nav>

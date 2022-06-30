@@ -7,7 +7,7 @@ const JobList = ({jobList}) => {
     const headers = [
         {prop : 'jobName', value : 'Job Name'},
         {prop : 'logs', value : 'Log Source Name', subProps : {props : ['logName'], format : '##prop0##'}},
-        {prop : 'date', value : 'Date'},
+        {prop : 'date', value : 'Date', format : 'DATE'},
         {prop : 'status', value : 'Status'},
         {prop : 'duration', value : 'Duration'},
         {prop : 'volume', value : 'Volume'},

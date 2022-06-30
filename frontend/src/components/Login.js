@@ -21,15 +21,18 @@ const Login = () => {
 	};
 	
 	return (
-        <div className="container">
-
+		<div className="topnav" fixed="top">
+		<img id="Content" className="ribbon" src={require('../small_logo.png')}></img>
+		
+		<div className="container-login">
 		<div className="row">
-			<div className="col-md-6 col-md-offset-3">
+			<div className="col-md-6 col-md-offset-3 card">
+							
 				<h1>Login page</h1>
 					<div className="form-group">
 						<label>Username</label>: <input type="text"
 							className="form-control" onChange={e => setUsername(e.target.value)} onKeyPress={handleKeypress}
-							autofocus="autofocus" placeholder="Username" />
+							placeholder="Username" />
 					</div>
 					<div className="form-group">
 						<label >Password</label>: <input type="password"
@@ -40,7 +43,7 @@ const Login = () => {
 					{ message &&
 							<div style={{color:'red'}}>{message}</div>
 						}
-					<div className="form-group">
+					<div className="form-group login">
 						<div className="row">
 							<div className="col-sm-6 col-sm-offset-3">
 								<input onClick={handleLogin}
@@ -50,7 +53,7 @@ const Login = () => {
 					</div>
 			</div>
 		</div>
-
+		</div>
 
 	</div>
     );
