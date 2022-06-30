@@ -64,7 +64,7 @@ const List = ({listOptions, data, headers}) => {
     return (
         data &&
         <div className="container">
-        <Table striped bordered hover>
+        <Table className={listOptions.tableClass} striped bordered hover>
              <thead><tr>{createTableHeader()}{listOptions.editLink && <th>Actions</th>}{listOptions.actions && <th>Actions</th>}</tr></thead>
              <tbody>{createTableData()}</tbody>
         </Table>

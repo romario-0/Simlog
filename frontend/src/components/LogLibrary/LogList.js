@@ -12,6 +12,7 @@ const LogList = ({logList}) => {
     ];
 
     const listOptions = {
+        tableClass : 'logTable'
     };
 
     return (

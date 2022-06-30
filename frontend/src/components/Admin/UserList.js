@@ -13,6 +13,7 @@ const UserList = ({userList}) => {
     ];
 
     const listOptions = {
+        tableClass : 'userTable',
         editLink : 'users'
     };
 
