@@ -14,19 +14,35 @@
     padding: 16px;
     text-decoration: none;
   }
-  
-  .sidebar li a {
-    text-decoration: none;
+
+  .sidebar a{
+    display: block;
     color: black;
+    padding: 16px;
+    text-decoration: none;
+    text-decoration: none;
+    
   }
 
-  .sidebar .active {
+  .sidebar_links{
+    display: block;
+    color: black;
+    padding: 16px;
+    
+  }
+
+  .sidebar a{
+    text-decoration: none;
+    text-decoration: none;
+  }
+
+  .sidebar a.active{
     background-color: gray;
     color: white;
   }
-  
-  .sidebar li:hover:not(.active) {
-    background-color: #555;
+
+  .sidebar a:hover:not(.active) {
+    background-color: rgb(172, 172, 172);
     color: white;
   }
   
@@ -37,11 +53,11 @@
       height: auto;
       position: relative;
     }
-    .sidebar li {float: left;}
+    .sidebar a {float: left;}
   }
   
   @media screen and (max-width: 400px) {
-    .sidebar li {
+    .sidebar a {
       text-align: center;
       float: none;
     }
