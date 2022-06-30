@@ -11,6 +11,7 @@ import SourceDetails from '../components/SourceIP/SourceDetails';
 import SourceList from '../components/SourceIP/SourceList';
 import LogTypeDetails from '../components/LogLibrary/LogTypeDetails';
 import UserDetails from '../components/Admin/UserDetails';
+import PageNotFound from '../components/PageNotFound';
 
 const AppNavigator = () => {
     return (
@@ -25,6 +26,7 @@ const AppNavigator = () => {
           <Route path='/sources/:id' element={<SourceDetails />} />
           <Route path='/collectors/:id' element={<CollectorDetails />} />
           <Route path='/users/:id' element={<UserDetails />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
     </div>
     );
