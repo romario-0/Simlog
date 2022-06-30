@@ -118,17 +118,19 @@ const LogUpload = () => {
 							/>
 						</div>
 						
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
+						
 						
 						<div className = "box-footer">
 							<button onClick={uploadLog} className = "btn btn-primary" disabled={isUploading}>
 								Submit
 							</button>
 						</div>
+						</div>
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 				
-				</div>
+				
 			</div>
 			<LogList logList={logList} />
 			</div>

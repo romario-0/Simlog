@@ -85,9 +85,10 @@ const Home = () => {
                 <option selected={filter.toUpperCase() === 'STOPPED'} value="Stopped">STOPPED</option>
                 <option selected={filter.toUpperCase() === 'COMPLETED'} value="Completed">COMPLETED</option>
             </select>
+            <h4>Sort:</h4>
             <SortList sortOptions={sortOptions} list={jobList} setSortedList={(newList) => setJobList(newList)} />
-            <List data={jobList} headers={headers} listOptions={listOptions}></List>
             </div>
+            <List data={jobList} headers={headers} listOptions={listOptions}></List>
         </div>
     );
 }
