@@ -31,7 +31,7 @@ export const AuthenticationContextProvider = ({children}) => {
     }
 
     const onLogin = (username, password) => {
-        setIsLoading(true);
+        //setIsLoading(true);
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
@@ -45,7 +45,7 @@ export const AuthenticationContextProvider = ({children}) => {
               setError(data.message);
               return data.message;
             }
-            setIsLoading(false);
+            //setIsLoading(false);
           });
     }
 
