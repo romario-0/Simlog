@@ -15,7 +15,7 @@ const NavBar = () => {
             <NavLink  to={'/jobs/0'} onClick={()=>setSelectedTab('Jobs')} >Jobs</NavLink>
             <NavLink  to={'/sources/0'} onClick={()=>setSelectedTab('Sources')} >Sources</NavLink>
             <NavLink  to={'/collectors/0'} onClick={()=>setSelectedTab('Collectors')} >Collectors</NavLink>
-            <span className={'sidebar_links'} onClick={() => setToggleAdmin(!toggleAdmin)} >Administration</span>
+            <a onClick={() => setToggleAdmin(!toggleAdmin)} >Administration</a>
             {toggleAdmin && <NavLink  to={'/users/0'} onClick={()=>setSelectedTab('Users')} >Users</NavLink>}
         </div>
     );
