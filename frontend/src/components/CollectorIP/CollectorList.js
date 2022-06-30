@@ -11,6 +11,7 @@ const CollectorList = ({collectorList}) => {
     ];
 
     const listOptions = {
+        tableClass : 'collectorTable',
         editLink : 'collectors'
     };
     return (

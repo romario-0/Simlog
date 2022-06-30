@@ -11,6 +11,7 @@ const SourceList = ({sourceList}) => {
     ];
 
     const listOptions = {
+        tableClass : 'sourceTable',
         editLink : 'sources'
     };
 

@@ -13,6 +13,7 @@ const Home = () => {
     const [jobList, setJobList] = useState([]);
     const [filter, setFilter] = useState('Running');
     const [listOptions, setListOptions] = useState({
+        tableClass : 'homeTable',
         actions : [JOB_ACTION.STOP, JOB_ACTION.CANCEL]
     })
     const [sortOptions, setSortOptions] = useState({
@@ -52,22 +53,26 @@ const Home = () => {
         setFilter(value);
         if(value.toUpperCase() === 'PROCESSING'){
             setListOptions({
+                ...listOptions,
                 actions : [JOB_ACTION.CANCEL]
             });
         }else if(value.toUpperCase() === 'RUNNING'){
             setListOptions({
+                ...listOptions,
                 actions : [JOB_ACTION.STOP, JOB_ACTION.CANCEL]
             });
         }else if(value.toUpperCase() === 'STOPPED'){
             setListOptions({
+                ...listOptions,
                 actions : [JOB_ACTION.RESUME]
             });
         }else if(value === 'NEW'){
             setListOptions({
+                ...listOptions,
                 actions : [JOB_ACTION.START]
             });
         }else{
-            setListOptions({});
+            setListOptions({ tableClass : listOptions.tableClass });
         }
     }
 
