@@ -172,7 +172,7 @@ const SimulationDetails = () => {
           <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0');}}>Cancel</button>
           </div>
           <div>
-            <SimulationList simulationList={simulationList} />
+            <SimulationList refreshList={(list) => setSimulationList(list)} simulationList={simulationList} />
           </div>
       </div>
     );
