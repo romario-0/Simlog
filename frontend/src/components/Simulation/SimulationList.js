@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import List from "../List";
 
-const SimulationList = ({simulationList}) => {
+const SimulationList = ({simulationList, refreshList}) => {
 
     const jobHeaders = [
         {prop : 'jobName', value : 'Job Name'},
@@ -24,6 +24,7 @@ const SimulationList = ({simulationList}) => {
         };
         fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/action`, requestOptions).then( res => res.json() ).then( data => {
             //Handle success or failure
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then( res => res.json() ).then( data => {refreshList(data.simulationList)});
         });
     }
 
