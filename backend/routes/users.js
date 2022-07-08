@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
+const { checkUser } = require('../middlewares/auth.middleware');
 
 router.post('/signup', function(req, res, next){
     const userObj = req.body;
@@ -14,19 +15,18 @@ router.post('/signup', function(req, res, next){
                 userModelObj = new userModel({
                     firstName : userObj.firstName,
                     lastName : userObj.lastName,
-                    age : userObj.age,
-                    nationality : userObj.nationality,
+                    email : userObj.email,
+                    mobile : userObj.mobile,
                     username : userObj.username,
                     password :  userObj.password,
                 });
             
                 userModelObj.save(function(err, user){
                     if(err){
+                        console.log(err);
                         res.send({message:'Unable to add Object'});
                     }else{
                         const newUser = getUserData(userObj);
-                        const token = createToken(newUser.id);
-                        res.cookie('jwt', token, {httpOnly : true,  maxAge : 3*24*60*60*1000});
                         res.send({message:'User added successfully', user : newUser});
                     }
                 });
@@ -43,23 +43,38 @@ router.post('/login',async function(req, res, next){
         const user = await userModel.login(userCredentials.username, userCredentials.password);
         const userObj = getUserData(user);
         const token = createToken(userObj.id);
-        res.cookie('jwt', token, {httpOnly : true,  maxAge : 3*24*60*60*1000});
-        res.send({message : "User fetched", user : userObj});
+        //res.cookie('token', token, {httpOnly : true,  maxAge : 3*24*60*60*1000});
+        res.send({message : "User fetched", user : userObj, userToken : token});
     }catch(err){
         res.send({message : err.message});
     } 
 });
 
-router.put('/update', function(req, res, next){
+router.post('/logout',checkUser, function(req, res, next){
+    const userCredentials = req.body;
+    try{
+        //res.cookie('token', "", {httpOnly : true,  maxAge : 1});
+        res.send({message : "User Logged out", isSuccess : true});
+    }catch(err){
+        res.send({message : err.message, isSuccess : false});
+    } 
+});
+
+router.post('/update', function(req, res, next){
     const userObj = req.body;
     userUpdateObj = {
+        password : userObj.password,
         firstName : userObj.firstName,
         lastName : userObj.lastName,
-        age : userObj.age,
-        nationality : userObj.nationality
+        email : userObj.email,
+        mobile : userObj.mobile,
     };
 
-    userModel.findOneAndUpdate({ username : userObj.username }, userUpdateObj, function(err, user){
+    if(!userUpdateObj.password){
+        delete userUpdateObj.password;
+    }
+
+    userModel.findOneAndUpdate({ _id : userObj.userId }, userUpdateObj, function(err, user){
         if(err){
             res.send({ message : "User update failed" });
             console.log(err);
@@ -70,20 +85,62 @@ router.put('/update', function(req, res, next){
     });
 });
 
+router.get('/validate',checkUser, async function(req, res, next){
+    try{
+        if(!res.locals.authError){
+            const userId = res.locals.user.id;
+            const user = await userModel.findOne({_id : userId });
+            const userObj = getUserData(user);
+            res.send({message : "User fetched", user : userObj});
+        }else{
+            res.send({message : "Session timed out"});
+        }
+    }catch(err){
+        res.send({message : err.message});
+    } 
+});
+
+  /* List all Users */
+  router.get('/', function(req, res, next) {
+
+    userModel.find(function(err , userList){
+    if(err){
+      res.send({message:'Unable to fetch List'});
+    }else{
+      res.send({message: 'User List fetched', userList: userList});
+    }
+  });
+});
+
+  /* Get single User details */
+  router.get('/view/:userId', function(req, res, next) {
+
+    const userId = req.params.userId;
+
+    userModel.findById(userId, function(err , user){
+    if(err){
+      res.send({message:'Unable to fetch List'});
+    }else{
+        const userObj = getUserData(user);
+      res.send({message: 'User List fetched', user: userObj});
+    }
+  });
+});
+
 function getUserData(user){
     const userObj = {
         id : user._id,
         firstName : user.firstName,
         lastName : user.lastName,
-        age : user.age,
-        nationality : user.nationality,
+        email : user.email,
+        mobile : user.mobile,
         username : user.username
     }
     return userObj;
 }
 
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.SECRET, {
+    return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET_KEY, {
         expiresIn : 3*24*60*60
     });
 }

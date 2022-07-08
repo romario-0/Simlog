@@ -1,7 +1,17 @@
 .App {
   text-align: center;
+  font-family: 'Oswald';
+  text-transform: uppercase;
 }
 
+.img-thumbnail{
+  margin:-100px;
+  border:-1px;
+}
+
+.navbar-brand {
+  padding-left: 5rem;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +45,92 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.navbar-brand {
+    padding: 0px 0.6rem !important;
+
+}
+.container {
+  max-width: 95% !important;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 13px 0px;
+}
+
+.table {
+  width: 80% !important;
+  margin: 1% 16%;
+}
+
+.btn {
+  text-transform: uppercase;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  margin: 0% 2%;
+}
+
+.btn-primary {
+  background-color: #e95356 !important;
+  border-color: #e95356 !important;
+
+}
+
+.btn-primary:hover {
+  background-color: #c91e1c !important;
+}
+
+.btn-outline-warning {
+  color: black !important;
+  border-color: grey !important;
+  background-color: #f1f1f1 !important;
+}
+.dropdown-menu {
+  display: block;
+  clear: both;
+  line-height: 26px;
+  color: #999;
+  min-width: 200px;
+  white-space: wrap;
+  padding: 2px;
+}
+.row {
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.container.jobdetails{
+padding-left:9%
+}
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  margin-top: 2%;
+}
+.submitbutton {
+  margin-top: 2%;
+  margin-right: 2%;
+}
+.backbutton {
+  margin-top: 2%;
+  margin-right: 2%;
+}
+.col-md-1 {
+  flex: 0 0 auto;
+  width: 17.333333%!important;
+}
+.col-md-2 {
+  flex: 0 0 auto;
+  width: 21.666667%!important;
+}
+.row.align-items-center {
+  display: flex;
+  justify-content: center;
+}
+.col-md-4 {
+padding: 0px 3px;
 }
