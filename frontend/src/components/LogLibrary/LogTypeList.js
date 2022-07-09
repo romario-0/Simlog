@@ -6,7 +6,7 @@ const LogTypeList = ({logTypeList}) => {
 
     const headers = [
         {prop : 'logTypeName', value : 'Log Type Name'},
-        {prop : 'grokPattern', value : 'Pattern'}
+        {prop : 'patternType', value : 'Pattern'}
     ];
 
     const listOptions = {
