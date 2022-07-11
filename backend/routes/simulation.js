@@ -10,21 +10,25 @@ router.post('/save', async function(req, res, next){
     const simulationObj = await SimulationModel.findOne({ simulationName: req.body.simulationName }); // checking simulationName is alreday existing or not
     if (!simulationObj) {
       if(validateData(req.body)){
-      const date = new Date(req.body.date);
-        simulationModelObj = new SimulationModel({
-          simulationName : req.body.simulationName,
-          jobIds : req.body.jobIds,
-          date : date,
-        });
-  
-        simulationModelObj.save(async function(err , simulationDetails){
-          if(err){
-            res.send({message:'Unable to add Object'});
-          }else{
-            await JobModel.updateMany({ _id : { $in : simulationDetails.jobIds }}, { date : date, simulation : { simulationId : simulationDetails._id , simulationName : simulationDetails.simulationName }});
-            res.send({ message : 'Simulation Added', simulation : simulationDetails });
-          }
-        });
+        if(await validateNewJobs(req.body.jobIds)){
+          const date = new Date(req.body.date);
+          simulationModelObj = new SimulationModel({
+            simulationName : req.body.simulationName,
+            jobIds : req.body.jobIds,
+            date : date,
+          });
+    
+          simulationModelObj.save(async function(err , simulationDetails){
+            if(err){
+              res.send({message:'Unable to add Object'});
+            }else{
+              await JobModel.updateMany({ _id : { $in : simulationDetails.jobIds }}, { date : date, simulation : { simulationId : simulationDetails._id , simulationName : simulationDetails.simulationName }});
+              res.send({ message : 'Simulation Added', simulation : simulationDetails });
+            }
+          });
+        }else{
+          res.send({message:'Some jobs are already mapped to another simulation!!!'});
+        }
       }else{
         res.send({message:'Required details not provided'});
       }
@@ -195,6 +199,17 @@ function validateDataForUpdate(simulation){
     return false;
   }
   return true;
+}
+
+async function validateNewJobs(jobIds){
+  let flag = true;
+  for(let job of jobIds){
+    const temp = await JobModel.find({ _id : job, simulation : {$exists : false} });
+    if(temp.length === 0){
+      flag = false;
+    }
+  }
+  return flag;
 }
 
 module.exports = router;
