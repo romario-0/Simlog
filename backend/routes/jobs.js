@@ -232,6 +232,40 @@ router.post('/action', function(req, res, next) {
   });
 });
 
+/* List unassigned Jobs */
+router.get('/newJobs', function(req, res, next) {
+  JobModel.aggregate([{ 
+    $match: { status : 'New', simulation : {$exists : false} }},
+    {
+        $lookup: {
+            from: "sources",
+            localField: "sourceId",
+            foreignField: "_id",
+            as: "sources"
+        }
+    }, {
+        $lookup: {
+            from: "collectors",
+            localField: "collectorId",
+            foreignField: "_id",
+            as: "collectors"
+        }
+    }, {
+      $lookup: {
+          from: "logs",
+          localField: "logId",
+          foreignField: "_id",
+          as: "logs"
+      }
+  }]).exec(function (error, jobList) {
+      if(error){
+        res.send({message:'Unable to fetch List'});
+      }else{
+        res.send({message: 'Job List fetched', jobList: jobList});
+      }
+  });
+});
+
 function validateData(job){
   if(!job.jobName || !job.logId || !job.duration || !job.volume || !job.date || !job.sourceId || !job.collectorId){
     return false;

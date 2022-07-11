@@ -276,14 +276,14 @@ const JobDetails = () => {
             <div className="col-md-1">
               <label> Volume(MB) </label>
             </div>
-            <div className="col-md-2">
-              <label> Date & Time </label>
+            <div className="col-md-3">
+              <label>Collector IP</label>
             </div>
             <div className="col-md-3">
               <label>Source IP</label>
             </div>
-            <div className="col-md-3">
-              <label>Collector IP</label>
+            <div className="col-md-2">
+              <label> Date & Time </label>
             </div>
           </div>
           <div className="row col-md-5">
@@ -332,15 +332,7 @@ const JobDetails = () => {
               />
             </div>
 
-            <div className="col-md-2">
-              <input
-                name="scheculedDate"
-                type="datetime-local"
-                className="form-control"
-                value={formatDate(new Date(job.date))}
-                onChange={(e) => handleOnChange("date", e.target.value)}
-              />
-            </div>
+            
             <div className=" col-md-3">
               <select
                 className="form-select"
@@ -360,6 +352,15 @@ const JobDetails = () => {
                 <option value={0}>-- Select Collector --</option>
                 {collectorOptions && createCollectorOptions()}
               </select>
+            </div>
+            <div className="col-md-2">
+              <input
+                name="scheculedDate"
+                type="datetime-local"
+                className="form-control"
+                value={formatDate(new Date(job.date))}
+                onChange={(e) => handleOnChange("date", e.target.value)}
+              />
             </div>
           </div>
           {message.text && (

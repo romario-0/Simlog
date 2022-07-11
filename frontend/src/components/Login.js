@@ -26,9 +26,9 @@ const Login = () => {
 		
 		<div className="container-login">
 		<div className="row">
-			<div className="col-md-6 col-md-offset-3 card">
+			<div className="col-sm-3 col-md-offset-3 card">
 							
-				<h1>Login page</h1>
+				<h2>Login page</h2>
 					<div className="form-group">
 						<label>Username</label>: <input type="text"
 							className="form-control" onChange={e => setUsername(e.target.value)} onKeyPress={handleKeypress}
@@ -45,7 +45,7 @@ const Login = () => {
 						}
 					<div className="form-group login">
 						<div className="row">
-							<div className="col-sm-6 col-sm-offset-3">
+							<div className="col-lg-9 col-lg-offset-6">
 								<input onClick={handleLogin}
 									className="form-control btn btn-primary" value="Log In" />
 							</div>
