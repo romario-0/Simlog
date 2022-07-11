@@ -187,7 +187,9 @@ const UserDetails = () => {
 							placeholder="Enter Mobile Number" 
 							/>
 						</div>
-						
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 						
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveUser}>
@@ -195,12 +197,7 @@ const UserDetails = () => {
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
 						</div>
-						</div>
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
-						
-				
+				</div>
 			</div>
 		</div>
 	</div>

@@ -36,7 +36,7 @@ const SortList = ({sortOptions, list, setSortedList}) => {
     }
 
     return (
-    <div className="sort1">
+    <div>
         <select onChange={e => setSelectedSort(e.target.value)}>
             {filterElements}
         </select>
@@ -44,7 +44,7 @@ const SortList = ({sortOptions, list, setSortedList}) => {
             <option selected={selectedOrder === 1} value={1}>Asc</option>
             <option selected={selectedOrder === -1} value={-1}>Desc</option>
         </select>
-        <button className="btn btn-primary" onClick={() => sortList(selectedSort, selectedOrder)}>Apply</button>
+        <button onClick={() => sortList(selectedSort, selectedOrder)}>Apply</button>
     </div>
     );
 }

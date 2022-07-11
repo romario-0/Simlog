@@ -1,25 +1,22 @@
 .sidebar {
-  margin: 0px 66px;
+    margin: 0;
     padding: 0;
-    width: 100%;
-    column-gap: 20px;
-    background-color: #ffff;
-    /* position: fixed; */
-    display: flex;
-    height: 90%;
-    /* overflow: auto; */
-
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
   }
   
   .sidebar li {
-    display: flex;
+    display: block;
     color: black;
     padding: 16px;
     text-decoration: none;
   }
 
   .sidebar a{
-    display: flex;
+    display: block;
     color: black;
     padding: 16px;
     text-decoration: none;
