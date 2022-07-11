@@ -77,10 +77,7 @@ const Home = () => {
     }
 
     return (
-        
-        <div Class="fixedcontainer">
-            <div Class="statusrunning">
-            <h4>Status</h4>
+        <div>
             <select onChange={e => handleFilterChange(e.target.value)}>
                 <option selected={filter.toUpperCase() === 'ALL'} value="ALL">ALL</option>
                 <option selected={filter.toUpperCase() === 'NEW'} value="NEW">NEW</option>
@@ -90,9 +87,7 @@ const Home = () => {
                 <option selected={filter.toUpperCase() === 'STOPPED'} value="Stopped">STOPPED</option>
                 <option selected={filter.toUpperCase() === 'COMPLETED'} value="Completed">COMPLETED</option>
             </select>
-            <h4>Sort:</h4>
             <SortList sortOptions={sortOptions} list={jobList} setSortedList={(newList) => setJobList(newList)} />
-            </div>
             <List data={jobList} headers={headers} listOptions={listOptions}></List>
         </div>
     );

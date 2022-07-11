@@ -250,11 +250,11 @@ const LogTypeDetails = () => {
 	}
 
     return (
-		<div className="container">
-        <div className="container col-sm-9">
+		<div>
+        <div className="col-sm-9">
 		<div className = "row">
-			<div className ="col-lg-10 col-md-5 col-sm-5 container justify-content-center card">
-				<h2 className = "text-center"> Create New Log Type </h2>
+			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h2 className = "text-left"> Create New Log Type </h2>
 				<div className = "card-body">
 						<div className ="form-group">
 							<label> Log Type Name</label>
