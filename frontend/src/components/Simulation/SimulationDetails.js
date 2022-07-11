@@ -62,6 +62,7 @@ const SimulationDetails = () => {
     const handleData = (data) => {
       if(data.simulation){
         setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then( res => res.json() ).then( data => {setJobOptionsList(data.jobList)});
         fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then( res => res.json() ).then( data => {setSimulationList(data.simulationList)});
         resetForm();
       }else{
