@@ -139,17 +139,18 @@ const CollectorDetails = () => {
 							/>
 						</div>
 						
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
-						
+											
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveCollector}>
 								Submit
 							</button>
 							<button className="btn btn-outline-warning" onClick={() => {resetForm(); navigate('/collectors/0')}}>Cancel</button>
 						</div>
-				</div>
+						</div>
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
+				
 			</div>
 		</div>
 	</div>

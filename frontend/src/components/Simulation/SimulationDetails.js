@@ -135,9 +135,9 @@ const SimulationDetails = () => {
     }
 
     return (
-        <div>
-            <h2>Create new simulation</h2>
-      <div className="container">
+        <div className="container">
+            <h2>Create new simulations</h2>
+      <div className="container simulation">
           <div className="form-group">
             <label >Simulation Name</label>
             <input className="form-control" 

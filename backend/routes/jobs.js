@@ -17,6 +17,7 @@ const states = {
 
 /* Create new Job*/
 router.post('/save', async function(req, res, next){
+  console.log(req.body);
 
     const jobObj = await JobModel.findOne({ jobName: req.body.jobName }); // checking jobName is alreday existing or not
     if (!jobObj) {
@@ -36,6 +37,7 @@ router.post('/save', async function(req, res, next){
   
         jobModelObj.save(function(err , jobDetails){
           if(err){
+            console.log(err);
             res.send({message:'Unable to add Object'});
           }else{
             res.send({ message : 'Job Added', job : jobDetails })
@@ -96,7 +98,7 @@ router.get('/view/:jobId', async function(req, res, next) {
         logId : jobObj.logId,
         duration : jobObj.duration,
         volume :  jobObj.volume,
-        schedule : jobObj.schedule,
+        // schedule : jobObj.schedule,
         date : jobObj.date,
         sourceId : jobObj.sourceId,
         collectorId : jobObj.collectorId,
