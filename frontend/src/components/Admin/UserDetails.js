@@ -115,12 +115,12 @@ const UserDetails = () => {
 	}
 
     return (
-		<div>
-        <div className="col-sm-9">
-		<div className = "row">
-			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-				<h2 className = "text-left">User</h2>
-				<div className = "card-body">
+	<div>
+		<div className="col-sm-9">
+			<div className = "row">
+				<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+					<h2 className = "text-left">User</h2>
+					<div className = "card-body">
 						<div className ="form-group">
 							<label>Username </label>
 							<input
@@ -132,7 +132,7 @@ const UserDetails = () => {
 							disabled={userId}
 							/>
 						</div>
-						
+							
 						<div className ="form-group">
 							<label> Password </label>
 							<input
@@ -143,7 +143,7 @@ const UserDetails = () => {
 							placeholder="Enter Password" 
 							/>
 						</div>
-						
+							
 						<div className ="form-group">
 							<label> First Name </label>
 							<input
@@ -154,8 +154,8 @@ const UserDetails = () => {
 							placeholder="Enter First Name" 
 							/>
 						</div>
-						
-                        <div className ="form-group">
+							
+						<div className ="form-group">
 							<label> Last Name </label>
 							<input
 							type = "text"
@@ -166,7 +166,7 @@ const UserDetails = () => {
 							/>
 						</div>
 
-                        <div className ="form-group">
+						<div className ="form-group">
 							<label> Email </label>
 							<input
 							type = "text"
@@ -177,7 +177,7 @@ const UserDetails = () => {
 							/>
 						</div>
 
-                        <div className ="form-group">
+						<div className ="form-group">
 							<label> Mobile </label>
 							<input
 							type = "text"
@@ -187,23 +187,26 @@ const UserDetails = () => {
 							placeholder="Enter Mobile Number" 
 							/>
 						</div>
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
-						
+							
+								
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveUser}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
 						</div>
+						
+							{ message.text &&
+								<div style={{color:message.color}}>{message.text}</div>
+							}
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-		<UserList userList={userList} />
-	</div>
-    );
+			</div>
+					<UserList userList={userList} />
+		
+    </div>
+	);
 }
 
 export default UserDetails;

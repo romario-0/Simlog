@@ -34,10 +34,10 @@ const List = ({listOptions, data, headers}) => {
                         return (<td key={`${ele._id}_${key.prop}`}>{ele[key.prop]}</td>)
                     }
                 })}
-                {listOptions.editLink && !listOptions.editCondition && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
-                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() === listOptions.editCondition.value.toUpperCase() && <td><Link to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
+                {listOptions.editLink && !listOptions.editCondition && <td><Link className="btn btn-primary" to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
+                {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() === listOptions.editCondition.value.toUpperCase() && <td><Link className="btn btn-primary" to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
                 {listOptions.editLink && listOptions.editCondition && ele[listOptions.editCondition.field].toUpperCase() !== listOptions.editCondition.value.toUpperCase() && <td></td>}
-                {listOptions.actions && <td> {listOptions.actions.map(action => (<td key={`${ele._id}_${action.stateName}`}><button onClick={() => handleAction(ele._id, action)}>{action.stateName}</button></td>))}</td>
+                {listOptions.actions && <td> {listOptions.actions.map(action => (<td key={`${ele._id}_${action.stateName}`}><button className="btn btn-primary" onClick={() => handleAction(ele._id, action)}>{action.stateName}</button></td>))}</td>
                  }
             </tr>
         ));
