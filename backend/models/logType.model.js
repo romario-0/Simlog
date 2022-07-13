@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 
 const LogTypeSchema = mongoose.Schema({
     logTypeName : String,
-    grokPattern : String
+    patternType : String,
+    pattern : [
+        {
+            fieldKey : String,
+            pyFormat : String
+        }
+    ]
 });
 
 const LogTypeModel = mongoose.model('LogType', LogTypeSchema);

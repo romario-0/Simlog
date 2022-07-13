@@ -9,7 +9,8 @@ router.post('/save', async function(req, res, next){
     if (!logTypeObj) {
         logTypeModelObj = new LogTypeModel({
           logTypeName : req.body.logTypeName,
-          grokPattern : req.body.grokPattern
+          patternType : req.body.patternType,
+          pattern : req.body.pattern
         });
   
         logTypeModelObj.save(function(err , logTypeDetails){
@@ -29,7 +30,7 @@ router.post('/update', async function(req, res, next){
 
     const logTypeObj = await LogTypeModel.findOne({ _id: req.body.logTypeId }); // checking for Log type
     if (logTypeObj) {
-        let typeObj = { grokPattern : req.body.grokPattern };
+        let typeObj = { patternType : req.body.patternType, pattern : req.body.pattern };
   
         LogTypeModel.findOneAndUpdate({ _id: req.body.logTypeId },typeObj, function(err , logTypeDetails){
           if(err){

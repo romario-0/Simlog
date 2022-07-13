@@ -12,6 +12,7 @@ const logTypesRouter = require('./routes/logTypes');
 const jobsRouter = require('./routes/jobs');
 const sourcesRouter = require('./routes/sources');
 const collectorsRouter = require('./routes/collectors');
+const simulationRouter = require('./routes/simulation');
 
 const Database = require('./dbconfig');
 
@@ -38,6 +39,7 @@ app.use('/logTypes', logTypesRouter);
 app.use('/jobs', jobsRouter);
 app.use('/sources', sourcesRouter);
 app.use('/collectors', collectorsRouter);
+app.use('/simulations', simulationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

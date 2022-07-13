@@ -9,7 +9,13 @@ const JobSchema = mongoose.Schema({
     sourceId : mongoose.Schema.ObjectId,
     collectorId : mongoose.Schema.ObjectId,
     status : String,
-    progress : Number
+    progress : Number,
+    simulation : {
+        simulationId : mongoose.Schema.ObjectId,
+        simulationName : String,
+    },
+    createdBy : mongoose.Schema.ObjectId,
+    updatedBy : mongoose.Schema.ObjectId
 },
 {
     timestamps: true
