@@ -78,8 +78,8 @@ const Home = () => {
 
     return (
 
-        <div Class="fixedcontainer">
-            <div Class="statusrunning">
+        <div className="fixedcontainer">
+            <div className="statusrunning">
             <h4>Status</h4>
             <select onChange={e => handleFilterChange(e.target.value)}>
                 <option selected={filter.toUpperCase() === 'ALL'} value="ALL">ALL</option>

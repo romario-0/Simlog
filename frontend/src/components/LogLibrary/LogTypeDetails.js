@@ -280,7 +280,7 @@ const LogTypeDetails = () => {
 							</select>
 						</div>
 
-						<button type="button" className = " btnheight btn btn-primary" onClick={addFields} >
+						<button type="button" className = "btnheight btn btn-primary" onClick={addFields} >
 								Add
 							</button>
 
