@@ -16,7 +16,7 @@ const Header = () => {
     }
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="white" variant="white">
+        <Navbar collapseOnSelect fixed="top" expand="lg" bg="white" variant="white">
             <Container>
             <Navbar.Brand><img src={require('../small_logo.png')}></img> </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />

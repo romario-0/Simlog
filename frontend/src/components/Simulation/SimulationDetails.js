@@ -135,47 +135,63 @@ const SimulationDetails = () => {
     }
 
     return (
-        <div>
+      <div>
+      <div className="col-lg-10 col-md-6 col-sm-6 container justify-content-center card">
             <h2>Create new simulation</h2>
-      <div className="container">
-          <div className="form-group">
-            <label >Simulation Name</label>
-            <input className="form-control" 
-            disabled={simulation._id}
-            value={simulation.simulationName}
-            onChange={e => handleOnChange('simulationName', e.target.value)} 
-            placeholder="Add new Simulation name" />
-          </div>
-          {!simulation._id && <div className="form-group">
-            <select className="form-control" onChange={(e) => setSelectedJob(jobOptionsList[e.target.value])}>
-                <option value={0} selected>--Select Jobs--</option>
-                {jobOptionsList && createJobOptions()}
-            </select>
-            <button className="btn btn-primary" onClick={addJob}>Add</button>
-          </div>
-          }
-          {!simulation._id && <div className="form-group">
-              {simulation.jobs.length > 0 && getSelectedChips()}
-          </div>}
-          {simulation._id && <div className="form-group">
-              {createJobsCustomChip()}
-          </div>}
-          <div className="form-group">
-                  <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
-                    onChange={e => handleOnChange('date', e.target.value)} />
-          </div>
-          { message.text &&
-                      <div style={{color:message.color}}>{message.text}</div>
-                    }
-          <button className="btn btn-primary" onClick={saveSimulation}>Submit</button>
-          
-          <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0');}}>Cancel</button>
-          </div>
-          <div>
-            <SimulationList refreshList={(list) => setSimulationList(list)} simulationList={simulationList} />
-          </div>
+          <div className="card-body">
+              <div className="jobheight form-group col-3">
+                <label >Simulation Name</label>
+                <input className="form-control" 
+                disabled={simulation._id}
+                value={simulation.simulationName}
+                onChange={e => handleOnChange('simulationName', e.target.value)} 
+                placeholder="Add new Simulation name" />
+              </div>
+              {!simulation._id && <div className=" jobheight form-group col-md-4">
+              <label >Select Jobs</label>
+                <select className="form-control" onChange={(e) => setSelectedJob(jobOptionsList[e.target.value])}>
+                    <option value={0} selected>--Select Jobs--</option>
+                    {jobOptionsList && createJobOptions()}
+                </select>
+                </div>
+              }
+             
+                <div className="btnheight form-group">
+                <button className="btn btn-primary" onClick={addJob}>Add</button>
+                </div>            
+              
+                <div className="dtheight form-group">
+                      <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
+                        onChange={e => handleOnChange('date', e.target.value)} />
+              </div>
+
+              <div className = "box-footer">         
+                <button className="btn btn-primary" onClick={saveSimulation}>Submit</button>
+                
+                <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0');}}>Cancel</button>
+              </div>
+
+            </div>
+            {!simulation._id && <div className="form-group justify-content-center">
+                  {simulation.jobs.length > 0 && getSelectedChips()}
+              </div>}
+              
+              {simulation._id && <div className="form-group">
+                  {createJobsCustomChip()}
+              </div>}
+
+                { message.text &&
+                  <div style={{color:message.color}}>{message.text}</div>
+                }
+              
       </div>
+              <div className="simlist">
+                <SimulationList refreshList={(list) => setSimulationList(list)} simulationList={simulationList} />
+              </div>
+    
+    </div>
+      
     );
-}
+  }
 
 export default SimulationDetails;
