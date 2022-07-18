@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../services/CommonUtils";
-import { Chip } from 'react-chips';
 import SimulationList from "./SimulationList";
+import JobTile from "../Jobs/JobTile";
 
 const SimulationDetails = () => {
     const {id} = useParams();
@@ -128,7 +128,7 @@ const SimulationDetails = () => {
     }
 
     const getSelectedChips = () => {
-      return simulation.jobs.map(job => <Chip onRemove={e => removeJob(job._id)} >{job.jobName}</Chip>);
+      return simulation.jobs.map(job => <JobTile job={job} removeJob={jobId => removeJob(jobId)} />);
     }
 
     return (
