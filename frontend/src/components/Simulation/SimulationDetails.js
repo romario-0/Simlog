@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../services/CommonUtils";
-import { Chip } from 'react-chips';
 import SimulationList from "./SimulationList";
+import JobTile from "../Jobs/JobTile";
 
 const SimulationDetails = () => {
     const {id} = useParams();
@@ -128,11 +128,7 @@ const SimulationDetails = () => {
     }
 
     const getSelectedChips = () => {
-      return simulation.jobs.map(job => <Chip onRemove={e => removeJob(job._id)} >{job.jobName}</Chip>);
-    }
-
-    const createJobsCustomChip = () => {
-      return simulation.jobs.map(ele => <span>{ele.jobName}</span>);
+      return simulation.jobs.map(job => <JobTile job={job} removeJob={jobId => removeJob(jobId)} />);
     }
 
     return (
@@ -148,7 +144,7 @@ const SimulationDetails = () => {
                 onChange={e => handleOnChange('simulationName', e.target.value)} 
                 placeholder="Add new Simulation name" />
               </div>
-              {!simulation._id && <div className=" jobheight form-group col-md-4">
+              {<div className=" jobheight form-group col-md-4">
               <label >Select Jobs</label>
                 <select className="form-control" onChange={(e) => setSelectedJob(jobOptionsList[e.target.value])}>
                     <option value={0} selected>--Select Jobs--</option>
@@ -173,13 +169,10 @@ const SimulationDetails = () => {
               </div>
 
             </div>
-            {!simulation._id && <div className="form-group justify-content-center">
+            {<div className="form-group justify-content-center">
                   {simulation.jobs.length > 0 && getSelectedChips()}
               </div>}
               
-              {simulation._id && <div className="form-group">
-                  {createJobsCustomChip()}
-              </div>}
 
                 { message.text &&
                   <div style={{color:message.color}}>{message.text}</div>
