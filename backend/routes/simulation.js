@@ -40,28 +40,30 @@ router.post('/save', async function(req, res, next){
 /* Update Simulation*/
 router.post('/update', async function(req, res, next){
 
-    const simulationObj = await SimulationModel.findOne({ _id: req.body._id }); // checking for Simulation
-    if (simulationObj) {
-      let simulation = req.body;
-          if(validateDataForUpdate(simulation)){
-            if(simulation.hasOwnProperty('simulationName')){
-              delete simulation.simulationName;
-             }
-            const simulationObj = SimulationModel.findOneAndUpdate({  _id: req.body._id }, simulation, function(err, simulationDetails){
-              if(err){
-                console.log(err);
-                res.send({message:'Unable to update Object'});
-              }else{
-                updateJobsDate(simulationDetails.jobIds, simulation.date);
-                res.send({ message : 'Simulation Updated', simulation : simulationDetails });
-              }
-          });  
+    SimulationModel.findOne({ _id: req.body._id }, async function(err, simulationObj){
+      // checking for Simulation
+      if (simulationObj) {
+        let simulation = req.body;
+            if(validateDataForUpdate(simulation)){
+               simulation.simulationName = simulationObj.simulationName;
+               await updateSimulationJobs(simulation.jobIds, simulationObj.jobIds, simulation);
+              SimulationModel.findOneAndUpdate({  _id: req.body._id }, simulation, function(err, simulationDetails){
+                if(err){
+                  console.log(err);
+                  res.send({message:'Unable to update Object'});
+                }else{
+                  updateJobsDate(simulationDetails.jobIds, simulation.date);
+                  res.send({ message : 'Simulation Updated', simulation : simulationDetails });
+                }
+            });  
+          }else{
+            res.send({message:'Required details not proper'});
+          }      
         }else{
-          res.send({message:'Required details not proper'});
-        }      
-      }else{
-        res.send({ message : "Simulation doesn't exists" });
-      }
+          res.send({ message : "Simulation doesn't exists" });
+        }
+    });
+    
 });
 
 /* Read Simulation details */
@@ -212,4 +214,32 @@ async function validateNewJobs(jobIds){
   return flag;
 }
 
+async function updateSimulationJobs(newList, oldList, simulation){
+  const removeJobList = getJobsToRemove(newList, oldList);
+  await JobModel.updateMany({ _id : { $in : removeJobList }}, { $unset :  {simulation : ""}});
+  const addJobList = getJobsToAdd(newList, oldList);
+  const result = await JobModel.updateMany({ _id : { $in : addJobList }}, { date : simulation.date, simulation : { simulationId : simulation._id , simulationName : simulation.simulationName }});
+}
+
+function getJobsToRemove(newList, oldList){
+  const removeJobs = [];
+  for(let job of oldList){
+    const idx = newList.findIndex(ele => ele == job.toString());
+    if(idx < 0){
+      removeJobs.push(job);
+    }
+  }
+  return removeJobs;
+}
+
+function getJobsToAdd(newList, oldList){
+  const addJobs = [];
+  for(let job of newList){
+    const idx = oldList.findIndex(ele => ele.toString() == job);
+    if(idx < 0){
+      addJobs.push(job);
+    }
+  }
+  return addJobs;
+}
 module.exports = router;

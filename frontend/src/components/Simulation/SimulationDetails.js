@@ -131,10 +131,6 @@ const SimulationDetails = () => {
       return simulation.jobs.map(job => <Chip onRemove={e => removeJob(job._id)} >{job.jobName}</Chip>);
     }
 
-    const createJobsCustomChip = () => {
-      return simulation.jobs.map(ele => <span>{ele.jobName}</span>);
-    }
-
     return (
       <div>
       <div className="col-lg-10 col-md-6 col-sm-6 container justify-content-center card">
@@ -148,7 +144,7 @@ const SimulationDetails = () => {
                 onChange={e => handleOnChange('simulationName', e.target.value)} 
                 placeholder="Add new Simulation name" />
               </div>
-              {!simulation._id && <div className=" jobheight form-group col-md-4">
+              {<div className=" jobheight form-group col-md-4">
               <label >Select Jobs</label>
                 <select className="form-control" onChange={(e) => setSelectedJob(jobOptionsList[e.target.value])}>
                     <option value={0} selected>--Select Jobs--</option>
@@ -173,13 +169,10 @@ const SimulationDetails = () => {
               </div>
 
             </div>
-            {!simulation._id && <div className="form-group justify-content-center">
+            {<div className="form-group justify-content-center">
                   {simulation.jobs.length > 0 && getSelectedChips()}
               </div>}
               
-              {simulation._id && <div className="form-group">
-                  {createJobsCustomChip()}
-              </div>}
 
                 { message.text &&
                   <div style={{color:message.color}}>{message.text}</div>
