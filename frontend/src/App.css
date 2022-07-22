@@ -8,6 +8,11 @@
   overflow-x: hidden;
 }
 
+textarea {
+  width: 300px;
+  height: 40px;
+}
+
  /* .img-thumbnail{
   margin:-100px;
   border:-1px;
@@ -21,6 +26,7 @@
   right: -17px!important;
   min-width: 8rem;
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -265,7 +271,7 @@ padding-left:9%
     
   }
   a {
-   font-size:20px;
+   font-size:18px;
    text-decoration: none;
    display: block;
    color:#282c34;
@@ -337,4 +343,8 @@ padding-left:9%
     align-items:flex-end;
     column-gap:10px;
     
+}
+
+.col-md-1\.5{
+  margin-left:15px;
 }
