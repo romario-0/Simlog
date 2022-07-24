@@ -152,6 +152,7 @@ const LogTypeDetails = () => {
 			case 'PLAIN' : testData = testPattern; break;
 			case 'CSV' : testData = testPattern.split(','); break;
 			case 'JSON' : testData = JSON.parse(testPattern); break;
+			default : setMessage({color : 'red', text : 'Select a log type'});
 		}
 		for(let ele of pattern){
 			testData = processOutputData(patternType, ele.pyFormat, ele.fieldKey, testData);
