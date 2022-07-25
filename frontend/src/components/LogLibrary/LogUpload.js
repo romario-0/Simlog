@@ -79,6 +79,17 @@ const LogUpload = () => {
 		if(!file){
 			setMessage({color : 'red', text : 'Select a file'});
 			return false;
+		}else{
+			const name = file.name.split('.');
+			const type = name[name.length - 1];
+			const size = file.size;
+			if(type !== 'log'){
+				setMessage({color : 'red', text : 'Please Upload a log file'});
+				return false;
+			}else if(size > (10*1000*1000)){
+				setMessage({color : 'red', text : 'File size too big'});
+				return false;
+			}
 		}
 		return true;
 	}
