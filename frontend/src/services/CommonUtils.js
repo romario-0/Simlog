@@ -18,3 +18,10 @@ function padTo2Digits(num) {
       ].join(':')
     );
   }
+
+  export const getDeepValue = function(data, path){
+    for (let i=0, key = path.split('.'), len=key.length; i<len; i++){
+        data = data[key[i]];
+    };
+    return data;
+};

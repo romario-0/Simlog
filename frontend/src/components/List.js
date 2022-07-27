@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { Link } from "react-router-dom";
+import { getDeepValue, formatDate } from '../services/CommonUtils';
 
 const List = ({listOptions, data, headers}) => {
 
@@ -29,9 +30,9 @@ const List = ({listOptions, data, headers}) => {
                     if(key.subProps){
                         return (<td key={`${ele._id}_${key.prop}`}>{formatSubData(ele, key.prop, key.subProps)}</td>)
                     }else if(key.format){
-                        return (<td key={`${ele._id}_${key.prop}`}>{formatData(ele, key.prop, key.format)}</td>)
+                        return (<td key={`${ele._id}_${key.prop}`}>{formatData(getDeepValue(ele, key.prop), key.format)}</td>)
                     }else{
-                        return (<td key={`${ele._id}_${key.prop}`}>{ele[key.prop]}</td>)
+                        return (<td key={`${ele._id}_${key.prop}`}>{getDeepValue(ele, key.prop)}</td>)
                     }
                 })}
                 {listOptions.editLink && !listOptions.editCondition && <td><Link className="btn btn-primary" to={`/${listOptions.editLink}/${ele._id}`}>Edit</Link></td>}
@@ -52,11 +53,11 @@ const List = ({listOptions, data, headers}) => {
         return data;
     }
 
-    const formatData = (ele, prop, format) => {
+    const formatData = (data, format) => {
         switch(format.toUpperCase()){
-            case 'DATE' :  const date = new Date(ele[prop]);
+            case 'DATE' :  const date = new Date(data);
                 return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
-            case 'FILE_SIZE' : const size = Math.round(ele[prop]*1000000)/1000;
+            case 'FILE_SIZE' : const size = Math.round(data*1000000)/1000;
                 return `${size} KB`;
         }
     }

@@ -15,6 +15,11 @@ const Header = () => {
         navigate(path);
     }
 
+    const handleLogout = () => {
+        navigate('/');
+        onLogout()
+    }
+
     return (
         <Navbar collapseOnSelect fixed="top" expand="lg" bg="white" variant="white">
             <Container>
@@ -35,7 +40,7 @@ const Header = () => {
                 </Nav>
                 <Nav>
                 <NavDropdown title={user ? user.firstName : 'Sign In'} id="collasible-nav-dropdown">
-                    <NavDropdown.Item onClick={onLogout}>Sign Out</NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
                 </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
