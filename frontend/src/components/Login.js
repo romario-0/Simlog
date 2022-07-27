@@ -44,7 +44,7 @@ const Login = () => {
 					<div className="form-group login">
 						<div className="row">
 							<div className="col-lg-9 col-lg-offset-6">
-								<input onClick={handleLogin}
+								<input type="button" onClick={handleLogin}
 									className="form-control btn btn-primary" value="Log In" />
 							</div>
 						</div>
