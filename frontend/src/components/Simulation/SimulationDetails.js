@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../services/CommonUtils";
 import SimulationList from "./SimulationList";
-import JobTile from "../Jobs/JobTile";
 import { MultiSelect } from "react-multi-select-component";
 import List from "../List";
 
