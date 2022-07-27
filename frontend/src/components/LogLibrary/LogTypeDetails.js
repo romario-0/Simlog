@@ -281,10 +281,6 @@ const LogTypeDetails = () => {
 							</select>
 						</div>
 
-						<button type="button" className = "btnheight btn btn-primary" onClick={addFields} >
-								Add
-							</button>
-
 						<div className ="form-group">
 							<label> Test Data </label>
 							<textarea
@@ -294,10 +290,9 @@ const LogTypeDetails = () => {
 							placeholder="Enter Test Data" 
 							/>
 						</div>
-						{
-							pattern.length && createFieldElements()
-						}
-						
+						<button type="button" className = "btnheight btn btn-primary" onClick={addFields} >
+								Add
+						</button>
 						<button className="btnheight btn btn-primary" onClick={testRegex} >
 								Test
 							</button>
@@ -311,13 +306,20 @@ const LogTypeDetails = () => {
 							/>
 						</div>
 						</div>
-						<div className = "box-footer">
+										
+						<div className="col-md-1.5">
+						{
+							pattern.length && createFieldElements()
+						}
+						</div>
+						<div className = "box-footer" >
+											
 							<button type="button" className = "btn btn-primary" onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/logTypes/0');}}>Cancel</button>
-						</div>
 						
+						</div>
 						{ message.text &&
 							<div style={{color:message.color}}>{message.text}</div>
 						}
