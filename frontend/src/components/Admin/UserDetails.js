@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { createUser, updateUser } from "../../services/user.service";
 import UserList from "./UserList";
 
 const UserDetails = () => {
@@ -37,7 +38,7 @@ const UserDetails = () => {
 		setIsLoading(false)
 	}
 
-	const saveUser = () => {
+	const saveUser = async () => {
 		if(validateForm()){
 			setIsLoading(true);
 
@@ -61,20 +62,17 @@ const UserDetails = () => {
 			};
 
 			if(userId){
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await updateUser(requestOptions));
 			}else{
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await createUser(requestOptions));
 			}
 		}
 	}
 
 	const handleData = (data) => {
 		if(data.user){
-			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
 			resetForm();
-		}else{
-			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
@@ -87,6 +85,7 @@ const UserDetails = () => {
 		setEmail('');
 		setMobile('');
 		setuserId(0); 
+		setMessage({ color: null, text: null });
 		navigate('/users/0');
 	}
 

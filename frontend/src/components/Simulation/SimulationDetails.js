@@ -4,6 +4,7 @@ import { formatDate } from "../../services/CommonUtils";
 import SimulationList from "./SimulationList";
 import { MultiSelect } from "react-multi-select-component";
 import List from "../List";
+import { createSimulation, updateSimulation } from "../../services/simulation.service";
 
 const jobHeaders = [
   { prop: 'job.jobName', value: 'Job Name' },
@@ -43,7 +44,7 @@ const SimulationDetails = () => {
     setSimulation(prevState => ({ ...prevState, [prop]: value }))
   }
 
-  const saveSimulation = () => {
+  const saveSimulation = async () => {
     if (validateForm()) {
       setIsLoading(true);
 
@@ -54,21 +55,18 @@ const SimulationDetails = () => {
       };
 
       if (simulation._id) {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/update`, requestOptions).then(res => res.json()).then(data => handleData(data));
+        handleData(await updateSimulation(requestOptions));
       } else {
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/save`, requestOptions).then(res => res.json()).then(data => handleData(data));
+        handleData(await createSimulation(requestOptions));
       }
     }
   }
 
   const handleData = (data) => {
     if (data.simulation) {
-      setMessage(prev => { prev.color = 'green'; prev.text = data.message; return prev; });
       fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then(res => res.json()).then(data => { setJobOptionsList(data.jobList) });
       fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then(res => res.json()).then(data => { setSimulationList(data.simulationList) });
       resetForm();
-    } else {
-      setMessage(prev => { prev.color = 'red'; prev.text = data.message; return prev; })
     }
     setIsLoading(false);
   }
@@ -81,6 +79,7 @@ const SimulationDetails = () => {
       jobs: []
     });
     setSelectedJobs([]);
+    setMessage({ color: null, text: null });
     navigate('/simulations/0');
   }
 

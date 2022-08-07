@@ -10,8 +10,7 @@ const Login = () => {
 	const {onLogin} = useContext(AuthenticationContext);
 
 	const handleLogin = async () => {
-		const msg = await onLogin(username, password);
-		setMessage(msg);
+		onLogin(username, password);
 	}
 
 	const handleKeypress = e => {
@@ -19,6 +18,18 @@ const Login = () => {
 		handleLogin();
 	  }
 	};
+
+	const validateForm = () => {
+		if(!username.trim()){
+			setMessage({color : 'red', text : 'Enter username'});
+			return false;
+		}
+		if(!password.trim()){
+			setMessage({color : 'red', text : 'Enter password'});
+			return false;
+		}
+		return true;
+	}
 	
 	return (
         <div className="topnav" fixed="top">
