@@ -1,7 +1,18 @@
 import messagePopup from "./MessagePopup";
 
-const deleteCollector = () => {
-
+const deleteCollector = async (collectorId) => {
+    const requestOptions = {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      };
+    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors/remove/${collectorId}`, requestOptions).then( res => res.json() ).then( data => {
+        if(data.collector){
+            messagePopup('success', data.message);
+        }else{
+            messagePopup('error', data.message);
+        }
+        return data;
+    });
 }
 
 const createCollector = async (requestOptions) => {
@@ -26,4 +37,4 @@ const updateCollector = async (requestOptions) => {
     });
 }
 
-export { createCollector, updateCollector }
+export { createCollector, updateCollector, deleteCollector }

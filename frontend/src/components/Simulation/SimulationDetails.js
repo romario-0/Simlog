@@ -64,8 +64,7 @@ const SimulationDetails = () => {
 
   const handleData = (data) => {
     if (data.simulation) {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then(res => res.json()).then(data => { setJobOptionsList(data.jobList) });
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then(res => res.json()).then(data => { setSimulationList(data.simulationList) });
+      reloadList();
       resetForm();
     }
     setIsLoading(false);
@@ -117,6 +116,11 @@ const SimulationDetails = () => {
     setSelectedJobs(jobs);
   }
 
+  const reloadList = () => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then(res => res.json()).then(data => { setJobOptionsList(data.jobList) });
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then(res => res.json()).then(data => { setSimulationList(data.simulationList) });
+  }
+
   return (
     <div>
       <div className="col-lg-10 col-md-6 col-sm-6 container justify-content-center card">
@@ -152,7 +156,7 @@ const SimulationDetails = () => {
 
       </div>
       <div className="simlist">
-        <SimulationList refreshList={(list) => setSimulationList(list)} simulationList={simulationList} />
+        <SimulationList refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList}/>
       </div>
     </div>
   );

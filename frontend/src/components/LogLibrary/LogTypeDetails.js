@@ -63,7 +63,7 @@ const LogTypeDetails = () => {
 
 	const handleData = (data) => {
 		if (data.logType) {
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setLogTypeList(data.logTypeList) });
+			reloadList();
 			resetForm();
 		}
 		setIsLoading(false);
@@ -252,6 +252,10 @@ const LogTypeDetails = () => {
 		}
 	}
 
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setLogTypeList(data.logTypeList) });
+	}
+
 	return (
 		<div className="container">
 			<div className=" container col-sm-9">
@@ -325,7 +329,7 @@ const LogTypeDetails = () => {
 					</div>
 				</div>
 			</div>
-			<LogTypeList logTypeList={logTypeList} />
+			<LogTypeList logTypeList={logTypeList} reload={reloadList} />
 		</div>
 	);
 }

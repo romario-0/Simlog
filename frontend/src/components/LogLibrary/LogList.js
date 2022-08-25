@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import List from "../List";
 
-const LogList = ({logList}) => {
+const LogList = ({logList, reload}) => {
     
     const headers = [
         {prop : 'logName', value : 'Log Name'},
@@ -15,10 +15,14 @@ const LogList = ({logList}) => {
         tableClass : 'logTable'
     };
 
+    const handleReload = () => {
+        reload();
+    }
+
     return (
         <div>
             <h3>List of Log Uploads</h3>
-            <List data={logList} headers={headers} listOptions={listOptions}></List>
+            <List data={logList} headers={headers} listOptions={listOptions} reload={handleReload}></List>
         </div>
     );
 }

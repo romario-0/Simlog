@@ -132,11 +132,7 @@ const JobDetails = () => {
 
   const handleData = (data) => {
     if (data.job) {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`)
-        .then((res) => res.json())
-        .then((data) => {
-          setJobList(data.jobList);
-        });
+      reloadList();
       resetForm();
     }
     setIsLoading(false);
@@ -190,6 +186,14 @@ const JobDetails = () => {
     }
     return true;
   };
+
+  const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`)
+        .then((res) => res.json())
+        .then((data) => {
+          setJobList(data.jobList);
+        });
+	}
 
   return (
     <div className="container">
@@ -322,7 +326,7 @@ const JobDetails = () => {
           		
         	</div>
 		</div>
-        <JobList jobList={jobList} />
+        <JobList jobList={jobList} reload={reloadList}/>
 	</div>
     
   );

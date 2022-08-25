@@ -140,7 +140,7 @@ const LogUpload = () => {
 					<div style={{ color: message.color }}>{message.text}</div>
 				}
 			</div>
-			<LogList logList={logList} />
+			<LogList logList={logList} reload={fetchLogList}/>
 		</div>
 	);
 }

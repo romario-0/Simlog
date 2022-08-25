@@ -63,7 +63,7 @@ const CollectorDetails = () => {
 
 	const handleData = (data) => {
 		if (data.collector) {
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then(res => res.json()).then(data => { setCollectorList(data.collectorList) });
+			reloadList();
 			resetForm();
 		}
 		setIsLoading(false);
@@ -92,6 +92,10 @@ const CollectorDetails = () => {
 			return false;
 		}
 		return true;
+	}
+
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then(res => res.json()).then(data => { setCollectorList(data.collectorList) });
 	}
 
 	return (
@@ -151,7 +155,7 @@ const CollectorDetails = () => {
 					</div>
 				</div>
 			</div>
-			<CollectorList collectorList={collectorList} />
+			<CollectorList collectorList={collectorList} reload={reloadList} />
 		</div>
 	);
 }

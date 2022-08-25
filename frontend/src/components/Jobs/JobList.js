@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import List from "../List";
 
-const JobList = ({jobList}) => {
+const JobList = ({jobList, reload}) => {
 
     const headers = [
         {prop : 'jobName', value : 'Job Name'},
@@ -19,12 +19,18 @@ const JobList = ({jobList}) => {
     const listOptions = {
         tableClass : 'jobTable',
         editLink : 'jobs',
-        editCondition : {field : 'status', value : 'NEW'}
+        editCondition : {field : 'status', value : 'NEW'},
+        deleteLink : 'job',
+        deleteCondition : {field : 'status', value : 'NEW'},
     };
+
+    const handleReload = () => {
+        reload();
+    }
     
     return (
         <div>
-            <List data={jobList} headers={headers} listOptions={listOptions}></List>
+            <List data={jobList} headers={headers} listOptions={listOptions} reload={handleReload} ></List>
         </div>
     );
 }

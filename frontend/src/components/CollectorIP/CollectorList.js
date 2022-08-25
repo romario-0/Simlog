@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import List from "../List";
 
-const CollectorList = ({collectorList}) => {
+const CollectorList = ({collectorList, reload}) => {
 
     const headers = [
         {prop : 'collectorName', value : 'Collector Name'},
@@ -12,11 +12,17 @@ const CollectorList = ({collectorList}) => {
 
     const listOptions = {
         tableClass : 'collectorTable',
-        editLink : 'collectors'
+        editLink : 'collectors',
+        deleteLink : 'collector'
     };
+
+    const handleReload = () => {
+        reload();
+    }
+
     return (
         <div>
-            <List data={collectorList} headers={headers} listOptions={listOptions}></List>
+            <List data={collectorList} headers={headers} listOptions={listOptions} reload={handleReload} ></List>
         </div>
     );
 }
