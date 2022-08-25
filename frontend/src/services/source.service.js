@@ -1,7 +1,18 @@
 import messagePopup from "./MessagePopup";
 
-const deleteSource = () => {
-
+const deleteSource = async (sourceId) => {
+    const requestOptions = {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      };
+    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/remove/${sourceId}`, requestOptions).then( res => res.json() ).then( data => {
+        if(data.source){
+            messagePopup('success', data.message);
+        }else{
+            messagePopup('error', data.message);
+        }
+        return data;
+    });
 }
 
 const createSource = async (requestOptions) => {
@@ -26,4 +37,4 @@ const updateSource = async (requestOptions) => {
     });
 }
 
-export { createSource, updateSource }
+export { createSource, updateSource, deleteSource }

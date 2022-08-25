@@ -19,12 +19,13 @@ router.post('/signup', function(req, res, next){
                     mobile : userObj.mobile,
                     username : userObj.username,
                     password :  userObj.password,
+                    isActive : true
                 });
             
                 userModelObj.save(function(err, user){
                     if(err){
                         console.log(err);
-                        res.send({message:'Unable to add Object'});
+                        res.send({message:'Unable to add User'});
                     }else{
                         const newUser = getUserData(userObj);
                         res.send({message:'User added successfully', user : newUser});
@@ -44,7 +45,7 @@ router.post('/login',async function(req, res, next){
         const userObj = getUserData(user);
         const token = createToken(userObj.id);
         //res.cookie('token', token, {httpOnly : true,  maxAge : 3*24*60*60*1000});
-        res.send({message : "User fetched", user : userObj, userToken : token});
+        res.send({message : "User Logged in", user : userObj, userToken : token});
     }catch(err){
         res.send({message : err.message});
     } 
@@ -127,6 +128,37 @@ router.get('/validate',checkUser, async function(req, res, next){
   });
 });
 
+/* Activate User */
+router.put('/activate/:userId', function(req, res, next){
+    const userId = req.params.userId;
+
+    userModel.findOneAndUpdate({ _id : userId }, { isActive : true }, function(err, user){
+        if(err){
+            res.send({ message : "User update failed" });
+            console.log(err);
+        }else{
+            const upadtedUser = getUserData(user);
+            res.send({ message : "User activated", user : upadtedUser});
+        }
+    });
+})
+
+
+/* Deactivate User */
+router.put('/deactivate/:userId', function(req, res, next){
+    const userId = req.params.userId;
+
+    userModel.findOneAndUpdate({ _id : userId }, { isActive : false }, function(err, user){
+        if(err){
+            res.send({ message : "User update failed" });
+            console.log(err);
+        }else{
+            const upadtedUser = getUserData(user);
+            res.send({ message : "User deactivated", user : upadtedUser});
+        }
+    });
+})
+
 function getUserData(user){
     const userObj = {
         id : user._id,
@@ -134,7 +166,8 @@ function getUserData(user){
         lastName : user.lastName,
         email : user.email,
         mobile : user.mobile,
-        username : user.username
+        username : user.username,
+        isActive : user.isActive
     }
     return userObj;
 }

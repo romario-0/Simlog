@@ -62,7 +62,7 @@ const SourceDetails = () => {
 
 	const handleData = (data) => {
 		if(data.source){			
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
+			reloadList();
 			resetForm();
 		}
 		setIsLoading(false);
@@ -91,6 +91,10 @@ const SourceDetails = () => {
 			return false;
 		}
 		return true;
+	}
+
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
 	}
 
     return (
@@ -151,7 +155,7 @@ const SourceDetails = () => {
 			</div>
 		</div>
 	</div>
-		<SourceList sourceList={sourceList} />
+		<SourceList sourceList={sourceList} reload={reloadList} />
 	</div>
     );
 }

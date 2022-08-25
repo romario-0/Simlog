@@ -1,6 +1,7 @@
 var express = require('express');
 const router = express.Router();
 const SourceModel = require('../models/source.model');
+const { checkJobDependency } = require('../services/job.service');
 
 /* Create new Source*/
 router.post('/save', async function(req, res, next){
@@ -62,17 +63,22 @@ router.get('/view/:sourceId', function(req, res, next) {
   });
 
 /* Delete Source details */
-router.delete('/remove/:sourceId', function(req, res, next) {
+router.delete('/remove/:sourceId', async function(req, res, next) {
 
-    const sourceId = req.query.sourceId;
-  
-    SourceModel.findByIdAndDelete(sourceId, function(err , sourceObj){
-      if(err){
-        res.send({message:'Unable to fetch Object'});
-      }else{
-        res.send({message: 'Source deleted', source: sourceObj});
-      }
-    });
+    const sourceId = req.params.sourceId;
+
+    const dependency = await checkJobDependency('source', sourceId);
+    if(!dependency){
+      SourceModel.findByIdAndDelete(sourceId, function(err , sourceObj){
+        if(err){
+          res.send({message:'Unable to fetch Object'});
+        }else{
+          res.send({message: 'Source deleted', source: sourceObj});
+        }
+      });
+    }else{
+      res.send({message:'Source is linked to one or more jobs!!!'});
+    }
   });
 
   /* List all Sources */

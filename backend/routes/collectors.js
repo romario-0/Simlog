@@ -1,6 +1,7 @@
 var express = require('express');
 const router = express.Router();
 const CollectorModel = require('../models/collector.model');
+const { checkJobDependency } = require('../services/job.service');
 
 /* Create new Collector*/
 router.post('/save', async function(req, res, next){
@@ -62,17 +63,22 @@ router.get('/view/:collectorId', function(req, res, next) {
   });
 
 /* Delete Collector details */
-router.delete('/remove/:collectorId', function(req, res, next) {
+router.delete('/remove/:collectorId', async function(req, res, next) {
 
-    const collectorId = req.query.collectorId;
-  
-    CollectorModel.findByIdAndDelete(collectorId, function(err , collectorObj){
-      if(err){
-        res.send({message:'Unable to fetch Object'});
-      }else{
-        res.send({message: 'Collector deleted', collector: collectorObj});
-      }
-    });
+    const collectorId = req.params.collectorId;
+
+    const dependency = await checkJobDependency('collector', collectorId);
+    if(!dependency){
+      CollectorModel.findByIdAndDelete(collectorId, function(err , collectorObj){
+        if(err){
+          res.send({message:'Unable to fetch Object'});
+        }else{
+          res.send({message: 'Collector deleted', collector: collectorObj});
+        }
+      });
+    }else{
+      res.send({message:'Collector is linked to one or more jobs!!!'});
+    }
   });
 
   /* List all Collectors */

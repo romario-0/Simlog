@@ -1,7 +1,18 @@
 import messagePopup from "./MessagePopup";
 
-const deleteJob = () => {
-
+const deleteJob = async (jobId) => {
+    const requestOptions = {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      };
+    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/remove/${jobId}`, requestOptions).then( res => res.json() ).then( data => {
+        if(data.job){
+            messagePopup('success', data.message);
+        }else{
+            messagePopup('error', data.message);
+        }
+        return data;
+    });
 }
 
 const createJob = async (requestOptions) => {
@@ -26,4 +37,4 @@ const updateJob = async (requestOptions) => {
     });
 }
 
-export { createJob, updateJob }
+export { createJob, updateJob, deleteJob }

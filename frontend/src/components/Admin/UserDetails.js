@@ -38,6 +38,10 @@ const UserDetails = () => {
 		setIsLoading(false)
 	}
 
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+	}
+
 	const saveUser = async () => {
 		if(validateForm()){
 			setIsLoading(true);
@@ -71,7 +75,7 @@ const UserDetails = () => {
 
 	const handleData = (data) => {
 		if(data.user){
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+			reloadList();
 			resetForm();
 		}
 		setIsLoading(false);
@@ -202,7 +206,7 @@ const UserDetails = () => {
 				</div>
 			</div>
 			</div>
-					<UserList userList={userList} />
+					<UserList userList={userList} reload={reloadList} />
 		
     </div>
 	);

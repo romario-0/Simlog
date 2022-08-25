@@ -1,7 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { displayDate } from "../../services/CommonUtils";
 import List from "../List";
 
-const SimulationList = ({simulationList, refreshList}) => {
+const SimulationList = ({simulationList, refreshList, reload}) => {
 
     const jobHeaders = [
         {prop : 'jobName', value : 'Job Name'},
@@ -28,19 +29,23 @@ const SimulationList = ({simulationList, refreshList}) => {
         });
     }
 
+    const handleReload = () => {
+        reload();
+    }
+
     const createSimulationElements = () => {
         return simulationList.map(ele => 
             <div className="simjoblist" key={`SimList_${ele._id}`}>
                 <div>
                     <span>{ele.simulationName}</span>
-                    <span>{ele.date}</span>
+                    <span>{displayDate(ele.date)}</span>
                     <span>
                         <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link> 
                         <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Immediately</button>
                     </span>
                 </div>
                 <div>
-                    <List data={ele.jobs} headers={jobHeaders} listOptions={{}}></List>
+                    <List data={ele.jobs} headers={jobHeaders} listOptions={{}} reload={handleReload}></List>
                 </div>
             </div>
         )

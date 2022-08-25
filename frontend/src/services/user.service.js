@@ -1,7 +1,18 @@
 import messagePopup from "./MessagePopup";
 
-const deactivateUser = () => {
-
+const activationUser = async (link, userId) => {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/${link}/${userId}`, requestOptions).then( res => res.json() ).then( data => {
+        if(data.user){
+            messagePopup('success', data.message);
+        }else{
+            messagePopup('error', data.message);
+        }
+        return data;
+    });
 }
 
 const createUser = async (requestOptions) => {
@@ -26,4 +37,4 @@ const updateUser = async (requestOptions) => {
     });
 }
 
-export { createUser, updateUser }
+export { createUser, updateUser, activationUser }
