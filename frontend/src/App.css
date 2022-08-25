@@ -326,8 +326,27 @@ padding-left:9%
 .jobheight {
     height: 50%;
     margin-top: 1%;
+    width:400px;
   
 }
+
+.simname{
+  font-size: 25px;
+  color:#e95356;
+}
+
+.simdate {
+  font-size: 18px;
+
+}
+
+
+
+
+.rmsc.multi-select {
+  width: 350px;
+}
+
 .btnheight {
   /* height: 50%; */
   margin-top: 1%;
@@ -347,9 +366,10 @@ padding-left:9%
   padding-bottom:10px;
   
 }
-a.detailslink{
+.detailslink{
   width:400px;
-} 
+}
+
 
  .grabdatepattern{
     display:flex;
@@ -370,6 +390,7 @@ a.detailslink{
   justify-content: space-around;
   margin-top:10px;
 }
+
 .joblist {
   display: flex;
   margin-left: 1%;

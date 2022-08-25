@@ -132,7 +132,9 @@ const SimulationDetails = () => {
               onChange={e => handleOnChange('simulationName', e.target.value)}
               placeholder="Add new Simulation name" />
           </div>
+          
           <div className="jobheight form-group col-md-4">
+          <label >Select Jobs</label>
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div>
           <div className="dtheight form-group">

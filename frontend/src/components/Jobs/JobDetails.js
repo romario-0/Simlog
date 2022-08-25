@@ -129,9 +129,11 @@ const JobDetails = () => {
           .then((res) => res.json())
           .then((data) => handleData(data));
       } else {
+       
         fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions)
           .then((res) => res.json())
           .then((data) => handleData(data));
+          
       }
     }
   };

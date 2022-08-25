@@ -32,8 +32,8 @@ const SimulationList = ({simulationList, refreshList}) => {
         return simulationList.map(ele => 
             <div className="simjoblist" key={`SimList_${ele._id}`}>
                 <div>
-                    <span>{ele.simulationName}</span>
-                    <span>{ele.date}</span>
+                    <span className="simname">{ele.simulationName+'-'}</span>
+                    <span className="simdate">{ele.date}</span>
                     <span>
                         <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link> 
                         <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Immediately</button>

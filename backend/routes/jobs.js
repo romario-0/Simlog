@@ -5,6 +5,7 @@ const CollectorModel = require('../models/collector.model');
 const SourceModel = require('../models/source.model');
 const { exec } = require('child_process');
 
+
 const states = {
   NEW : "New",
   PROCESSING : "Processing",
@@ -184,6 +185,7 @@ router.post('/action', function(req, res, next) {
     startJob(req, res, next);
   }else{
     const command = `${process.env.PYTHON_ENV_VAR} ${process.env.PYTHON_FILE_PATH}/controller.py ${action} ${jobId}`;
+    console.log("command",command)
     exec(command, (err, stdout, stderr) => {
       if (err) {
         console.log(err);
@@ -191,6 +193,7 @@ router.post('/action', function(req, res, next) {
       }else{
         // executed Stop command
         res.send({ message : `Job ${action} requested` });
+        //res.redirect('/jobs/0');
       }
     }); 
   }
