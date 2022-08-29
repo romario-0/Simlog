@@ -1,4 +1,5 @@
 import { createContext, useState } from "react"
+import messagePopup from "./MessagePopup";
 
 export const AuthenticationContext = createContext();
 
@@ -22,6 +23,7 @@ export const AuthenticationContextProvider = ({children}) => {
               }else{
                 setUser(null);
                 setError(data.message);
+                messagePopup('error', data.message);
               }
               setIsLoading(false);
             });
@@ -37,13 +39,15 @@ export const AuthenticationContextProvider = ({children}) => {
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({username : username,password : password})
           };
-          return fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`, requestOptions).then(res => res.json()).then(async data => {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`, requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
+              messagePopup('success', data.message);
               setUser(data.user);
               localStorage.setItem('token', data.userToken);
+              
             }else{
+              messagePopup('error', data.message);
               setError(data.message);
-              return data.message;
             }
             //setIsLoading(false);
           });
@@ -59,8 +63,10 @@ export const AuthenticationContextProvider = ({children}) => {
           fetch(path+'user/userAdd', requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
               setUser(data.user);
+              messagePopup('success', data.message);
             }else{
               setError(data.message);
+              messagePopup('error', data.message);
             }
             setIsLoading(false);
           });
@@ -76,8 +82,10 @@ export const AuthenticationContextProvider = ({children}) => {
           if(data.isSuccess){
             setUser(null);
             localStorage.removeItem('token');
+            messagePopup('success', data.message);
           }else{
             setError(data.message);
+            messagePopup('error', data.message);
           }
           
           setIsLoading(false);
@@ -94,8 +102,10 @@ export const AuthenticationContextProvider = ({children}) => {
           fetch(path+'user/userUpdate', requestOptions).then(res => res.json()).then(async data => {
             if(data.user !== undefined && data.user !== null){
               setUser(data.user);
+              messagePopup('success', data.message);
             }else{
               setError(data.message);
+              messagePopup('error', data.message);
             }
             
             setIsLoading(false);

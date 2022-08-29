@@ -4,6 +4,7 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import JobList from "./JobList";
 import { formatDate } from "../../services/CommonUtils";
+import { createJob, updateJob } from "../../services/job.service";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -111,7 +112,7 @@ const JobDetails = () => {
     }
   };
 
-  const saveJob = () => {
+  const saveJob = async () => {
     if (validateForm()) {
       setIsLoading(true);
 
@@ -122,41 +123,17 @@ const JobDetails = () => {
       };
 
       if (job._id) {
-        fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/jobs/update`,
-          requestOptions
-        )
-          .then((res) => res.json())
-          .then((data) => handleData(data));
+        handleData(await updateJob(requestOptions));
       } else {
-       
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/save`, requestOptions)
-          .then((res) => res.json())
-          .then((data) => handleData(data));
-          
+        handleData(await createJob(requestOptions));
       }
     }
   };
 
   const handleData = (data) => {
     if (data.job) {
-      setMessage((prev) => {
-        prev.color = "green";
-        prev.text = data.message;
-        return prev;
-      });
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`)
-        .then((res) => res.json())
-        .then((data) => {
-          setJobList(data.jobList);
-        });
+      reloadList();
       resetForm();
-    } else {
-      setMessage((prev) => {
-        prev.color = "red";
-        prev.text = data.message;
-        return prev;
-      });
     }
     setIsLoading(false);
   };
@@ -172,6 +149,7 @@ const JobDetails = () => {
       sourceId: "",
       collectorId: "",
     });
+    setMessage({ color: null, text: null });
     navigate("/jobs/0");
   };
 
@@ -208,6 +186,14 @@ const JobDetails = () => {
     }
     return true;
   };
+
+  const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs`)
+        .then((res) => res.json())
+        .then((data) => {
+          setJobList(data.jobList);
+        });
+	}
 
   return (
     <div className="container">
@@ -340,7 +326,7 @@ const JobDetails = () => {
           		
         	</div>
 		</div>
-        <JobList jobList={jobList} />
+        <JobList jobList={jobList} reload={reloadList}/>
 	</div>
     
   );

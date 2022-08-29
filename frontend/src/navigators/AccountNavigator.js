@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Loader from '../components/Loader';
 import Login from '../components/Login';
@@ -6,28 +6,28 @@ import { AuthenticationContext } from '../services/AuthenticationContext';
 import AppNavigator from './AppNavigator';
 
 const AccountNavigator = () => {
-  
-  const {isLoading, user, checkLoggedUser} = useContext(AuthenticationContext);
 
-  useEffect(()=>{
-    if(!user){
+  const { isLoading, user, checkLoggedUser } = useContext(AuthenticationContext);
+
+  useEffect(() => {
+    if (!user) {
       checkLoggedUser();
     }
-  },[user])
-  
-  if(isLoading){
+  }, [user])
+
+  if (isLoading) {
     return (<Loader />)
   }
 
-  if(!user){
+  if (!user) {
     return (<Login />)
   }
 
   return (
     <BrowserRouter>
-        <AppNavigator />
+      <AppNavigator />
     </BrowserRouter>
-    );
+  );
 }
 
 export default AccountNavigator;

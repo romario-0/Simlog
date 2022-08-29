@@ -96,15 +96,15 @@ router.get('/view/:simulationId', async function(req, res, next) {
 /* Delete Simulation details */
 router.delete('/remove/:simulationId', function(req, res, next) {
 
-    const simulationId = req.query.simulationId;
-  
-    SimulationModel.findByIdAndDelete(simulationId, function(err , simulationObj){
+    const simulationId = req.params.simulationId;
+    //Need to delete entry in jobs
+    /*SimulationModel.findByIdAndDelete(simulationId, function(err , simulationObj){
       if(err){
         res.send({message:'Unable to fetch Object'});
       }else{
         res.send({message: 'Simulation deleted', simulation: simulationObj});
       }
-    });
+    });*/
   });
 
   /* List all Simulations */

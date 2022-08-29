@@ -5,6 +5,7 @@ const path = require("path");
 const LogModel = require('../models/log.model');
 const LogTypeModel = require('../models/logType.model');
 const firstLine = require('firstline');
+const { checkJobDependency } = require('../services/job.service');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -103,17 +104,22 @@ router.get('/view/:logId', async function(req, res, next) {
   });
 
 /* Delete Log details */
-router.delete('/remove/:logId', function(req, res, next) {
+router.delete('/remove/:logId', async function(req, res, next) {
 
-    const logId = req.query.logId;
+    const logId = req.params.logId;
   
-    LogModel.findByIdAndDelete(logId, function(err , logObj){
-      if(err){
-        res.send({message:'Unable to fetch Object'});
-      }else{
-        res.send({message: 'Log deleted', logDetails: logObj});
-      }
-    });
+    const dependency = await checkJobDependency('log', logId);
+    if(!dependency){
+      LogModel.findByIdAndDelete(logId, function(err , logObj){
+        if(err){
+          res.send({message:'Unable to fetch Object'});
+        }else{
+          res.send({message: 'Log deleted', logDetails: logObj});
+        }
+      });
+    }else{
+      res.send({message:'Log is linked to one or more jobs!!!'});
+    }
   });
 
   /* List all logs */
