@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SourceList from "./SourceList";
+import { createSource, updateSource } from "../../services/source.service";
 
 const SourceDetails = () => {
 	const {id} = useParams();
@@ -31,7 +32,7 @@ const SourceDetails = () => {
 		setIsLoading(false)
 	}
 
-	const saveSource = () => {
+	const saveSource = async () => {
 		if(validateForm()){
 			setIsLoading(true);
 
@@ -52,20 +53,17 @@ const SourceDetails = () => {
 			};
 
 			if(sourceId){
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await updateSource(requestOptions));
 			}else{
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/save`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await createSource(requestOptions));
 			}
 		}
 	}
 
 	const handleData = (data) => {
-		if(data.source){
-			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
+		if(data.source){			
+			reloadList();
 			resetForm();
-		}else{
-			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
@@ -75,6 +73,7 @@ const SourceDetails = () => {
 		setFromIP('');
 		setToIP('');
 		setSourceId(0); 
+		setMessage({color: null, text : null});
 		navigate('/sources/0');
 	}
 
@@ -92,6 +91,10 @@ const SourceDetails = () => {
 			return false;
 		}
 		return true;
+	}
+
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
 	}
 
     return (
@@ -138,9 +141,6 @@ const SourceDetails = () => {
 							/>
 						</div>
 						
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
 						
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveSource}>
@@ -148,11 +148,14 @@ const SourceDetails = () => {
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/sources/0')}}>Cancel</button>
 						</div>
-				</div>
+						</div>
+						{ message.text &&
+							<div style={{color:message.color}}>{message.text}</div>
+						}
 			</div>
 		</div>
 	</div>
-		<SourceList sourceList={sourceList} />
+		<SourceList sourceList={sourceList} reload={reloadList} />
 	</div>
     );
 }

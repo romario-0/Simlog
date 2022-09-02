@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import List from "../List";
 
-const UserList = ({userList}) => {
+const UserList = ({userList, reload}) => {
     
     const headers = [
         {prop : 'username', value : 'Username'},
@@ -14,12 +14,17 @@ const UserList = ({userList}) => {
 
     const listOptions = {
         tableClass : 'userTable',
-        editLink : 'users'
+        editLink : 'users',
+        activation : false
     };
+
+    const handleReload = () => {
+        reload();
+    }
 
     return (
         <div>
-            <List data={userList} headers={headers} listOptions={listOptions}></List>
+            <List data={userList} headers={headers} listOptions={listOptions} reload={handleReload}></List>
         </div>
     );
 }

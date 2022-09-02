@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { createUser, updateUser } from "../../services/user.service";
 import UserList from "./UserList";
 
 const UserDetails = () => {
@@ -37,7 +38,11 @@ const UserDetails = () => {
 		setIsLoading(false)
 	}
 
-	const saveUser = () => {
+	const reloadList = () => {
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+	}
+
+	const saveUser = async () => {
 		if(validateForm()){
 			setIsLoading(true);
 
@@ -61,20 +66,17 @@ const UserDetails = () => {
 			};
 
 			if(userId){
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/update`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await updateUser(requestOptions));
 			}else{
-				fetch(`${process.env.REACT_APP_BACKEND_URL}/users/signup`, requestOptions).then( res => res.json() ).then( data => handleData(data));
+				handleData(await createUser(requestOptions));
 			}
 		}
 	}
 
 	const handleData = (data) => {
 		if(data.user){
-			setMessage(prev => {prev.color = 'green'; prev.text = data.message; return prev;});
-			fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+			reloadList();
 			resetForm();
-		}else{
-			setMessage(prev => {prev.color = 'red'; prev.text = data.message; return prev;})
 		}
 		setIsLoading(false);
 	}
@@ -87,6 +89,7 @@ const UserDetails = () => {
 		setEmail('');
 		setMobile('');
 		setuserId(0); 
+		setMessage({ color: null, text: null });
 		navigate('/users/0');
 	}
 
@@ -115,12 +118,12 @@ const UserDetails = () => {
 	}
 
     return (
-		<div>
-        <div className="col-sm-9">
-		<div className = "row">
-			<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-				<h2 className = "text-left">User</h2>
-				<div className = "card-body">
+	<div>
+		<div className="col-sm-9">
+			<div className = "row">
+				<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+					<h2 className = "text-left">User</h2>
+					<div className = "card-body">
 						<div className ="form-group">
 							<label>Username </label>
 							<input
@@ -132,7 +135,7 @@ const UserDetails = () => {
 							disabled={userId}
 							/>
 						</div>
-						
+							
 						<div className ="form-group">
 							<label> Password </label>
 							<input
@@ -143,7 +146,7 @@ const UserDetails = () => {
 							placeholder="Enter Password" 
 							/>
 						</div>
-						
+							
 						<div className ="form-group">
 							<label> First Name </label>
 							<input
@@ -154,8 +157,8 @@ const UserDetails = () => {
 							placeholder="Enter First Name" 
 							/>
 						</div>
-						
-                        <div className ="form-group">
+							
+						<div className ="form-group">
 							<label> Last Name </label>
 							<input
 							type = "text"
@@ -166,7 +169,7 @@ const UserDetails = () => {
 							/>
 						</div>
 
-                        <div className ="form-group">
+						<div className ="form-group">
 							<label> Email </label>
 							<input
 							type = "text"
@@ -177,7 +180,7 @@ const UserDetails = () => {
 							/>
 						</div>
 
-                        <div className ="form-group">
+						<div className ="form-group">
 							<label> Mobile </label>
 							<input
 							type = "text"
@@ -187,23 +190,26 @@ const UserDetails = () => {
 							placeholder="Enter Mobile Number" 
 							/>
 						</div>
-						{ message.text &&
-							<div style={{color:message.color}}>{message.text}</div>
-						}
-						
+							
+								
 						<div className = "box-footer">
 							<button className = "btn btn-primary" onClick={saveUser}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
 						</div>
+						
+							{ message.text &&
+								<div style={{color:message.color}}>{message.text}</div>
+							}
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-		<UserList userList={userList} />
-	</div>
-    );
+			</div>
+					<UserList userList={userList} reload={reloadList} />
+		
+    </div>
+	);
 }
 
 export default UserDetails;
