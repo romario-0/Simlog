@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import List from "../List";
 
 const LogList = ({logList, reload}) => {
