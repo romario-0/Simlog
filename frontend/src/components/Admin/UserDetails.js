@@ -7,6 +7,7 @@ const UserDetails = () => {
 	const {id} = useParams();
 	useEffect(() => {
 		if(Number(id) !== 0){
+			setIsChangePassword(false);
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/users/view/${id}`).then( res => res.json() ).then( data => {setUserValue(data.user)});
 		}else{
 			resetForm();
@@ -27,6 +28,7 @@ const UserDetails = () => {
 	const [userList, setuserList] = useState([]);
 	const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
 	const MOBILE_REGEX = /^\d{10}$/;
+	const [isChangePassword, setIsChangePassword] = useState(true);
 	const navigate = useNavigate();
 
 	const setUserValue = (data) => {
@@ -90,6 +92,7 @@ const UserDetails = () => {
 		setEmail('');
 		setMobile('');
 		setuserId(0); 
+		setIsChangePassword(true);
 		setMessage({ color: null, text: null });
 		navigate('/users/0');
 	}
@@ -99,7 +102,7 @@ const UserDetails = () => {
 			setMessage({color : 'red', text : 'Enter username'});
 			return false;
 		}
-		if(!password){
+		if(!password && isChangePassword){
 			setMessage({color : 'red', text : 'Enter password'});
 			return false;
 		}
@@ -139,13 +142,14 @@ const UserDetails = () => {
 							
 						<div className ="form-group">
 							<label> Password </label>
-							<input
+							{!isChangePassword && <button href="" onClick={(e) => setIsChangePassword(true)} className="btn" style={{fontSize: '16px'}}>Edit password</button>}
+							{isChangePassword && <input
 							type = "password"
 							value={password}
 							onChange={e => setPassword(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Password" 
-							/>
+							/>}
 						</div>
 							
 						<div className ="form-group">
