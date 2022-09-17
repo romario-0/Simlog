@@ -7,6 +7,7 @@ const LogUpload = () => {
 	useEffect(() => {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setTypeOptions(data.logTypeList) });
 		fetchLogList();
+		/* eslint-disable */
 	}, []);
 
 	const [file, setFile] = useState(null);
