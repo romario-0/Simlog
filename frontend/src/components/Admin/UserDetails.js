@@ -6,12 +6,13 @@ import UserList from "./UserList";
 const UserDetails = () => {
 	const {id} = useParams();
 	useEffect(() => {
-		if(id != 0){
+		if(Number(id) !== 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/users/view/${id}`).then( res => res.json() ).then( data => {setUserValue(data.user)});
 		}else{
 			resetForm();
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+		/* eslint-disable */
     },[id]);
 
 	const [userId, setuserId] = useState('');
@@ -24,7 +25,7 @@ const UserDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const [userList, setuserList] = useState([]);
-	const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
 	const MOBILE_REGEX = /^\d{10}$/;
 	const navigate = useNavigate();
 
@@ -193,7 +194,7 @@ const UserDetails = () => {
 							
 								
 						<div className = "box-footer">
-							<button className = "btn btn-primary" onClick={saveUser}>
+							<button disabled={isLoading} className = "btn btn-primary" onClick={saveUser}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>

@@ -12,6 +12,7 @@ const CollectorDetails = () => {
 			resetForm();
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/collectors`).then(res => res.json()).then(data => { setCollectorList(data.collectorList) });
+		/* eslint-disable */
 	}, [id]);
 
 	const [collectorId, setCollectorId] = useState('');
@@ -143,7 +144,7 @@ const CollectorDetails = () => {
 							</div>
 
 							<div className="box-footer">
-								<button className="btn btn-primary" onClick={saveCollector}>
+								<button className="btn btn-primary" onClick={saveCollector} disabled={isLoading}>
 									Submit
 								</button>
 								<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/collectors/0') }}>Cancel</button>

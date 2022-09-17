@@ -9,7 +9,7 @@ const capDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday
 const LogTypeDetails = () => {
 	const { id } = useParams();
 	useEffect(() => {
-		if (id != 0) {
+		if (Number(id) !== 0) {
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/view/${id}`).then(res => res.json()).then(data => { setLogTypeValue(data.logType) });
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setLogTypeList(data.logTypeList) });
@@ -74,7 +74,7 @@ const LogTypeDetails = () => {
 			setMessage({ color: 'red', text: 'Enter Log Type Name' });
 			return false;
 		}
-		if (!patternType || patternType == 0) {
+		if (!patternType || Number(patternType) === 0) {
 			setMessage({ color: 'red', text: 'Select a Log Type' });
 			return false;
 		}
@@ -91,6 +91,8 @@ const LogTypeDetails = () => {
 		setPattern([{ fieldKey: '', pyFormat: '' }]);
 		setPatternType('');
 		setMessage({ color: null, text: null });
+		setTestPattern('');
+		setOutput('');
 		navigate('/logTypes/0');
 	}
 
@@ -161,6 +163,7 @@ const LogTypeDetails = () => {
 		switch (patternType.toUpperCase()) {
 			case 'CSV': testData = testData.toString(); break;
 			case 'JSON': testData = JSON.stringify(testData); break;
+			default: break;
 		}
 
 		setOutput(testData);
@@ -172,6 +175,7 @@ const LogTypeDetails = () => {
 			case 'PLAIN': return calculateForPlain(dateData, grabPattern, testData);
 			case 'CSV': return calculateForCSV(dateData, grabPattern, testData);
 			case 'JSON': return calculateForJson(dateData, grabPattern, testData);
+			default: return testData;
 		}
 	}
 
@@ -249,6 +253,7 @@ const LogTypeDetails = () => {
 			case '%w': return date.getDay();
 			case '%f': return `${date.getMilliseconds()}000`;
 			case '%%': return `%`;
+			default: return '';
 		}
 	}
 

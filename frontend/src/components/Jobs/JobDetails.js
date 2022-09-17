@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import JobList from "./JobList";
 import { formatDate } from "../../services/CommonUtils";
 import { createJob, updateJob } from "../../services/job.service";
@@ -29,7 +27,7 @@ const JobDetails = () => {
       .then((data) => {
         setJobList(data.jobList);
       });
-    if (id != 0) {
+    if (Number(id) !== 0) {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/view/${id}`)
         .then((res) => res.json())
         .then((data) => {
@@ -38,6 +36,7 @@ const JobDetails = () => {
     } else {
       resetForm();
     }
+    /* eslint-disable */
   }, [id]);
 
   const [job, setJob] = useState({
@@ -160,7 +159,7 @@ const JobDetails = () => {
       setMessage({ color: "red", text: "Enter Job Name" });
       return false;
     }
-    if (!job.logId || job.logId == 0) {
+    if (!job.logId || Number(job.logId) === 0) {
       setMessage({ color: "red", text: "Select a log" });
       return false;
     }
@@ -176,11 +175,11 @@ const JobDetails = () => {
       setMessage({ color: "red", text: "Invalid date" });
       return false;
     }
-    if (!job.sourceId || job.sourceId == 0) {
+    if (!job.sourceId || Number(job.sourceId) === 0) {
       setMessage({ color: "red", text: "Select a Source IP range" });
       return false;
     }
-    if (!job.collectorId || job.collectorId == 0) {
+    if (!job.collectorId || Number(job.collectorId) === 0) {
       setMessage({ color: "red", text: "Select a Collector IP" });
       return false;
     }
@@ -304,7 +303,7 @@ const JobDetails = () => {
 				</div>		
 					<div className="flex-container">
 					<div Class="submitbutton">
-						<button className="btn btn-primary" onClick={saveJob}>
+						<button disabled={isLoading} className="btn btn-primary" onClick={saveJob}>
 						Submit
 						</button>
 					</div>
