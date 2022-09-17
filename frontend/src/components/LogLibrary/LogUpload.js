@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createLog } from "../../services/log.service";
 import LogList from "./LogList";
 
@@ -18,7 +17,6 @@ const LogUpload = () => {
 	const [typeOptions, setTypeOptions] = useState([]);
 	const [logList, setLogList] = useState([]);
 	const inputRef = useRef(null);
-	const navigate = useNavigate();
 
 	const uploadLog = async () => {
 		if (validateForm()) {
