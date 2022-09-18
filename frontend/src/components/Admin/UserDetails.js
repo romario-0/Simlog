@@ -6,12 +6,14 @@ import UserList from "./UserList";
 const UserDetails = () => {
 	const {id} = useParams();
 	useEffect(() => {
-		if(id != 0){
+		if(Number(id) !== 0){
+			setIsChangePassword(false);
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/users/view/${id}`).then( res => res.json() ).then( data => {setUserValue(data.user)});
 		}else{
 			resetForm();
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/users`).then( res => res.json() ).then( data => {setuserList(data.userList)});
+		/* eslint-disable */
     },[id]);
 
 	const [userId, setuserId] = useState('');
@@ -24,8 +26,9 @@ const UserDetails = () => {
 	const [message, setMessage] = useState({color: null, text : null});
 	const [isLoading, setIsLoading] = useState(false);
 	const [userList, setuserList] = useState([]);
-	const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
 	const MOBILE_REGEX = /^\d{10}$/;
+	const [isChangePassword, setIsChangePassword] = useState(true);
 	const navigate = useNavigate();
 
 	const setUserValue = (data) => {
@@ -89,6 +92,7 @@ const UserDetails = () => {
 		setEmail('');
 		setMobile('');
 		setuserId(0); 
+		setIsChangePassword(true);
 		setMessage({ color: null, text: null });
 		navigate('/users/0');
 	}
@@ -98,7 +102,7 @@ const UserDetails = () => {
 			setMessage({color : 'red', text : 'Enter username'});
 			return false;
 		}
-		if(!password){
+		if(!password && isChangePassword){
 			setMessage({color : 'red', text : 'Enter password'});
 			return false;
 		}
@@ -138,13 +142,14 @@ const UserDetails = () => {
 							
 						<div className ="form-group">
 							<label> Password </label>
-							<input
+							{!isChangePassword && <button href="" onClick={(e) => setIsChangePassword(true)} className="btn" style={{fontSize: '16px'}}>Edit password</button>}
+							{isChangePassword && <input
 							type = "password"
 							value={password}
 							onChange={e => setPassword(e.target.value)}
 							className = "form-control"
 							placeholder="Enter Password" 
-							/>
+							/>}
 						</div>
 							
 						<div className ="form-group">
@@ -193,7 +198,7 @@ const UserDetails = () => {
 							
 								
 						<div className = "box-footer">
-							<button className = "btn btn-primary" onClick={saveUser}>
+							<button disabled={isLoading} className = "btn btn-primary" onClick={saveUser}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>

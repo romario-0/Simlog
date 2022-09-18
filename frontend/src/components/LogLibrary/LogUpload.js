@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { createLog } from "../../services/log.service";
 import LogList from "./LogList";
 
@@ -8,6 +7,7 @@ const LogUpload = () => {
 	useEffect(() => {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setTypeOptions(data.logTypeList) });
 		fetchLogList();
+		/* eslint-disable */
 	}, []);
 
 	const [file, setFile] = useState(null);
@@ -18,7 +18,6 @@ const LogUpload = () => {
 	const [typeOptions, setTypeOptions] = useState([]);
 	const [logList, setLogList] = useState([]);
 	const inputRef = useRef(null);
-	const navigate = useNavigate();
 
 	const uploadLog = async () => {
 		if (validateForm()) {

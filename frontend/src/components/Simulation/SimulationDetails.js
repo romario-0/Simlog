@@ -33,11 +33,12 @@ const SimulationDetails = () => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then(res => res.json()).then(data => { setSimulationList(data.simulationList) });
     fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then(res => res.json()).then(data => { setJobOptionsList(data.jobList) });
-    if (id != 0) {
+    if (Number(id) !== 0) {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/view/${id}`).then(res => res.json()).then(data => { setSimulation(data.simulation); setSelectedJobList(data.simulation.jobs) });
     } else {
       resetForm();
     }
+    /* eslint-disable */
   }, [id]);
 
   const handleOnChange = (prop, value) => {
@@ -89,7 +90,7 @@ const SimulationDetails = () => {
       setMessage({ color: 'red', text: 'Enter Simulation Name' });
       return false;
     }
-    if (!simulation.jobIds || simulation.jobIds.length == 0) {
+    if (!simulation.jobIds || simulation.jobIds.length === 0) {
       setMessage({ color: 'red', text: 'Select a job' });
       return false;
     }
@@ -144,7 +145,7 @@ const SimulationDetails = () => {
               onChange={e => handleOnChange('date', e.target.value)} />
           </div>
           <div className="box-footer">
-            <button className="btn btn-primary" onClick={saveSimulation}>Submit</button>
+            <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 
             <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
           </div>
