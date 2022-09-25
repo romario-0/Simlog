@@ -31,7 +31,7 @@ const Header = () => {
                     <Nav.Link onClick={() => navigateToScreen('/simulations/0')}>Simulation</Nav.Link>
                     <Nav.Link onClick={() => navigateToScreen('/logLibrary')}>Log</Nav.Link>
                     <Nav.Link onClick={() => navigateToScreen('/logTypes/0')}>Log Type</Nav.Link>
-                    <Nav.Link onClick={() => navigateToScreen('/jobs/0')}>Jobs</Nav.Link>
+                    {/* <Nav.Link onClick={() => navigateToScreen('/jobs/0')}>Jobs</Nav.Link> */}
                     <Nav.Link onClick={() => navigateToScreen('/sources/0')}>Sources</Nav.Link>
                     <Nav.Link onClick={() => navigateToScreen('/collectors/0')}>Collectors</Nav.Link>
                     <NavDropdown title="Administration" id="basic-nav-dropdown">

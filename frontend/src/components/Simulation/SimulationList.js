@@ -2,12 +2,11 @@ import { Link } from "react-router-dom";
 import { displayDate } from "../../services/CommonUtils";
 import List from "../List";
 
-const SimulationList = ({simulationList, refreshList, reload}) => {
+const SimulationList = ({simulationList, refreshList, reload, clone}) => {
 
     const jobHeaders = [
-        {prop : 'jobName', value : 'Job Name'},
-        {prop : 'date', value : 'Date', format : 'DATE'},
-        {prop : 'status', value : 'Status'},
+        // {prop : 'jobName', value : 'Job Name'},
+        // {prop : 'status', value : 'Status'},
         {prop : 'duration', value : 'Duration'},
         {prop : 'volume', value : 'Volume'},
         {prop : 'progress', value : 'Progress'}
@@ -42,6 +41,7 @@ const SimulationList = ({simulationList, refreshList, reload}) => {
                     <span>
                         <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link> 
                         <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Immediately</button>
+                        <button onClick={() => clone(ele)} class="btn btn-outline-warning">Clone</button>
                     </span>
                 </div>
                 <div>
