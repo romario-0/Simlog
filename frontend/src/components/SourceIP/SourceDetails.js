@@ -6,12 +6,13 @@ import { createSource, updateSource } from "../../services/source.service";
 const SourceDetails = () => {
 	const {id} = useParams();
 	useEffect(() => {
-		if(id != 0){
+		if(Number(id) !== 0){
         	fetch(`${process.env.REACT_APP_BACKEND_URL}/sources/view/${id}`).then( res => res.json() ).then( data => {setSourceValue(data.source)});
 		}else{
 			resetForm();
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/sources`).then( res => res.json() ).then( data => {setSourceList(data.sourceList)});
+		/* eslint-disable */
     },[id]);
 
 	const [sourceId, setSourceId] = useState('');
@@ -143,7 +144,7 @@ const SourceDetails = () => {
 						
 						
 						<div className = "box-footer">
-							<button className = "btn btn-primary" onClick={saveSource}>
+							<button className = "btn btn-primary" onClick={saveSource} disabled={isLoading}>
 								Submit
 							</button>
 							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/sources/0')}}>Cancel</button>

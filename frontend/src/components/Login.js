@@ -5,8 +5,7 @@ const Login = () => {
     
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [message, setMessage] = useState('');
-
+	
 	const {onLogin} = useContext(AuthenticationContext);
 
 	const handleLogin = async () => {
@@ -18,22 +17,10 @@ const Login = () => {
 		handleLogin();
 	  }
 	};
-
-	const validateForm = () => {
-		if(!username.trim()){
-			setMessage({color : 'red', text : 'Enter username'});
-			return false;
-		}
-		if(!password.trim()){
-			setMessage({color : 'red', text : 'Enter password'});
-			return false;
-		}
-		return true;
-	}
 	
 	return (
         <div className="topnav" fixed="top">
-		<img id="Content" className="ribbon" src={require('../small_logo.png')}></img>
+		<img id="Content" className="ribbon" alt="logo" src={require('../small_logo.png')}></img>
 		<div className="container-login">
 		<div className="row">
 			<div className="col-sm-3 col-md-offset-3 card">
@@ -48,10 +35,6 @@ const Login = () => {
 							className="form-control" onChange={e => setPassword(e.target.value)} onKeyPress={handleKeypress}
 							placeholder="Password" />
 					</div>
-
-					{ message &&
-							<div style={{color:'red'}}>{message}</div>
-						}
 					<div className="form-group login">
 						<div className="row">
 							<div className="col-lg-9 col-lg-offset-6">
