@@ -38,6 +38,7 @@ const SimulationList = ({simulationList, refreshList, reload, clone}) => {
                 <div>
                     <span>{ele.simulationName}</span>
                     <span>{displayDate(ele.date)}</span>
+                    <span>{ele.status}</span>
                     <span>
                         <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link> 
                         <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Immediately</button>

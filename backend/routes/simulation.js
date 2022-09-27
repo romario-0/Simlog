@@ -4,6 +4,7 @@ const SimulationModel = require('../models/simulation.model');
 const JobModel = require('../models/job.model');
 const { exec } = require('child_process');
 const mongoose = require('mongoose');
+const SIMULATION_STATUS_NEW = 'NEW';
 
 /* Create new Simulation*/
 router.post('/save', async function (req, res, next) {
@@ -16,6 +17,7 @@ router.post('/save', async function (req, res, next) {
           simulationName: req.body.simulationName,
           jobs: req.body.jobs,
           date: date,
+          status: SIMULATION_STATUS_NEW,
           createdBy: res.locals.user,
           updatedBy: res.locals.user
         });
@@ -143,7 +145,7 @@ router.get('/', function (req, res, next) {
       res.send({ message: 'Unable to fetch List' });
     } else {
       res.send({ message: 'Simulation List fetched', simulationList: simulationList });
-    }
+      }
   });
 });
 

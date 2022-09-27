@@ -5,6 +5,7 @@ const SimulationSchema = mongoose.Schema({
     date : Date,
     startTime: Date,
     endTime: Date,
+    status: String,
     jobs: [{
         logId : mongoose.Schema.ObjectId,
         duration : Number,
