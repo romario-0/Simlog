@@ -50,7 +50,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions }
   }
 
     return (
-        <div>
+        <div className="jobcard2">
             <div className="form-group">
                 <label> Select Log </label>
                 <select

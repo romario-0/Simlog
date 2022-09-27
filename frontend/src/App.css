@@ -333,10 +333,13 @@ padding-left:9%
 .simname{
   font-size: 25px;
   color:#e95356;
+  position: absolute;
+  margin-left: -28rem;
 }
 
 .simdate {
   font-size: 18px;
+  color:#2a9419;
 
 }
 
@@ -379,19 +382,47 @@ padding-left:9%
     
 }
 
-.col-md-1\.5{
-  margin-left:15px;
+.jobcard0{
+    display:flex;
+    flex-direction: column;
+    
 }
 
-.container.jobtile.simjoblist
+
+
+
+/* .container.jobtile.simjoblist
 {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top:10px;
+} */
+
+.jobcard2 {
+  display: flex;
+  flex-direction: row;
+  column-gap:20px;
+  margin-bottom:-13px;
+  margin-top: 30px;
 }
+.jobcard1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  column-gap:15px;
+}
+
 
 .joblist {
   display: flex;
   margin-left: 1%;
+}
+button.btnheight.btn.btn-primary {
+  width: 80px;
+  margin: 0;
+}
+.jobcardbtn {
+  position: absolute;
+  top: 132px;
 }

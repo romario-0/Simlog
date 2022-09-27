@@ -5,6 +5,7 @@ const SimulationSchema = mongoose.Schema({
     date : Date,
     startTime: Date,
     endTime: Date,
+    status: String,
     jobs: [{
         logId : mongoose.Schema.ObjectId,
         duration : Number,
@@ -16,10 +17,14 @@ const SimulationSchema = mongoose.Schema({
         updatedAt: Date,
 }],
     createdBy : mongoose.Schema.ObjectId,
-    updatedBy : mongoose.Schema.ObjectId
+    updatedBy : mongoose.Schema.ObjectId,
+    
 },
 {
     timestamps: true
+},
+{
+    status : String,
 });
 
 const SimulationModel = mongoose.model('Simulation', SimulationSchema);
