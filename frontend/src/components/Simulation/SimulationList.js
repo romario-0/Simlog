@@ -35,13 +35,17 @@ const SimulationList = ({simulationList, refreshList, reload, clone}) => {
     const createSimulationElements = () => {
         return simulationList.map(ele => 
             <div className="simjoblist" key={`SimList_${ele._id}`}>
-                <div>
-                    <span className="simname">{ele.simulationName}</span>
-                    <span className="simdate">{displayDate(ele.date)}</span>
-                    <span>{ele.status}</span>
+                <div className="simdetails">
+                    <span> {'Name: '+ele.simulationName}</span>
+                    <span> {'Date: '+displayDate(ele.date)}</span>
+                    <span> {'Status: '+ ele.status}</span>
                     <span>
                         <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link> 
-                        <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Immediately</button>
+                    </span>
+                    <span>
+                        <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Now</button>
+                        </span>    
+                        <span>
                         <button onClick={() => clone(ele)} class="btn btn-outline-warning">Clone</button>
                     </span>
                 </div>

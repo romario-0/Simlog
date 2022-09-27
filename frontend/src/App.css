@@ -330,19 +330,31 @@ padding-left:9%
   
 }
 
-.simname{
+/* .simname{
   font-size: 25px;
   color:#e95356;
   position: absolute;
-  margin-left: -28rem;
+  margin-left: -25rem;
+} */
+.simdetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 19px;
+  
 }
-
-.simdate {
+button.btn.btn-outline-warning {
+  width: 86px;
+  margin: 0;
+}
+  /* .simdate {
   font-size: 18px;
-  color:#2a9419;
+ }
 
-}
-
+span.simbtn {
+  display: flex;
+  align-items: center;
+} */
 
 
 
