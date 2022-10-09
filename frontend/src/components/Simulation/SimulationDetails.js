@@ -99,7 +99,7 @@ const SimulationDetails = () => {
         setJobs(data.simulation.jobs);
         // setSelectedJobList(data.simulation.jobs) 
       });
-    } else {
+    } else if (jobs.logId === '') {
       resetForm();
     }
     /* eslint-disable */
@@ -176,6 +176,7 @@ const SimulationDetails = () => {
       return job;
     })
     const newData = {
+      simulationName: '',
       date: data.date,
       jobs: newJobs
     }
