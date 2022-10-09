@@ -5,6 +5,7 @@ const SimulationSchema = mongoose.Schema({
     date: Date,
     startTime: Date,
     endTime: Date,
+    status: { type: String, default: 'NEW' },
     jobIds: [mongoose.Schema.ObjectId],
     createdBy: mongoose.Schema.ObjectId,
     updatedBy: mongoose.Schema.ObjectId
