@@ -23,7 +23,7 @@ router.post('/save', async function (req, res, next) {
   if (!jobObj) {
     if (validateData(req.body)) {
       const date = new Date(req.body.date);
-      jobModelObj = new JobModel({
+      const jobModelObj = new JobModel({
         jobName: req.body.jobName,
         logId: req.body.logId,
         duration: Number(req.body.duration),
