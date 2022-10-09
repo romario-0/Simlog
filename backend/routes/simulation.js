@@ -50,10 +50,8 @@ router.post('/update', async function (req, res, next) {
       let simulation = req.body;
       if (validateDataForUpdate(simulation)) {
         const jobIds = await upsertNewJobs(req.body.jobs);
-        console.log('NEW JOB IDS', jobIds);
         deleteJobs(simulationOldObj.jobIds, req.body.jobs)
         const remainingJobs = req.body.jobs.filter(ele => ele._id).map(ele => ele._id);
-        console.log('REMAIN JOB IDS', remainingJobs);
         simulation.simulationName = simulationOldObj.simulationName;
         simulation.jobIds = [...remainingJobs, ...jobIds];
         SimulationModel.findOneAndUpdate({ _id: req.body._id }, simulation, function (err, simulationDetails) {

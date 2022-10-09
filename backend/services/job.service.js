@@ -43,13 +43,6 @@ async function upsertJobs(jobs) {
                 }
             })
         }
-        // else {
-        //     return ({
-        //         deleteOne: {
-        //             filter: { _id: doc }
-        //           }
-        //     })
-        // }
     }))
 
     return bulkResult;
