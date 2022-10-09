@@ -328,7 +328,6 @@ async function upsertNewJobs(jobs) {
   try {
     const res = await upsertJobs(jobs)
     if (res) {
-      console.log(res);
       return Object.keys(res.insertedIds).map((key) => res.insertedIds[key].toString());
     }
     return [];
