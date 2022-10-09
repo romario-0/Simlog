@@ -9,8 +9,6 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
     const [showJob, setShowJob] = useState({});
 
     const jobHeaders = [
-        // {prop : 'jobName', value : 'Job Name'},
-        // {prop : 'status', value : 'Status'},
         { prop: 'log.logName', value: 'Log' },
         { prop: 'source.sourceName', value: 'Source' },
         { prop: 'collector.collectorName', value: 'Collector' },
@@ -56,9 +54,8 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
                     <span>{displayDate(ele.date)}</span>
                     <span>{ele.status}</span>
                     <span>
-                        <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link>
-                        <button onClick={() => startSimulation(ele)} class="btn btn-outline-warning">Run Now</button>
-                        {/* <button onClick={() => handleAction(ele._id, 'run')} class="btn btn-outline-warning">Run Now</button> */}
+                        {ele.status.toUpperCase() === 'NEW' && <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link>}
+                        {ele.status.toUpperCase() === 'NEW' && <button onClick={() => startSimulation(ele)} class="btn btn-outline-warning">Run Now</button>}
                         <button onClick={() => clone(ele)} class="btn btn-outline-warning">Clone</button>
                     </span>
                 </div>

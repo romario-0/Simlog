@@ -47,23 +47,27 @@ router.post('/update', async function (req, res, next) {
   SimulationModel.findOne({ _id: req.body._id }, async function (err, simulationOldObj) {
     // checking for Simulation
     if (simulationOldObj) {
-      let simulation = req.body;
-      if (validateDataForUpdate(simulation)) {
-        const jobIds = await upsertNewJobs(req.body.jobs);
-        deleteJobs(simulationOldObj.jobIds, req.body.jobs)
-        const remainingJobs = req.body.jobs.filter(ele => ele._id).map(ele => ele._id);
-        simulation.simulationName = simulationOldObj.simulationName;
-        simulation.jobIds = [...remainingJobs, ...jobIds];
-        SimulationModel.findOneAndUpdate({ _id: req.body._id }, simulation, function (err, simulationDetails) {
-          if (err) {
-            console.log(err);
-            res.send({ message: 'Unable to update Object' });
-          } else {
-            res.send({ message: 'Simulation Updated', simulation: simulationDetails });
-          }
-        });
+      if (simulationOldObj?.status?.toUpperCase() === SIMULATION_STATUS_NEW) {
+        let simulation = req.body;
+        if (validateDataForUpdate(simulation)) {
+          const jobIds = await upsertNewJobs(req.body.jobs);
+          deleteJobs(simulationOldObj.jobIds, req.body.jobs)
+          const remainingJobs = req.body.jobs.filter(ele => ele._id).map(ele => ele._id);
+          simulation.simulationName = simulationOldObj.simulationName;
+          simulation.jobIds = [...remainingJobs, ...jobIds];
+          SimulationModel.findOneAndUpdate({ _id: req.body._id }, simulation, function (err, simulationDetails) {
+            if (err) {
+              console.log(err);
+              res.send({ message: 'Unable to update Object' });
+            } else {
+              res.send({ message: 'Simulation Updated', simulation: simulationDetails });
+            }
+          });
+        } else {
+          res.send({ message: 'Required details not proper' });
+        }
       } else {
-        res.send({ message: 'Required details not proper' });
+        res.send({ message: "Simulation already running" });
       }
     } else {
       res.send({ message: "Simulation doesn't exists" });
