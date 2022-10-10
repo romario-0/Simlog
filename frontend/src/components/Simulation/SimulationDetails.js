@@ -94,12 +94,12 @@ const SimulationDetails = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations`).then(res => res.json()).then(data => { setSimulationList(data.simulationList) });
     // fetch(`${process.env.REACT_APP_BACKEND_URL}/jobs/newJobs`).then(res => res.json()).then(data => { setJobOptionsList(data.jobList) });
     if (Number(id) !== 0) {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/view/${id}`).then(res => res.json()).then(data => { 
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/view/${id}`).then(res => res.json()).then(data => {
         setSimulation(data.simulation);
         setJobs(data.simulation.jobs);
         // setSelectedJobList(data.simulation.jobs) 
       });
-    } else {
+    } else if (jobs.logId === '') {
       resetForm();
     }
     /* eslint-disable */
@@ -114,10 +114,12 @@ const SimulationDetails = () => {
     if (validateForm()) {
       setIsLoading(true);
 
+      const simulationObj = { ...simulation, jobs: jobs }
+
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(simulation)
+        body: JSON.stringify(simulationObj)
       };
 
       if (simulation._id) {
@@ -136,7 +138,7 @@ const SimulationDetails = () => {
     setIsLoading(false);
   }
 
-  const resetForm = (data={
+  const resetForm = (data = {
     simulationName: '',
     date: '',
     // jobIds: [],
@@ -168,9 +170,16 @@ const SimulationDetails = () => {
   }
 
   const cloneData = (data) => {
+    const newJobs = data.jobs.map(ele => {
+      const job = { ...ele, progress: 0 };
+      delete job._id;
+      delete job.status;
+      return job;
+    })
     const newData = {
+      simulationName: '',
       date: data.date,
-      jobs: data.jobs
+      jobs: newJobs
     }
     resetForm(newData)
   }
@@ -197,45 +206,39 @@ const SimulationDetails = () => {
   }
 
   const addFields = () => {
-		const data = [...jobs];
-		data.push({ logId: '', duration: 0, volume: 0, sourceId: '', collectorId: '' });
-		setJobs(data);
-	}
+    const data = [...jobs];
+    data.push({ logId: '', duration: 0, volume: 0, sourceId: '', collectorId: '' });
+    setJobs(data);
+  }
 
   const setJobData = (idx, value) => {
-		const data = [...jobs];
-		data[idx] = value;
-		setJobs(data);
-    setSimulation({...simulation, jobs : data});
-	}
+    const data = [...jobs];
+    data[idx] = value;
+    setJobs(data);
+    setSimulation({ ...simulation, jobs: data });
+  }
 
   const removeFields = (index) => {
-		const data = [...jobs];
-		data.splice(index, 1);
-		setJobs(data);
-	}
+    const data = [...jobs];
+    data.splice(index, 1);
+    setJobs(data);
+  }
 
   const createFieldElements = () => {
-		return jobs.map((ele, idx) => (
-			<div >
-        <div className="jobcardbtn">
-          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-            Add Job
-          </button>}
-          </div>
-        <div className="jobcard1"  key={`job_field_${idx}`}>
+    return jobs.map((ele, idx) => (
+      <div key={`job_field_${idx}`}>
 
-          <JobCard updateJob={(newJob) => { setJobData(idx, newJob)}} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} />
+        <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} />
 
-          {jobs.length > 1 && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
-            Del
-          </button>}
-        </div>
-        
-        
+        {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
+          Del
+        </button>}
+        {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+          Add
+        </button>}
       </div>
-		));
-	}
+    ));
+  }
 
   return (
     <div>
@@ -260,6 +263,29 @@ const SimulationDetails = () => {
               onChange={e => handleOnChange('date', e.target.value)} />
           </div>
 
+          <div className="col-md-1.5">
+            <div>
+              Log
+            </div>
+            <div>
+              Duration
+            </div>
+            <div>
+              Volume
+            </div>
+            <div>
+              Source
+            </div>
+            <div>
+              Collector
+            </div>
+          </div>
+          <div className="col-md-1.5">
+            {
+              jobs.length && createFieldElements()
+            }
+          </div>
+
           <div className="box-footer">
             <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 
@@ -281,7 +307,7 @@ const SimulationDetails = () => {
 
       </div>
       <div className="simlist">
-        <SimulationList clone={(data) => cloneData(data) } refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList}/>
+        <SimulationList clone={(data) => cloneData(data)} refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList} />
       </div>
     </div>
   );
