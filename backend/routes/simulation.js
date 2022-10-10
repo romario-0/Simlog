@@ -4,7 +4,7 @@ const SimulationModel = require('../models/simulation.model');
 const JobModel = require('../models/job.model');
 const { exec } = require('child_process');
 const mongoose = require('mongoose');
-const SIMULATION_STATUS_NEW = 'NEW';
+const SIMULATION_STATUS_NEW = 'New';
 
 /* Create new Simulation*/
 router.post('/save', async function (req, res, next) {
@@ -209,7 +209,6 @@ router.post('/action', function (req, res, next) {
 
 function validateData(simulation) {
   if (!simulation.simulationName || !simulation.date || !(simulation?.jobs && simulation.jobs.length > 0)) {
-    console.log("we are in validateData")
     return false;
   } else if (!validateDataForUpdate(simulation)) {
     return false
@@ -221,7 +220,6 @@ function validateDataForUpdate(simulation) {
   if (!simulation.date) {
     return false;
   } else if (!(simulation?.jobs && simulation.jobs.length > 0)) {
-    console.log("we are in validateDataforupdate")
     return false;
   } else {
     for (let job of simulation.jobs) {
@@ -230,8 +228,7 @@ function validateDataForUpdate(simulation) {
         || (job.volume !== undefined && !Number(job.volume))
         || (job.sourceId !== undefined && !job.sourceId.trim())
         || (job.collectorId !== undefined && !job.collectorId.trim())) {
-          console.log("we are in job of simulation.jobs")
-          return false;
+        return false;
       }
     }
   }
@@ -278,3 +275,4 @@ function getJobsToAdd(newList, oldList) {
   return addJobs;
 }
 module.exports = router;
+

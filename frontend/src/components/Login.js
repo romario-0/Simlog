@@ -21,9 +21,9 @@ const Login = () => {
 	return (
         <div className="topnav" fixed="top">
 		<img id="Content" className="ribbon" alt="logo" src={require('../small_logo.png')}></img>
-		<div className="container-login">
-		<div className="row">
-			<div className="col-sm-3 col-md-offset-3 card">
+		<div className="container  py-5 h-100">
+		<div className="row d-flex justify-content-center align-items-center h-100">
+			<div className="col-12 col-md-8 col-lg-6 col-xl-5">
 				<h2>Login page</h2>
 					<div className="form-group">
 						<label>Username</label>: <input type="text"
