@@ -226,77 +226,82 @@ const SimulationDetails = () => {
 
   const createFieldElements = () => {
     return jobs.map((ele, idx) => (
-      <div key={`job_field_${idx}`}>
+      <div>
+      <div className="jobcardbtn">
+          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+          Add
+          </button>}
+      </div>
+      <div className="deljob" key={`job_field_${idx}`}>
 
         <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} />
 
         {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
           Del
         </button>}
-        {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-          Add
-        </button>}
+      </div>
       </div>
     ));
   }
 
   return (
-    <div>
-      <div className="col-lg-10 col-md-6 col-sm-6 container justify-content-center card">
-        <h2>Create new simulation</h2>
-        <div className="card-body">
-          <div className="jobheight form-group col-3">
-            <label >Simulation Name</label>
-            <input className="form-control"
+    <div className="Container-md">
+    <div className="row form-inline justify-content-center">
+      <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row ">
+        <h5>Create new Simulation</h5>
+        <div className="card-body col-sm-12 col-md-12 row">
+          <div className="form-group col-sm-7">
+            <label>Simulation Name</label>
+            <input className="form-control col-sm-7"
               disabled={simulation._id}
               value={simulation.simulationName}
               onChange={e => handleOnChange('simulationName', e.target.value)}
-              placeholder="Add new Simulation name" />
+              placeholder="Add Simulation name" />
           </div>
           {/* <div className="jobheight form-group col-md-4">
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div> */}
 
-          
-          <div className="dtheight form-group">
-            <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
-              onChange={e => handleOnChange('date', e.target.value)} />
+          <div className="newjob row">
+          <div className="jobheader col row">
+                  <div className="col-sm-2">
+                    Log
+                  </div>
+                  <div className="col-sm-2">
+                    Duration
+                  </div>
+                  <div className="col-sm-2">
+                    Volume
+                  </div>
+                  <div className="col-sm-3">
+                    Source
+                  </div>
+                  <div className="col-sm-3">
+                    Collector
+                  </div>
           </div>
-
-          <div className="col-md-1.5">
-            <div>
-              Log
-            </div>
-            <div>
-              Duration
-            </div>
-            <div>
-              Volume
-            </div>
-            <div>
-              Source
-            </div>
-            <div>
-              Collector
-            </div>
-          </div>
-          <div className="col-md-1.5">
+          <div className="jobfield col row">
             {
               jobs.length && createFieldElements()
             }
           </div>
+        </div>
 
-          <div className="box-footer">
+          <div className="dtheight form-group">
+            <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
+              onChange={e => handleOnChange('date', e.target.value)} />
+          
             <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 
-            <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
+              <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
+            </div>
           </div>
           </div>
-          <div className="jobcard0">
+          {/* <div className="jobcard0">
 							{
 								jobs.length && createFieldElements()
 							}
-					</div>
+					</div> */}
         
         {/* {<div className="form-group justify-content-center">
           {selectedJobs.length > 0 && <List data={selectedJobs} headers={jobHeaders} listOptions={{}}></List>}
@@ -310,6 +315,8 @@ const SimulationDetails = () => {
         <SimulationList clone={(data) => cloneData(data)} refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList} />
       </div>
     </div>
+    
+    
   );
 }
 

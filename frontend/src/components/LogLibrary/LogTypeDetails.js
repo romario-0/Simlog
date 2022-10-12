@@ -110,6 +110,7 @@ const LogTypeDetails = () => {
 
 	const createFieldElements = () => {
 		return pattern.map((ele, idx) => (
+			<div className="row">
 			<div className="grabdatepattern" key={`pattern_field_${idx}`}>
 				<div className="form-group">
 					<label> Grab Pattern </label>
@@ -138,6 +139,7 @@ const LogTypeDetails = () => {
 				{idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
 					Add
 				</button>}
+			</div>
 			</div>
 		));
 	}
@@ -262,13 +264,12 @@ const LogTypeDetails = () => {
 	}
 
 	return (
-		<div className="container">
-			<div className=" container col-sm-9">
-				<div className="row">
-					<div className="col-lg-9 container justify-content-center card">
-						<h2 className="text-left"> Create New Log Type </h2>
-						<div className="card-body">
-							<div className="form-group col-sm-1.5">
+		<div>
+		<div className="col-md-9 mx-auto">
+			<div className=" row col-lg-12 col-md-12 col-sm-6 card bg-light">
+			<h2 className="card-title mb-3"> Create New Log Type </h2>
+				<div className="card-body col row  align-items-end text-left py-0">
+					<div className="form-group col-sm-3">
 								<label> Log Type Name</label>
 								<input
 									type="text"
@@ -281,7 +282,7 @@ const LogTypeDetails = () => {
 								/>
 							</div>
 
-							<div className="form-group col-sm-1.5">
+							<div className="form-group col-sm-3">
 								<label> Select Log Type</label>
 								<select className=" form-control" onChange={(e) => setPatternType(e.target.value)}>
 									<option selected value={0}>--Select Type--</option>
@@ -291,7 +292,7 @@ const LogTypeDetails = () => {
 								</select>
 							</div>
 
-							<div className="form-group">
+							<div className="form-group col-sm-3">
 								<label> Test Data </label>
 								<textarea
 									value={testPattern}
@@ -301,11 +302,7 @@ const LogTypeDetails = () => {
 								/>
 							</div>
 
-							<button className="btnheight btn btn-primary" onClick={testRegex} >
-								Test
-							</button>
-
-							<div className="form-group">
+							<div className="form-group col-sm-3">
 								<label> Output </label>
 								<textarea
 									value={output}
@@ -313,29 +310,36 @@ const LogTypeDetails = () => {
 									disabled
 								/>
 							</div>
-						</div>
-
-						<div className="col-md-1.5">
+						<div className="form-group col-sm-3">
 							{
 								pattern.length && createFieldElements()
 							}
 						</div>
+						<div>
+						<button className="form-group btnheight btn btn-primary" onClick={testRegex} >
+								Test
+						</button>
+						</div>
+						<div className=" form-group col-sm-3 row">
 						<div className="box-footer" >
 
 							<button type="button" className="btn btn-primary" onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
 							<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/logTypes/0'); }}>Cancel</button>
-
+						</div>
 						</div>
 						{message.text &&
 							<div style={{ color: message.color }}>{message.text}</div>
 						}
-					</div>
+					
 				</div>
 			</div>
+			<div className="container px-0 mt-1">
 			<LogTypeList logTypeList={logTypeList} reload={reloadList} />
+			</div>
 		</div>
+	</div>
 	);
 }
 

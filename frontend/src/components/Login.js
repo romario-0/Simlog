@@ -19,35 +19,45 @@ const Login = () => {
 	};
 	
 	return (
-        <div className="topnav" fixed="top">
-		<img id="Content" className="ribbon" alt="logo" src={require('../small_logo.png')}></img>
-		<div className="container  py-5 h-100">
-		<div className="row d-flex justify-content-center align-items-center h-100">
-			<div className="col-12 col-md-8 col-lg-6 col-xl-5">
-				<h2>Login page</h2>
-					<div className="form-group">
-						<label>Username</label>: <input type="text"
-							className="form-control" onChange={e => setUsername(e.target.value)} onKeyPress={handleKeypress}
-							autofocus="autofocus" placeholder="Username" />
-					</div>
-					<div className="form-group">
-						<label >Password</label>: <input type="password"
-							className="form-control" onChange={e => setPassword(e.target.value)} onKeyPress={handleKeypress}
-							placeholder="Password" />
-					</div>
-					<div className="form-group login">
-						<div className="row">
-							<div className="col-lg-9 col-lg-offset-6">
-								<input type="button" onClick={handleLogin}
-									className="form-control btn btn-primary" value="Log In" />
-							</div>
-						</div>
-					</div>
+	<div >
+			<div className="topnav" fixed="top">
+				<img id="Content" className="ribbon" alt="logo" src={require('../small_logo.png')}></img>
 			</div>
-		</div>
-		</div>
-
+		<div className="container">
+			<div className="row card bg-light col-4">
+			<article className="card-body mx-auto">
+				{/* <div className="col-12 col-md-8 col-lg-6 col-xl-5"> */}
+					<h3 class="card-title text-center">Login page</h3>
+						<form>
+						<div className="form-group input-group">
+							<div class="input-group-prepend">
+							<span class="input-group-text"> <i class="fa fa-user"></i> </span>
+							</div>
+							<input name="" class="form-control" placeholder="Username" type="text"
+									className="form-control" onChange={e => setUsername(e.target.value)} onKeyPress={handleKeypress}
+									autofocus="autofocus"/>
+							
+						</div>
+						<div className="form-group input-group">
+						<div className="input-group-prepend">
+							<span className="input-group-text"> <i class="fa fa-lock"></i> </span>
+							</div>
+							<input className="form-control" placeholder="Password" type="password"
+								onChange={e => setPassword(e.target.value)} onKeyPress={handleKeypress} />
+						</div>
+						<div className="form-group">
+										<input type="button" onClick={handleLogin}
+										className="btn btn-primary btn-block" value="Log In" />
+								
+							
+						</div>
+						</form>
+				{/* </div> */}
+			</article>
+			</div>
+			</div>
 	</div>
+	
     );
 }
 

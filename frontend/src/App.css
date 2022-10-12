@@ -3,10 +3,21 @@
 .App {
   text-align: center;
   font-family: 'Oswald';
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   padding-top: 70px;
   overflow-x: hidden;
+
 }
+.row.card.bg-light.col-4 {
+  margin: auto;
+}
+article.card-body.mx-auto {
+  max-width: 400px;
+}
+h3.card-title.text-center {
+  margin-bottom: 20px;
+}
+
 .btn-primary {
   background-color: #e95356 !important;
   border-color: #e95356 !important;
@@ -14,33 +25,16 @@
   user-select: none!important;
 
 }
-
-.container-login {
-  margin-top: 6%;
-  
-}
-
-.navbar-brand {
-  padding: 0px 0.6rem !important;
-  padding-left: 5rem;
-}
-nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
-  border-bottom: 1px solid rgba(0,0,0,.125)
-}
-
-nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
-  border-bottom: 1px solid rgba(0,0,0,.125)
-}
-
+/*login page image*/
 .topnav {
   position:fixed;
-  top:10px;
+  top:8px;
   left:0;
   width:100%;
   height:100px;
   background-color:#ffffff;
   /* margin-bottom:solid black 2px; */
-}
+} 
 
 .nav-link {
   color:#212529!important;
@@ -48,16 +42,123 @@ nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
 
 .nav-link:hover {
   color:Gray!important;
+} 
+.navbar-brand {
+  padding: 0px 0.6rem !important;
+  padding-left: 5rem;
 }
-
-.navbar-expand-lg .navbar-nav .nav-link {
+nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
+  border-bottom: 1px solid rgba(0,0,0,.125)
+}
+ .navbar-expand-lg .navbar-nav .nav-link {
   padding-right: 0.5rem!important;
   padding-left: 1.5rem!important;
- }
+ } 
+ /* .col-md-1\.5 {
+  display: flex;
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+ .ribbon {
+    position: absolute;
+    top: 0px;
+    left: 30px;
+  }
+  
+.newjob.row {
+  display: flex;
+  flex-direction: column;
+}
+.jobheader.col.row {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  margin-left: -5px;
+  max-height: 26px;
+}
 
+.jobfield.col.row {
+  display: flex;
+  flex-direction: row;
+}
+.btn-outline-warning {
+  color: black !important;
+  border-color: grey !important;
+  background-color: #f1f1f1 !important;
+}
+
+.dtheight.form-group {
+  column-gap: 14px;
+  margin-top: 8px
+}
+.jobcardbtn {
+  position: absolute;
+  margin-left: 18.5rem; 
+  /* margin-left: 23.5rem; */
+  margin-top: -4rem;
+}
+
+input.form-control.col-sm-7 {
+  margin-left: 11px;
+}
+.deljob {
+  display: flex;
+  flex-direction: row;
+  column-gap: 7px;
+  padding-top: 2px;
+  margin: 0rem -5rem 0rem -1rem;
+}
+
+.container.simlist{
+  max-width: 85%;
+}
+
+.simjoblist.row.col-md-12 {
+  padding: 0 0;
+  margin: 0 0;
+}
+.row.bg-info.rounded-3 {
+  margin: 0;
+}
+.table{
+  padding:0.2rem 0.5rem
+}
+h5{
+  margin:0 0;
+}
+.cardbody{
+  padding: 0rem 1rem 1rem 1rem;
+}
+h4.card-title {
+  margin: 0 0;
+}
+.form-group.col-sm-2.row {
+  padding: 0px 37px;
+}
+table.sourceTable.table.table-striped.table-bordered.table-hover {
+  margin-top: 6px;
+  padding:0 0;
+}
+ /* .card-body.source.col.row.align-items-end.text-left {
+  padding-bottom: 0;
+}  */
+
+a.btn.btn-primary {
+  margin: 0px 5px;
+}
+.tr td th {
+padding:none;
+}
+
+
+
+
+.table.logTable tr td:nth-child(4){ 
+  word-wrap: break-word;
+ column-width: 1000px!important;
+
+}
