@@ -1,4 +1,9 @@
-const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions }) => {
+import { useState } from "react";
+
+const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, validate }) => {
+
+  const emptyError = { logId: '', duration: '', volume: '', sourceId: '', collectorId: '' };
+  const [formErrors, setFormErrors] = useState(emptyError);
 
   const createLogOptions = () => {
     if (logOptions) {
@@ -42,9 +47,36 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions }
     }
   };
 
+  const validateForm = (newJob) => {
+    let error = { ...emptyError };
+    let flag = true;
+    if (!newJob.logId || Number(newJob.logId) === 0) {
+      error.logId = "Select a log";
+      flag = false;
+    }
+    if (!newJob.duration || !Number(newJob.duration) || newJob.duration <= 0) {
+      error.duration = "Invalid duration";
+      flag = false;
+    }
+    if (!newJob.volume || !Number(newJob.volume) || newJob.volume <= 0) {
+      error.volume = "Invalid volume";
+      flag = false;
+    }
+    if (!newJob.sourceId || Number(newJob.sourceId) === 0) {
+      error.sourceId = "Select a Source IP range";
+      flag = false;
+    }
+    if (!newJob.collectorId || Number(newJob.collectorId) === 0) {
+      error.collectorId = "Select a Collector IP";
+      flag = false;
+    }
+    validate(!flag);
+  };
+
   const handleOnChange = (attr, value) => {
     let newJob = { ...job };
     newJob[attr] = value;
+    validateForm(newJob);
     updateJob(newJob);
   }
 

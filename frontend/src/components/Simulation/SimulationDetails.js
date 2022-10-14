@@ -26,6 +26,7 @@ const SimulationDetails = () => {
   // const [jobOptionsList, setJobOptionsList] = useState([]);
   // const [selectedJobs, setSelectedJobs] = useState([]);
   const [jobs, setJobs] = useState([emptyJob]);
+  const [jobsError, setJobsError] = useState([true]);
   const [message, setMessage] = useState({ color: null, text: null });
   const [isLoading, setIsLoading] = useState(false);
   const [logOptions, setlogOptions] = useState("");
@@ -161,6 +162,10 @@ const SimulationDetails = () => {
     //   setMessage({ color: 'red', text: 'Select a job' });
     //   return false;
     // }
+    if (jobsError.length === 0 || jobsError.includes(true)) {
+      setMessage({ color: 'red', text: 'Job details invalid' });
+      return false;
+    }
     if (selectedDate < date) {
       setMessage({ color: 'red', text: 'Invalid date' });
       return false;
@@ -208,6 +213,10 @@ const SimulationDetails = () => {
     const data = [...jobs];
     data.push({ logId: '', duration: 0, volume: 0, sourceId: '', collectorId: '' });
     setJobs(data);
+
+    const errors = [...jobsError];
+    errors.push(true);
+    setJobsError(errors);
   }
 
   const setJobData = (idx, value) => {
@@ -217,17 +226,25 @@ const SimulationDetails = () => {
     setSimulation({ ...simulation, jobs: data });
   }
 
+  const setJobErrors = (idx, value) => {
+    const data = [...jobsError];
+    data[idx] = value;
+    setJobsError(data);
+  }
   const removeFields = (index) => {
     const data = [...jobs];
+    const errorData = [...jobsError];
     data.splice(index, 1);
+    errorData.splice(index, 1);
     setJobs(data);
+    setJobsError(errorData);
   }
 
   const createFieldElements = () => {
     return jobs.map((ele, idx) => (
       <div key={`job_field_${idx}`}>
 
-        <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} />
+        <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} validate={(val) => { setJobErrors(idx, val) }} />
 
         {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
           Del

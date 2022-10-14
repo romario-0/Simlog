@@ -53,6 +53,7 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
                     <span onClick={(e) => handleClick(e, index)}>{ele.simulationName}</span>
                     <span>{displayDate(ele.date)}</span>
                     <span>{ele.status}</span>
+                    <span>{ele.jobs.length}</span>
                     <span>
                         {ele.status.toUpperCase() === 'NEW' && <Link class="btn btn-primary" to={`/simulations/${ele._id}`}>Edit</Link>}
                         {ele.status.toUpperCase() === 'NEW' && <button onClick={() => startSimulation(ele)} class="btn btn-outline-warning">Run Now</button>}
@@ -74,6 +75,7 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
                 <span>Simulation Name</span>
                 <span>Date</span>
                 <span>Status</span>
+                <span>Jobs</span>
                 <span>Action</span>
             </div>
             {createSimulationElements()}
