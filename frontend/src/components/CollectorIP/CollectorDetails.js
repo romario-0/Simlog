@@ -101,12 +101,11 @@ const CollectorDetails = () => {
 
 	return (
 		<div>
-			<div className="col-sm-9">
-				<div className="row">
-					<div className="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-						<h2 className="text-left"> Create New Log Collector </h2>
-						<div className="card-body">
-							<div className="form-group">
+			<div className="col-md-9 mx-auto">
+				<div className="row col-lg-12 col-md-12 col-sm-6 card bg-light">
+				<h4 className="card-title mb-3"> Create New Log Collector </h4>
+				<div className="card-body col row  align-items-end text-left py-0">
+							<div className="form-group col-sm-3">
 								<label> Log Collector Name </label>
 								<input
 									type="text"
@@ -119,7 +118,7 @@ const CollectorDetails = () => {
 								/>
 							</div>
 
-							<div className="form-group">
+							<div className="form-group col-sm-3">
 								<label> Collector IP </label>
 								<input
 									type="text"
@@ -131,7 +130,7 @@ const CollectorDetails = () => {
 								/>
 							</div>
 
-							<div className="form-group">
+							<div className="form-group col-sm-3">
 								<label> Collector Port </label>
 								<input
 									type="text"
@@ -143,20 +142,27 @@ const CollectorDetails = () => {
 								/>
 							</div>
 
-							<div className="box-footer">
+							<div className=" form-group col-sm-3 row">
+							<div className="col-sm-4">
 								<button className="btn btn-primary" onClick={saveCollector} disabled={isLoading}>
 									Submit
 								</button>
+								</div>
+								<div className="col-sm-4">
 								<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/collectors/0') }}>Cancel</button>
+								</div>
 							</div>
+
 						</div>
 						{message.text &&
 							<div style={{ color: message.color }}>{message.text}</div>
 						}
-					</div>
+					
 				</div>
 			</div>
+			<div className="container px-0 mt-1">
 			<CollectorList collectorList={collectorList} reload={reloadList} />
+			</div>	
 		</div>
 	);
 }

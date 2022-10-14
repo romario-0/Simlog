@@ -123,96 +123,105 @@ const UserDetails = () => {
 
     return (
 	<div>
-		<div className="col-sm-9">
-			<div className = "row">
-				<div className ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-					<h2 className = "text-left">User</h2>
-					<div className = "card-body">
-						<div className ="form-group">
-							<label>Username </label>
-							<input
-							type = "text"
-							value={username}
-							onChange={e => setUsername(e.target.value)}
-							className = "form-control"
-							placeholder="Enter Username"
-							disabled={userId}
-							/>
-						</div>
-							
-						<div className ="form-group">
-							<label> Password </label>
-							{!isChangePassword && <button href="" onClick={(e) => setIsChangePassword(true)} className="btn" style={{fontSize: '16px'}}>Edit password</button>}
-							{isChangePassword && <input
-							type = "password"
-							value={password}
-							onChange={e => setPassword(e.target.value)}
-							className = "form-control"
-							placeholder="Enter Password" 
-							/>}
-						</div>
-							
-						<div className ="form-group">
-							<label> First Name </label>
-							<input
-							type = "text"
-							value={firstName}
-							onChange={e => setFirstName(e.target.value)}
-							className = "form-control"
-							placeholder="Enter First Name" 
-							/>
-						</div>
-							
-						<div className ="form-group">
-							<label> Last Name </label>
-							<input
-							type = "text"
-							value={lastName}
-							onChange={e => setLastName(e.target.value)}
-							className = "form-control"
-							placeholder="Enter Last Name" 
-							/>
-						</div>
-
-						<div className ="form-group">
-							<label> Email </label>
-							<input
-							type = "text"
-							value={email}
-							onChange={e => setEmail(e.target.value)}
-							className = "form-control"
-							placeholder="Enter Email" 
-							/>
-						</div>
-
-						<div className ="form-group">
-							<label> Mobile </label>
-							<input
-							type = "text"
-							value={mobile}
-							onChange={e => setMobile(e.target.value)}
-							className = "form-control"
-							placeholder="Enter Mobile Number" 
-							/>
-						</div>
-							
+		<div className="col-md-10 mx-auto">
+			<div className="row col-lg-12 col-md-12 col-sm-6 card bg-light">
+					<h4 className="card-title mb-3"> Create User </h4>
+				<div className="card-body col row  align-items-end text-left py-0">
+							<div className ="form-group col">
+								<label>Username </label>
+								<input
+								type = "text"
+								value={username}
+								onChange={e => setUsername(e.target.value)}
+								className = "form-control"
+								placeholder="Enter Username"
+								disabled={userId}
+								/>
+							</div>
 								
-						<div className = "box-footer">
-							<button disabled={isLoading} className = "btn btn-primary" onClick={saveUser}>
-								Submit
-							</button>
-							<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
-						</div>
+							<div className ="form-group col">
+								<label> Password </label>
+								{!isChangePassword && <button href="" onClick={(e) => setIsChangePassword(true)} className="btn" style={{fontSize: '16px'}}>Edit password</button>}
+								{isChangePassword && <input
+								type = "password"
+								value={password}
+								onChange={e => setPassword(e.target.value)}
+								className = "form-control"
+								placeholder="Enter Password" 
+								/>}
+							</div>
+								
+							<div className ="form-group col">
+								<label> First Name </label>
+								<input
+								type = "text"
+								value={firstName}
+								onChange={e => setFirstName(e.target.value)}
+								className = "form-control"
+								placeholder="Enter First Name" 
+								/>
+							</div>
 						
-							{ message.text &&
-								<div style={{color:message.color}}>{message.text}</div>
-							}
-					</div>
+						
+							<div className ="form-group col">
+								<label> Last Name </label>
+								<input
+								type = "text"
+								value={lastName}
+								onChange={e => setLastName(e.target.value)}
+								className = "form-control"
+								placeholder="Enter Last Name" 
+								/>
+							</div>
+							
+							
+							<div className ="form-group col">
+								<label> Email </label>
+								<input
+								type = "text"
+								value={email}
+								onChange={e => setEmail(e.target.value)}
+								className = "form-control"
+								placeholder="Enter Email" 
+								/>
+							</div>
+
+							<div className ="form-group col">
+								<label> Mobile </label>
+								<input
+								type = "text"
+								value={mobile}
+								onChange={e => setMobile(e.target.value)}
+								className = "form-control"
+								placeholder="Enter Mobile Number" 
+								/>
+							</div>
+						
+						
+							<div className=" d-flex col-sm-2 align-items-start px-0 row">		
+								<div className = "form-group col-sm-5">
+									<button disabled={isLoading} className = "btn btn-primary" onClick={saveUser}>
+										Submit
+									</button>
+								</div>
+							
+								<div className="form-group col-sm-7">
+									<button className = "btn btn-outline-warning" onClick={() => {resetForm(); navigate('/users/0')}}>Cancel</button>
+								</div>
+							</div>
+						
+								{ message.text &&
+									<div style={{color:message.color}}>{message.text}</div>
+								}
+				
 				</div>
-			</div>
-			</div>
-					<UserList userList={userList} reload={reloadList} />
+				
+			</div>	
 		
+		</div>		
+				<div className="container px-0 mt-1">
+							<UserList userList={userList} reload={reloadList} />
+				</div>
     </div>
 	);
 }

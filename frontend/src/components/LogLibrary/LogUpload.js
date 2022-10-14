@@ -94,52 +94,68 @@ const LogUpload = () => {
 
 	return (
 		<div>
-			<div className="col-lg-8 col-md-6 col-sm-6 container justify-content-center card">
-				<h2 className="text-left"> Create New Log Library </h2>
-				<div className="card-body">
-					<div className="form-group">
-						<label> Log Upload Name </label>
-						<input
-							type="text"
-							name="name"
-							value={logName}
-							onChange={(e) => { setLogName(e.target.value) }}
-							className="form-control"
-							placeholder="Enter Log Source Name"
-						/>
-					</div>
-					<div className="form-group">
-						<label> Log Upload Type </label>
-						<select className="form-control" onChange={(e) => setLogType(e.target.value)}>
-							<option value={0}>-- Select Log Type --</option>
-							{typeOptions && createLogTypeOptions()}
-						</select>
-					</div>
+			<div className="col-md-9 mx-auto">
+				<div className="row col-lg-12 col-md-12 col-sm-6 card bg-light">
+					<h4 className="card-title mb-3"> Create New Log Library </h4>
+					<div className="card-body col row  align-items-end text-left py-0">
+						<div className="form-group col-sm-3">
+							<label> Log Upload Name </label>
+							<input
+								type="text"
+								name="name"
+								value={logName}
+								onChange={(e) => { setLogName(e.target.value) }}
+								className="form-control"
+								placeholder="Enter Log Source Name"
+							/>
+						</div>
+						<div className="form-group col-sm-3">
+							<label> Log Upload Type </label>
+							<select className="form-control" onChange={(e) => setLogType(e.target.value)}>
+								<option value={0}>-- Select Log Type --</option>
+								{typeOptions && createLogTypeOptions()}
+							</select>
+						</div>
 
-					<div className="form-group">
-						<label> Upload File </label>
-						<input
-							type="file"
-							ref={inputRef}
-							onChange={(e) => { setFile(e.target.files[0]); setIsUploading(false); }}
-							className="form-control"
-							placeholder=""
-						/>
+						<div className="form-group col-sm-3">
+							<label> Upload File </label>
+							<input
+								type="file"
+								ref={inputRef}
+								onChange={(e) => { setFile(e.target.files[0]); setIsUploading(false); }}
+								className="form-control"
+								placeholder=""
+							/>
+						</div>
+
+						<div className="form-group col-sm-3 row">
+							<div className="col-sm-4">
+								<button onClick={uploadLog} className="btn btn-primary" disabled={isUploading}>
+									Submit
+								</button>
+							</div>
+						
+						<div className="col-sm-3">
+							<button
+								className="btn btn-outline-warning"
+								onClick={() => {
+								resetForm();
+								navigate("/logLibrary/0");
+								}}
+								>
+								Cancel
+							</button>
+						</div> 
+						</div>
 					</div>
-
-
-
-					<div className="box-footer">
-						<button onClick={uploadLog} className="btn btn-primary" disabled={isUploading}>
-							Submit
-						</button>
-					</div>
+					{message.text &&
+						<div style={{ color: message.color }}>{message.text}</div>
+					}
 				</div>
-				{message.text &&
-					<div style={{ color: message.color }}>{message.text}</div>
-				}
 			</div>
-			<LogList logList={logList} reload={fetchLogList}/>
+				<div className="container px-0 mt-1	">
+				<LogList logList={logList} reload={fetchLogList}/>
+				</div>
 		</div>
 	);
 }
