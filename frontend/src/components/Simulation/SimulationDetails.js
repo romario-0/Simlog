@@ -110,7 +110,7 @@ const SimulationDetails = () => {
   }
 
   const saveSimulation = async () => {
-    console.log(simulation)
+    
     if (validateForm()) {
       setIsLoading(true);
 
@@ -226,28 +226,32 @@ const SimulationDetails = () => {
 
   const createFieldElements = () => {
     return jobs.map((ele, idx) => (
-      <div>
-      <div className="jobcardbtn">
-          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-          Add
-          </button>}
-      </div>
+            
       <div className="deljob" key={`job_field_${idx}`}>
 
         <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} />
-
+        
+        <div className="delbtn">
         {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
           Del
         </button>}
+        </div>
+
+        <div className="jobcardbtn">
+          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+          Add
+          </button>}
+        </div>
+
       </div>
-      </div>
+      
     ));
   }
 
   return (
     <div className="Container-md">
-    <div className="row form-inline justify-content-center">
-      <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row ">
+    <div className="row form-inline justify-content-center ">
+      <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row p-0 mx-3 ">
         <h5>Create new Simulation</h5>
         <div className="card-body col-sm-12 col-md-12 row">
           <div className="form-group col-sm-7">
@@ -263,20 +267,20 @@ const SimulationDetails = () => {
           </div> */}
 
           <div className="newjob row">
-          <div className="jobheader col row">
-                  <div className="col-sm-2">
+          <div className="jobheader col-md-12  row">
+                  <div className="form-group col-sm-2">
                     Log
                   </div>
-                  <div className="col-sm-2">
+                  <div className="form-group col-sm-2">
                     Duration
                   </div>
-                  <div className="col-sm-2">
+                  <div className="form-group col-sm-2">
                     Volume
                   </div>
-                  <div className="col-sm-3">
+                  <div className="form-group col-sm-3">
                     Source
                   </div>
-                  <div className="col-sm-3">
+                  <div className="form-group col-sm-3">
                     Collector
                   </div>
           </div>
@@ -295,8 +299,8 @@ const SimulationDetails = () => {
 
               <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
             </div>
-          </div>
-          </div>
+        </div>
+      </div>
           {/* <div className="jobcard0">
 							{
 								jobs.length && createFieldElements()
@@ -311,7 +315,7 @@ const SimulationDetails = () => {
         }
 
       </div>
-      <div className="simlist">
+      <div className="simlist mt-2">
         <SimulationList clone={(data) => cloneData(data)} refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList} />
       </div>
     </div>

@@ -79,6 +79,7 @@ nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
   text-align: left;
   margin-left: -5px;
   max-height: 26px;
+  max-width: 1200px;
 }
 
 .jobfield.col.row {
@@ -110,7 +111,7 @@ input.form-control.col-sm-7 {
   flex-direction: row;
   column-gap: 7px;
   padding-top: 2px;
-  margin: 0rem -5rem 0rem -1rem;
+  /* margin: 0rem -5rem 0rem -1rem; */
 }
 
 .container.simlist{
@@ -154,11 +155,15 @@ a.btn.btn-primary {
 padding:none;
 }
 
-
-
-
 .table.logTable tr td:nth-child(4){ 
   word-wrap: break-word;
  column-width: 1000px!important;
 
+}
+.header.form-group.col {
+  display: flex;
+  align-content: space-between;
+  justify-content: space-evenly;
+  margin-bottom: 0;
+  padding-right: 53px;
 }

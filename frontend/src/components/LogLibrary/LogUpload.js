@@ -96,7 +96,7 @@ const LogUpload = () => {
 		<div>
 			<div className="col-md-9 mx-auto">
 				<div className="row col-lg-12 col-md-12 col-sm-6 card bg-light">
-					<h2 className="card-title mb-3"> Create New Log Library </h2>
+					<h4 className="card-title mb-3"> Create New Log Library </h4>
 					<div className="card-body col row  align-items-end text-left py-0">
 						<div className="form-group col-sm-3">
 							<label> Log Upload Name </label>
@@ -135,7 +135,7 @@ const LogUpload = () => {
 								</button>
 							</div>
 						
-						<div className="col-sm-4">
+						<div className="col-sm-3">
 							<button
 								className="btn btn-outline-warning"
 								onClick={() => {
@@ -153,7 +153,7 @@ const LogUpload = () => {
 					}
 				</div>
 			</div>
-				<div className="container px-0">
+				<div className="container px-0 mt-1	">
 				<LogList logList={logList} reload={fetchLogList}/>
 				</div>
 		</div>

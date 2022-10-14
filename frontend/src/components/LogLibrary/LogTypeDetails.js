@@ -111,9 +111,14 @@ const LogTypeDetails = () => {
 	const createFieldElements = () => {
 		return pattern.map((ele, idx) => (
 			<div className="row">
-			<div className="grabdatepattern" key={`pattern_field_${idx}`}>
-				<div className="form-group">
-					<label> Grab Pattern </label>
+			<div className="grabdatepattern row col-sm-12 d-flex align-items-end " key={`pattern_field_${idx}`}>
+				<div className="form-group col-sm-2 mb-0">
+					{idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+						Add
+					</button>}
+				</div>	
+				<div className="form-group col-sm-4 mb-0">
+					
 					<input
 						type="text"
 						value={ele.fieldKey}
@@ -123,8 +128,8 @@ const LogTypeDetails = () => {
 					/>
 				</div>
 
-				<div className="form-group">
-					<label> Date Pattern </label>
+				<div className="form-group col-sm-4 mb-0">
+					
 					<input
 						type="text"
 						value={ele.pyFormat}
@@ -133,12 +138,13 @@ const LogTypeDetails = () => {
 						placeholder="Enter Date Pattern"
 					/>
 				</div>
+				<div className="form-group col-sm-2 mb-0">
 				{pattern.length > 1 && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
 					Del
 				</button>}
-				{idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-					Add
-				</button>}
+				</div>
+				
+				
 			</div>
 			</div>
 		));
@@ -267,11 +273,11 @@ const LogTypeDetails = () => {
 		<div>
 		<div className="col-md-9 mx-auto">
 			<div className=" row col-lg-12 col-md-12 col-sm-6 card bg-light">
-			<h2 className="card-title mb-3"> Create New Log Type </h2>
-				<div className="card-body col row  align-items-end text-left py-0">
-					<div className="form-group col-sm-3">
+			<h4 className="card-title mb-3"> Create New Log Type </h4>
+				<div className="card-body col-lg-12 row  align-items-start text-left py-0">
+					<div className="form-group col-sm-3 d-inline-block">
 								<label> Log Type Name</label>
-								<input
+								<input 
 									type="text"
 									name="name"
 									value={typeName}
@@ -280,9 +286,9 @@ const LogTypeDetails = () => {
 									placeholder="Enter Log Type Name"
 									disabled={logTypeId}
 								/>
-							</div>
+					</div>
 
-							<div className="form-group col-sm-3">
+					<div className="form-group col-sm-3">
 								<label> Select Log Type</label>
 								<select className=" form-control" onChange={(e) => setPatternType(e.target.value)}>
 									<option selected value={0}>--Select Type--</option>
@@ -290,45 +296,62 @@ const LogTypeDetails = () => {
 									<option selected={patternType === 'json'} value={'json'}>Json</option>
 									<option selected={patternType === 'csv'} value={'csv'}>CSV</option>
 								</select>
+					</div>
+					<div className="grab&grok form-group col-sm-6 p-0">
+						<div className="header form-group col ">
+							<div className=" form-group">
+							Grab Pattern 
 							</div>
-
-							<div className="form-group col-sm-3">
+							<div className=" form-group">
+							Date Pattern
+							</div>
+						</div>
+						<div className="form-group col">
+								{
+									pattern.length && createFieldElements()
+								}
+						</div>
+					</div>
+					<div className="form-group col-sm-3">
 								<label> Test Data </label>
-								<textarea
+								<textarea style={{height:"100px"}}
 									value={testPattern}
 									onChange={(e) => setTestPattern(e.target.value)}
 									className="form-control"
 									placeholder="Enter Test Data"
 								/>
-							</div>
+					</div>
 
-							<div className="form-group col-sm-3">
+					<div className="form-group col-sm-3">
 								<label> Output </label>
-								<textarea
+								<textarea style={{height:"100px"}}
 									value={output}
 									className="form-control"
 									disabled
 								/>
-							</div>
-						<div className="form-group col-sm-3">
-							{
-								pattern.length && createFieldElements()
-							}
-						</div>
-						<div>
+					</div>
+					
+					<div className=" form-group col-sm-2 row">
+					
+					</div>
+					<div className=" form-group col-sm-1 row mt-3">
 						<button className="form-group btnheight btn btn-primary" onClick={testRegex} >
 								Test
 						</button>
-						</div>
-						<div className=" form-group col-sm-3 row">
-						<div className="box-footer" >
+					</div>
+					
+					
+					<div className=" box-footer form-group col-sm-3 row mt-3">
+						<div className=" col-sm-6 pl-5" >
 
-							<button type="button" className="btn btn-primary" onClick={saveLogType} disabled={isLoading}>
+							<button type="button" className="btn btn-primary " onClick={saveLogType} disabled={isLoading}>
 								Submit
 							</button>
+						</div>
+						<div className=" col-sm-6" >
 							<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/logTypes/0'); }}>Cancel</button>
 						</div>
-						</div>
+					</div>
 						{message.text &&
 							<div style={{ color: message.color }}>{message.text}</div>
 						}
