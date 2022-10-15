@@ -21,13 +21,13 @@ const Header = () => {
     }
 
     return (
-        <Navbar collapseOnSelect fixed="top" expand="lg" bg="white" variant="white">
+        <Navbar collapseOnSelect fixed="top" expand="lg" bg="white" variant="white" className="container-fluid">
             <Container>
             <Navbar.Brand><img src={require('../small_logo.png')}></img> </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="me-auto">
-                    <Nav.Link onClick={() => navigateToScreen('/')}>Home</Nav.Link>
+                <Nav className="me-auto fs-5">
+                    {/* <Nav.Link onClick={() => navigateToScreen('/')}>Home</Nav.Link> */}
                     <Nav.Link onClick={() => navigateToScreen('/simulations/0')}>Simulation</Nav.Link>
                     <Nav.Link onClick={() => navigateToScreen('/logLibrary')}>Log</Nav.Link>
                     <Nav.Link onClick={() => navigateToScreen('/logTypes/0')}>Log Type</Nav.Link>

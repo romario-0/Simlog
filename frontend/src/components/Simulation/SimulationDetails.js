@@ -98,6 +98,7 @@ const SimulationDetails = () => {
       fetch(`${process.env.REACT_APP_BACKEND_URL}/simulations/view/${id}`).then(res => res.json()).then(data => {
         setSimulation(data.simulation);
         setJobs(data.simulation.jobs);
+        setJobsError(Array(data.simulation.jobs.length).fill(false));
         // setSelectedJobList(data.simulation.jobs) 
       });
     } else if (jobs.logId === '') {
@@ -111,6 +112,7 @@ const SimulationDetails = () => {
   }
 
   const saveSimulation = async () => {
+
     if (validateForm()) {
       setIsLoading(true);
 
@@ -242,70 +244,87 @@ const SimulationDetails = () => {
 
   const createFieldElements = () => {
     return jobs.map((ele, idx) => (
-      <div key={`job_field_${idx}`}>
+
+      <div className="deljob" key={`job_field_${idx}`}>
 
         <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} validate={(val) => { setJobErrors(idx, val) }} />
 
-        {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
-          Del
-        </button>}
-        {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-          Add
-        </button>}
+        <div className="delbtn">
+          {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
+            Del
+          </button>}
+        </div>
+
+        <div className="jobcardbtn">
+          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+            Add
+          </button>}
+        </div>
+
       </div>
+
     ));
   }
 
   return (
-    <div>
-      <div className="col-lg-10 col-md-6 col-sm-6 container justify-content-center card">
-        <h2>Create new simulation</h2>
-        <div className="card-body">
-          <div className="jobheight form-group col-3">
-            <label >Simulation Name</label>
-            <input className="form-control"
-              disabled={simulation._id}
-              value={simulation.simulationName}
-              onChange={e => handleOnChange('simulationName', e.target.value)}
-              placeholder="Add new Simulation name" />
-          </div>
-          {/* <div className="jobheight form-group col-md-4">
+    <div className="Container-md">
+      <div className="row form-inline justify-content-center ">
+        <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row p-0 mx-3 ">
+          <h5>Create new Simulation</h5>
+          <div className="card-body col-sm-12 col-md-12 row">
+            <div className="form-group col-sm-7">
+              <label>Simulation Name</label>
+              <input className="form-control col-sm-7"
+                disabled={simulation._id}
+                value={simulation.simulationName}
+                onChange={e => handleOnChange('simulationName', e.target.value)}
+                placeholder="Add Simulation name" />
+            </div>
+            {/* <div className="jobheight form-group col-md-4">
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div> */}
-          <div className="dtheight form-group">
-            <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
-              onChange={e => handleOnChange('date', e.target.value)} />
-          </div>
 
-          <div className="col-md-1.5">
-            <div>
-              Log
+            <div className="newjob row">
+              <div className="jobheader col-md-12  row">
+                <div className="form-group col-sm-2">
+                  Log
+                </div>
+                <div className="form-group col-sm-2">
+                  Duration
+                </div>
+                <div className="form-group col-sm-2">
+                  Volume
+                </div>
+                <div className="form-group col-sm-3">
+                  Source
+                </div>
+                <div className="form-group col-sm-3">
+                  Collector
+                </div>
+              </div>
+              <div className="jobfield col row">
+                {
+                  jobs.length && createFieldElements()
+                }
+              </div>
             </div>
-            <div>
-              Duration
-            </div>
-            <div>
-              Volume
-            </div>
-            <div>
-              Source
-            </div>
-            <div>
-              Collector
-            </div>
-          </div>
-          <div className="col-md-1.5">
-            {
-              jobs.length && createFieldElements()
-            }
-          </div>
 
-          <div className="box-footer">
-            <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
+            <div className="dtheight form-group">
+              <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
+                onChange={e => handleOnChange('date', e.target.value)} />
 
-            <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
+              <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
+
+              <button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/simulations/0'); }}>Cancel</button>
+            </div>
           </div>
         </div>
+        {/* <div className="jobcard0">
+							{
+								jobs.length && createFieldElements()
+							}
+					</div> */}
+
         {/* {<div className="form-group justify-content-center">
           {selectedJobs.length > 0 && <List data={selectedJobs} headers={jobHeaders} listOptions={{}}></List>}
         </div>} */}
@@ -314,10 +333,12 @@ const SimulationDetails = () => {
         }
 
       </div>
-      <div className="simlist">
+      <div className="simlist mt-2">
         <SimulationList clone={(data) => cloneData(data)} refreshList={(list) => setSimulationList(list)} simulationList={simulationList} reload={reloadList} />
       </div>
     </div>
+
+
   );
 }
 

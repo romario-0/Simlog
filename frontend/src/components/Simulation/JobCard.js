@@ -81,8 +81,8 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
   }
 
   return (
-    <div>
-      <div className="form-group">
+    <div className="simjobcard row">
+      <div className="form-group col-sm-2">
         <select
           className="form-select"
           name="logSourceId"
@@ -93,7 +93,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
         </select>
       </div>
 
-      <div className="form-group">
+      <div className="form-group col-sm-2">
         <input
           type="text"
           name="duration"
@@ -105,7 +105,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
         />
       </div>
 
-      <div className="form-group">
+      <div className="form-group col-sm-2">
         <input
           type="text"
           name="volume"
@@ -117,7 +117,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
         />
       </div>
 
-      <div className="form-group">
+      <div className="form-group col-sm-3">
         <select
           className="form-select"
           name="sourceId"
@@ -128,7 +128,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
         </select>
       </div>
 
-      <div className="form-group">
+      <div className="form-group col-sm-3">
         <select
           className="form-select"
           name="collectorId"
