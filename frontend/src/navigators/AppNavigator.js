@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import CollectorDetails from '../components/CollectorIP/CollectorDetails';
 import CollectorList from '../components/CollectorIP/CollectorList';
 import Header from '../components/Header';
@@ -15,22 +15,25 @@ import PageNotFound from '../components/PageNotFound';
 import SimulationDetails from '../components/Simulation/SimulationDetails';
 
 const AppNavigator = () => {
-    return (
+  return (
     <div>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/logLibrary' element={<LogUpload />} />
-          <Route path='/logTypes/:id' element={<LogTypeDetails />} />
-          <Route path='/jobs/:id' element={<JobDetails />} />
-          <Route path='/sources/:id' element={<SourceDetails />} />
-          <Route path='/collectors/:id' element={<CollectorDetails />} />
-          <Route path='/users/:id' element={<UserDetails />} />
-          <Route path='/simulations/:id' element={<SimulationDetails />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+      <Header />
+      <Routes >
+        <Route
+          path="/"
+          element={<Navigate to="/simulations/0" />}
+        />
+        <Route path='/simulations/:id' element={<SimulationDetails />} />
+        <Route path='/logLibrary' element={<LogUpload />} />
+        <Route path='/logTypes/:id' element={<LogTypeDetails />} />
+        <Route path='/jobs/:id' element={<JobDetails />} />
+        <Route path='/sources/:id' element={<SourceDetails />} />
+        <Route path='/collectors/:id' element={<CollectorDetails />} />
+        <Route path='/users/:id' element={<UserDetails />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
     </div>
-    );
+  );
 }
 
 export default AppNavigator;
