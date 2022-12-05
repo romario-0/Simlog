@@ -13,6 +13,7 @@ import LogTypeDetails from '../components/LogLibrary/LogTypeDetails';
 import UserDetails from '../components/Admin/UserDetails';
 import PageNotFound from '../components/PageNotFound';
 import SimulationDetails from '../components/Simulation/SimulationDetails';
+import DatasetDetails from '../components/Dataset/DatasetDetails';
 
 const AppNavigator = () => {
   return (
@@ -30,6 +31,7 @@ const AppNavigator = () => {
         <Route path='/sources/:id' element={<SourceDetails />} />
         <Route path='/collectors/:id' element={<CollectorDetails />} />
         <Route path='/users/:id' element={<UserDetails />} />
+        <Route path='/dataset/:id' element={<DatasetDetails />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
