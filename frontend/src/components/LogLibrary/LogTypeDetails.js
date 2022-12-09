@@ -13,17 +13,19 @@ const LogTypeDetails = () => {
 			fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes/view/${id}`).then(res => res.json()).then(data => { setLogTypeValue(data.logType) });
 		}
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/logTypes`).then(res => res.json()).then(data => { setLogTypeList(data.logTypeList) });
+		fetch(`${process.env.REACT_APP_BACKEND_URL}/datasets`).then(res => res.json()).then(data => { setDatasetList(data.datasetList) });
 	}, [id]);
 
 	const [logTypeId, setLogTypeId] = useState('');
 	const [typeName, setTypeName] = useState('');
 	const [patternType, setPatternType] = useState('');
-	const [pattern, setPattern] = useState([{ fieldKey: '', pyFormat: '' }]);
+	const [pattern, setPattern] = useState([{ fieldKey: '', pyFormat: '', fieldFormat: 0 }]);
 	const [testPattern, setTestPattern] = useState('');
 	const [output, setOutput] = useState('');
 	const [message, setMessage] = useState({ color: null, text: null });
 	const [isLoading, setIsLoading] = useState(false);
 	const [logTypeList, setLogTypeList] = useState([]);
+	const [datasetList, setDatasetList] = useState([]);
 	const navigate = useNavigate();
 
 	const setLogTypeValue = (data) => {
@@ -88,7 +90,7 @@ const LogTypeDetails = () => {
 	const resetForm = () => {
 		setLogTypeId(0);
 		setTypeName('');
-		setPattern([{ fieldKey: '', pyFormat: '' }]);
+		setPattern([{ fieldKey: '', pyFormat: '', fieldFormat: 0 }]);
 		setPatternType('');
 		setMessage({ color: null, text: null });
 		setTestPattern('');
@@ -98,7 +100,7 @@ const LogTypeDetails = () => {
 
 	const addFields = () => {
 		const data = [...pattern];
-		data.push({ fieldKey: '', pyFormat: '' });
+		data.push({ fieldKey: '', pyFormat: '', fieldFormat: 0 });
 		setPattern(data);
 	}
 
@@ -108,44 +110,73 @@ const LogTypeDetails = () => {
 		setPattern(data);
 	}
 
+	const createDatasetOptions = (selected) => {
+		if (datasetList) {
+			return datasetList.map((ele) => (
+				<option selected={ele._id === selected} key={ele._id} value={ele._id}>
+					{ele.datasetName}
+				</option>
+			));
+		}
+	};
+
 	const createFieldElements = () => {
 		return pattern.map((ele, idx) => (
 			<div className="row">
-			<div className="grabdatepattern row col-sm-12 d-flex align-items-end " key={`pattern_field_${idx}`}>
-				<div className="form-group col-sm-2 mb-0">
-					{idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
-						Add
-					</button>}
-				</div>	
-				<div className="form-group col-sm-4 mb-0">
-					
-					<input
-						type="text"
-						value={ele.fieldKey}
-						onChange={(e) => setPatternData(idx, 'fieldKey', e.target.value)}
-						className="form-control"
-						placeholder="Enter Grab Pattern"
-					/>
-				</div>
+				<div className="grabdatepattern row col-sm-12 d-flex align-items-end " key={`pattern_field_${idx}`}>
+					<div className="form-group col-sm-2 mb-0">
+						{idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+							Add
+						</button>}
+					</div>
+					<div className="form-group col-sm-4 mb-0">
 
-				<div className="form-group col-sm-4 mb-0">
-					
-					<input
-						type="text"
-						value={ele.pyFormat}
-						onChange={(e) => setPatternData(idx, 'pyFormat', e.target.value)}
-						className="form-control"
-						placeholder="Enter Date Pattern"
-					/>
+						<input
+							type="text"
+							value={ele.fieldKey}
+							onChange={(e) => setPatternData(idx, 'fieldKey', e.target.value)}
+							className="form-control"
+							placeholder="Enter Grab Pattern"
+						/>
+					</div>
+					<div className="form-group col-sm-4 mb-0">
+
+						<select className="form-control" onChange={(e) => setPatternData(idx, 'fieldFormat', e.target.value)}>
+							<option value={0} selected={ele.fieldFormat === 0}>-- Select Log Type --</option>
+							<option value={'static'} selected={ele.fieldFormat === 'static'}>Static Text</option>
+							<option value={'dataset'} selected={ele.fieldFormat === 'dataset'}>Random Dataset</option>
+							<option value={'date'} selected={ele.fieldFormat === 'date'}>Date</option>
+						</select>
+					</div>
+
+					<div className="form-group col-sm-4 mb-0">
+						{
+							pattern[idx]?.fieldFormat === 'dataset' ?
+								(
+									<select className="form-control" onChange={(e) => setPatternData(idx, 'pyFormat', e.target.value)}>
+										<option value={0}>-- Select Log Type --</option>
+										{createDatasetOptions(ele.pyFormat)}
+									</select>
+								) :
+								<input
+									type="text"
+									value={ele.pyFormat}
+									onChange={(e) => setPatternData(idx, 'pyFormat', e.target.value)}
+									className="form-control"
+									placeholder="Enter Date Pattern"
+								/>
+						}
+					</div>
+					<div className="form-group col-sm-2 mb-0">
+						{
+							pattern.length > 1 && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
+								Del
+							</button>
+						}
+					</div>
+
+
 				</div>
-				<div className="form-group col-sm-2 mb-0">
-				{pattern.length > 1 && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
-					Del
-				</button>}
-				</div>
-				
-				
-			</div>
 			</div>
 		));
 	}
@@ -166,7 +197,7 @@ const LogTypeDetails = () => {
 			default: setMessage({ color: 'red', text: 'Select a log type' });
 		}
 		for (let ele of pattern) {
-			testData = processOutputData(patternType, ele.pyFormat, ele.fieldKey, testData);
+			testData = processOutputData(patternType, ele.pyFormat, ele.fieldKey, testData, ele.fieldFormat);
 		}
 		switch (patternType.toUpperCase()) {
 			case 'CSV': testData = testData.toString(); break;
@@ -177,8 +208,19 @@ const LogTypeDetails = () => {
 		setOutput(testData);
 	}
 
-	const processOutputData = (patternType, datePattern, grabPattern, testData) => {
-		const dateData = calculateDate(datePattern);
+	const processOutputData = (patternType, datePattern, grabPattern, testData, dataType) => {
+
+		let dateData = ''
+
+		if (dataType === 'dataset') {
+			dateData = calculateDataset(datePattern);
+		} else if (dataType === 'date') {
+			dateData = calculateDate(datePattern);
+		} else {
+			dateData = datePattern;
+		}
+
+
 		switch (patternType.toUpperCase()) {
 			case 'PLAIN': return calculateForPlain(dateData, grabPattern, testData);
 			case 'CSV': return calculateForCSV(dateData, grabPattern, testData);
@@ -196,6 +238,16 @@ const LogTypeDetails = () => {
 		return dateOutput;
 	}
 
+	const calculateDataset = (datasetType) => {
+		const dataset = datasetList.find(set => set._id === datasetType);
+		let randomElement = '';
+		if (dataset) {
+			const array = dataset.datasetCollection.split(dataset.delimiter)
+			randomElement = array[Math.floor(Math.random() * array.length)];
+		}
+		return randomElement;
+	}
+
 	const calculateForPlain = (dateOutput, grabPattern, testData) => {
 		try {
 			const grabRegex = new RegExp(grabPattern)
@@ -208,7 +260,7 @@ const LogTypeDetails = () => {
 
 	const calculateForCSV = (dateOutput, grabPattern, csvArray) => {
 		try {
-			const grabIndex = Number(grabPattern);
+			const grabIndex = Number(grabPattern) - 1;
 			csvArray[grabIndex] = dateOutput;
 			return csvArray;
 		} catch (error) {
@@ -271,98 +323,98 @@ const LogTypeDetails = () => {
 
 	return (
 		<div>
-		<div className="col-md-9 mx-auto">
-			<div className=" row col-lg-12 col-md-12 col-sm-6 card bg-light">
-			<h4 className="card-title mb-3"> Create New Log Type </h4>
-				<div className="card-body col-lg-12 row  align-items-start text-left py-0">
-					<div className="form-group col-sm-3 d-inline-block">
-								<label> Log Type Name</label>
-								<input 
-									type="text"
-									name="name"
-									value={typeName}
-									onChange={(e) => setTypeName(e.target.value)}
-									className="form-control"
-									placeholder="Enter Log Type Name"
-									disabled={logTypeId}
-								/>
-					</div>
-
-					<div className="form-group col-sm-3">
-								<label> Select Log Type</label>
-								<select className=" form-control" onChange={(e) => setPatternType(e.target.value)}>
-									<option selected value={0}>--Select Type--</option>
-									<option selected={patternType === 'plain'} value={'plain'}>Plain</option>
-									<option selected={patternType === 'json'} value={'json'}>Json</option>
-									<option selected={patternType === 'csv'} value={'csv'}>CSV</option>
-								</select>
-					</div>
-					<div className="grab&grok form-group col-sm-6 p-0">
-						<div className="header form-group col ">
-							<div className=" form-group">
-							Grab Pattern 
-							</div>
-							<div className=" form-group">
-							Date Pattern
-							</div>
+			<div className="col-md-9 mx-auto">
+				<div className=" row col-lg-12 col-md-12 col-sm-6 card bg-light">
+					<h4 className="card-title mb-3"> Create New Log Type </h4>
+					<div className="card-body col-lg-12 row  align-items-start text-left py-0">
+						<div className="form-group col-sm-3 d-inline-block">
+							<label> Log Type Name</label>
+							<input
+								type="text"
+								name="name"
+								value={typeName}
+								onChange={(e) => setTypeName(e.target.value)}
+								className="form-control"
+								placeholder="Enter Log Type Name"
+								disabled={logTypeId}
+							/>
 						</div>
-						<div className="form-group col">
+
+						<div className="form-group col-sm-3">
+							<label> Select Log Type</label>
+							<select className=" form-control" onChange={(e) => setPatternType(e.target.value)}>
+								<option selected value={0}>--Select Type--</option>
+								<option selected={patternType === 'plain'} value={'plain'}>Plain</option>
+								<option selected={patternType === 'json'} value={'json'}>Json</option>
+								<option selected={patternType === 'csv'} value={'csv'}>CSV</option>
+							</select>
+						</div>
+						<div className="grab&grok form-group col-sm-6 p-0">
+							<div className="header form-group col ">
+								<div className=" form-group">
+									Grab Pattern
+								</div>
+								<div className=" form-group">
+									Date Pattern
+								</div>
+							</div>
+							<div className="form-group col">
 								{
 									pattern.length && createFieldElements()
 								}
+							</div>
 						</div>
-					</div>
-					<div className="form-group col-sm-3">
-								<label> Test Data </label>
-								<textarea style={{height:"100px"}}
-									value={testPattern}
-									onChange={(e) => setTestPattern(e.target.value)}
-									className="form-control"
-									placeholder="Enter Test Data"
-								/>
-					</div>
+						<div className="form-group col-sm-3">
+							<label> Test Data </label>
+							<textarea style={{ height: "100px" }}
+								value={testPattern}
+								onChange={(e) => setTestPattern(e.target.value)}
+								className="form-control"
+								placeholder="Enter Test Data"
+							/>
+						</div>
 
-					<div className="form-group col-sm-3">
-								<label> Output </label>
-								<textarea style={{height:"100px"}}
-									value={output}
-									className="form-control"
-									disabled
-								/>
-					</div>
-					
-					<div className=" form-group col-sm-2 row">
-					
-					</div>
-					<div className=" form-group col-sm-1 row mt-3">
-						<button className="form-group btnheight btn btn-primary" onClick={testRegex} >
+						<div className="form-group col-sm-3">
+							<label> Output </label>
+							<textarea style={{ height: "100px" }}
+								value={output}
+								className="form-control"
+								disabled
+							/>
+						</div>
+
+						<div className=" form-group col-sm-2 row">
+
+						</div>
+						<div className=" form-group col-sm-1 row mt-3">
+							<button className="form-group btnheight btn btn-primary" onClick={testRegex} >
 								Test
-						</button>
-					</div>
-					
-					
-					<div className=" box-footer form-group col-sm-3 row mt-3">
-						<div className=" col-sm-6 pl-5" >
-
-							<button type="button" className="btn btn-primary " onClick={saveLogType} disabled={isLoading}>
-								Submit
 							</button>
 						</div>
-						<div className=" col-sm-6" >
-							<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/logTypes/0'); }}>Cancel</button>
+
+
+						<div className=" box-footer form-group col-sm-3 row mt-3">
+							<div className=" col-sm-6 pl-5" >
+
+								<button type="button" className="btn btn-primary " onClick={saveLogType} disabled={isLoading}>
+									Submit
+								</button>
+							</div>
+							<div className=" col-sm-6" >
+								<button className="btn btn-outline-warning" onClick={() => { resetForm(); navigate('/logTypes/0'); }}>Cancel</button>
+							</div>
 						</div>
-					</div>
 						{message.text &&
 							<div style={{ color: message.color }}>{message.text}</div>
 						}
-					
+
+					</div>
+				</div>
+				<div className="container px-0 mt-1">
+					<LogTypeList logTypeList={logTypeList} reload={reloadList} />
 				</div>
 			</div>
-			<div className="container px-0 mt-1">
-			<LogTypeList logTypeList={logTypeList} reload={reloadList} />
-			</div>
 		</div>
-	</div>
 	);
 }
 

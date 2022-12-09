@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
 const LogTypeSchema = mongoose.Schema({
-    logTypeName : String,
-    patternType : String,
-    pattern : [
+    logTypeName: String,
+    patternType: String,
+    pattern: [
         {
-            fieldKey : String,
-            pyFormat : String
+            fieldKey: String,
+            fieldFormat: String,
+            pyFormat: String
         }
     ]
 });
