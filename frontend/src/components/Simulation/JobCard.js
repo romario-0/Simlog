@@ -81,7 +81,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
   }
 
   return (
-    <div className="simjobcard row">
+    <div className="simjobcard row col-12">
       <div className="form-group col-sm-2">
         <select
           className="form-select"

@@ -39,6 +39,7 @@ const Header = () => {
                     </NavDropdown>
                 </Nav>
                 <Nav>
+                <i class="fa fa-user"></i>
                 <NavDropdown title={user ? user.firstName : 'Sign In'} id="collasible-nav-dropdown">
                     <NavDropdown.Item onClick={handleLogout}>Sign Out</NavDropdown.Item>
                 </NavDropdown>

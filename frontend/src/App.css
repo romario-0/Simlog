@@ -70,18 +70,11 @@ nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
   }
   
 .newjob.row {
+  max-width: 100;
   display: flex;
   flex-direction: column;
+  margin-top: 12px;
 }
-.jobheader.col.row {
-  display: flex;
-  flex-direction: row;
-  text-align: left;
-  margin-left: -5px;
-  max-height: 26px;
-  max-width: 1200px;
-}
-
 .jobfield.col.row {
   display: flex;
   flex-direction: row;
@@ -93,8 +86,11 @@ nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
 }
 
 .dtheight.form-group {
-  column-gap: 14px;
-  margin-top: 8px
+  column-gap: 19px;
+  margin-top: 14px;
+  margin-left: 14px;
+  display: flex;
+  justify-content: center;
 }
 .jobcardbtn {
   position: absolute;
@@ -103,19 +99,17 @@ nav.navbar.navbar-expand-lg.navbar-white.bg-white.fixed-top {
   margin-top: -4rem;
 }
 
-input.form-control.col-sm-7 {
-  margin-left: 11px;
-}
-.deljob {
+
+.deljob.col-12 {
   display: flex;
   flex-direction: row;
-  column-gap: 7px;
+ text-align:left;
   padding-top: 2px;
-  /* margin: 0rem -5rem 0rem -1rem; */
+  margin: 0rem -5rem 0.5rem 0rem;
 }
 
 .container.simlist{
-  max-width: 85%;
+  max-width: 86%;
 }
 
 .simjoblist.row.col-md-12 {
@@ -126,7 +120,7 @@ input.form-control.col-sm-7 {
   margin: 0;
 }
 .table{
-  padding:0.2rem 0.5rem
+  padding:0rem 0rem
 }
 h5{
   margin:0 0;
@@ -136,6 +130,7 @@ h5{
 }
 h4.card-title {
   margin: 0 0;
+  padding-top: 10px;
 }
 .form-group.col-sm-2.row {
   padding: 0px 37px;
@@ -167,3 +162,71 @@ padding:none;
   margin-bottom: 0;
   padding-right: 53px;
 }
+.row.bg-info.rounded-3{
+  margin: 3px -1px;
+  padding-top: 3px;
+  margin-top: -6px;
+}
+
+.jobcardbtn1 {
+  position: absolute;
+  margin-left: 26rem; 
+  margin-top: -86px;
+}
+i.btn.bi.bi-chevron-down {
+  padding: 0 0;
+}
+i.fa.fa-user {
+  margin: 12px -1px;
+}
+
+.jobheader.col {
+  display: flex;
+  flex-direction: row;
+  margin-left: -5px;
+  max-height: 26px;
+  margin-bottom: 11px;
+  }
+  .deljob.col-12.simhead {
+    width: 88%;
+    margin-left: 2px;
+    column-gap:17px;
+  
+  }
+  .form-group.col-sm-10.simdate {
+    column-gap: 17px;
+    padding-left: 28px;
+    
+}
+
+
+.simtext {
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.col-lg-2.simtitle.row {
+  margin-left: 13px;
+}
+
+table.table.table-striped.table-bordered.table-hover {
+  border-collapse:inherit
+}
+table.table.table-striped.table-bordered.table-hover {
+  border: solid #ccc 0.1px;
+  border-radius: 6px;
+}
+table.table.table-striped.table-bordered.table-hover td, table.table.table-striped.table-bordered.table-hover th {
+  border-left: 0px solid #ccc;
+  border-top: 0px solid #ccc;
+}
+table.table.table-striped.table-bordered.table-hover tr > *:first-child {
+  border-left: 0px;
+}
+table.table.table-striped.table-bordered.table-hover tr:first-child > * {
+  border-top: 0px;
+  border-radius: 0px;
+}
+

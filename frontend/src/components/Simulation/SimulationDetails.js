@@ -245,18 +245,18 @@ const SimulationDetails = () => {
   const createFieldElements = () => {
     return jobs.map((ele, idx) => (
 
-      <div className="deljob" key={`job_field_${idx}`}>
+      <div className="deljob col-12" key={`job_field_${idx}`}>
 
         <JobCard updateJob={(newJob) => { setJobData(idx, newJob) }} job={ele} logOptions={logOptions} sourceOptions={sourceOptions} collectorOptions={collectorOptions} validate={(val) => { setJobErrors(idx, val) }} />
 
-        <div className="delbtn">
+        <div className="delbtn col-1">
           {jobs.length > 1 && !(ele.status && ele.status !== 'New') && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
             Del
           </button>}
         </div>
 
-        <div className="jobcardbtn">
-          {idx === 0 && <button type="button" className="btnheight btn btn-primary" onClick={addFields} >
+        <div className="jobcardbtn1">
+          {idx === 0 && <button type="button" className="btnheight btn btn-primary " onClick={addFields} >
             Add
           </button>}
         </div>
@@ -268,37 +268,47 @@ const SimulationDetails = () => {
 
   return (
     <div className="Container-md">
-      <div className="row form-inline justify-content-center ">
-        <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row p-0 mx-3 ">
-          <h5>Create new Simulation</h5>
+      <div className="row form-inline justify-content-center">
+        <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row p-0 mx-3">
+          <h4 class="card-title mb-3">Create New Simulation</h4>
           <div className="card-body col-sm-12 col-md-12 row">
-            <div className="form-group col-sm-7">
-              <label>Simulation Name</label>
-              <input className="form-control col-sm-7"
+            <div className="simulationhead row col ">
+              <div  className="col-lg-2 simtitle row">
+              <label className="form-group col-sm-auto">Simulation Name</label>
+              <input className="form-control"
                 disabled={simulation._id}
                 value={simulation.simulationName}
                 onChange={e => handleOnChange('simulationName', e.target.value)}
                 placeholder="Add Simulation name" />
+              
+              </div>
+
+            <div className="col-2 simtext ">
+            
+            <label className="form-group col-sm-auto">Simulation Schedule</label>
+              <input type='datetime-local' className="form-control col-sm-12" value={formatDate(new Date(simulation.date))}
+                onChange={e => handleOnChange('date', e.target.value)} />
+            </div>
             </div>
             {/* <div className="jobheight form-group col-md-4">
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div> */}
 
             <div className="newjob row">
-              <div className="jobheader col-md-12  row">
-                <div className="form-group col-sm-2">
+              <div className="deljob col-12 simhead">
+                <div className="form-group col-sm-2 log">
                   Log
                 </div>
-                <div className="form-group col-sm-2">
-                  Duration
+                <div className="form-group col-sm-2 duration">
+                  Duration (in mins)
                 </div>
-                <div className="form-group col-sm-2">
-                  Volume
+                <div className="form-group col-sm-2 volume">
+                  Volume (in mb)
                 </div>
-                <div className="form-group col-sm-3">
+                <div className="form-group col-sm-3 source">
                   Source
                 </div>
-                <div className="form-group col-sm-3">
+                <div className="form-group col-sm-3 collector">
                   Collector
                 </div>
               </div>
@@ -310,8 +320,8 @@ const SimulationDetails = () => {
             </div>
 
             <div className="dtheight form-group">
-              <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
-                onChange={e => handleOnChange('date', e.target.value)} />
+              {/* <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
+                onChange={e => handleOnChange('date', e.target.value)} /> */}
 
               <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 
