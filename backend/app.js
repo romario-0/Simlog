@@ -13,13 +13,14 @@ const jobsRouter = require('./routes/jobs');
 const sourcesRouter = require('./routes/sources');
 const collectorsRouter = require('./routes/collectors');
 const simulationRouter = require('./routes/simulation');
+const datasetRouter = require('./routes/dataset');
 
 const Database = require('./dbconfig');
 
 const app = express();
 
 // const corsOptions = {
-  //origin: "http://localhost:8000"
+//origin: "http://localhost:8000"
 // };
 
 app.use(cors(corsOptions));
@@ -51,14 +52,15 @@ app.use('/jobs', jobsRouter);
 app.use('/sources', sourcesRouter);
 app.use('/collectors', collectorsRouter);
 app.use('/simulations', simulationRouter);
+app.use('/datasets', datasetRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
