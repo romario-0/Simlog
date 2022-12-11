@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../services/CommonUtils";
 import SimulationList from "./SimulationList";
-import { MultiSelect } from "react-multi-select-component";
-import List from "../List";
 import { createSimulation, updateSimulation } from "../../services/simulation.service";
 import JobCard from "./JobCard";
 
@@ -21,6 +19,8 @@ const SimulationDetails = () => {
   const [simulation, setSimulation] = useState({
     simulationName: '',
     date: '',
+    frequency: 0,
+    frequencyType: 0,
   });
   const [simulationList, setSimulationList] = useState([]);
   // const [jobOptionsList, setJobOptionsList] = useState([]);
@@ -143,6 +143,8 @@ const SimulationDetails = () => {
   const resetForm = (data = {
     simulationName: '',
     date: '',
+    frequency: 0,
+    frequencyType: 0,
     // jobIds: [],
     jobs: [emptyJob]
   }) => {
@@ -185,6 +187,8 @@ const SimulationDetails = () => {
     const newData = {
       simulationName: '',
       date: data.date,
+      frequency: 0,
+      frequencyType: 0,
       jobs: newJobs
     }
     resetForm(newData)
@@ -312,6 +316,17 @@ const SimulationDetails = () => {
             <div className="dtheight form-group">
               <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
                 onChange={e => handleOnChange('date', e.target.value)} />
+
+              <input type='number' className="form-control" value={simulation.frequency}
+                onChange={e => handleOnChange('frequency', e.target.value)} />
+
+              <select onChange={e => handleOnChange('frequencyType', e.target.value)} disabled={!simulation.frequency} >
+                <option selected={simulation.frequencyType === 0} value={0}>Select</option>
+                <option selected={simulation.frequencyType === 's'} value={'s'}>Seconds</option>
+                <option selected={simulation.frequencyType === 'm'} value={'m'}>Minutes</option>
+                <option selected={simulation.frequencyType === 'h'} value={'h'}>Hours</option>
+                <option selected={simulation.frequencyType === 'd'} value={'d'}>Days</option>
+              </select>
 
               <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 
