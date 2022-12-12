@@ -14,12 +14,24 @@ router.post('/save', async function (req, res, next) {
   if (!simulationObj) {
     if (validateData(req.body)) {
       const jobIds = await upsertNewJobs(req.body.jobs);
+      let frequencyFactor = 1;
+      switch (req.body.frequencyType) {
+        case 'd': frequencyFactor *= 24;
+        case 'h': frequencyFactor *= 60;
+        case 'm': frequencyFactor *= 60;
+        case 's': frequencyFactor *= 1;
+          break;
+        default: frequencyFactor = 1;
+      }
       if (jobIds) {
         const date = new Date(req.body.date);
         const simulationModelObj = new SimulationModel({
           simulationName: req.body.simulationName,
           jobIds: jobIds,
           date: date,
+          frequency: req.body.frequency ? req.body?.frequency : 0,
+          frequencyType: req.body.frequencyType ? req.body.frequencyType : 's',
+          actualFrequency: req.body.frequency ? req.body.frequency * frequencyFactor : 0,
           status: SIMULATION_STATUS_NEW,
         });
 
@@ -50,10 +62,22 @@ router.post('/update', async function (req, res, next) {
       if (simulationOldObj?.status?.toUpperCase() === SIMULATION_STATUS_NEW) {
         let simulation = req.body;
         if (validateDataForUpdate(simulation)) {
+
+          let frequencyFactor = 1;
+          switch (simulation.frequencyType) {
+            case 'd': frequencyFactor *= 24;
+            case 'h': frequencyFactor *= 60;
+            case 'm': frequencyFactor *= 60;
+            case 's': frequencyFactor *= 1;
+              break;
+            default: frequencyFactor = 1;
+          }
+
           const jobIds = await upsertNewJobs(req.body.jobs);
           deleteJobs(simulationOldObj.jobIds, req.body.jobs)
           const remainingJobs = req.body.jobs.filter(ele => ele._id).map(ele => ele._id);
           simulation.simulationName = simulationOldObj.simulationName;
+          simulation.actualFrequency = simulation.frequency ? simulation.frequency * frequencyFactor : 0;
           simulation.jobIds = [...remainingJobs, ...jobIds];
           SimulationModel.findOneAndUpdate({ _id: req.body._id }, simulation, function (err, simulationDetails) {
             if (err) {
@@ -133,6 +157,8 @@ router.get('/view/:simulationId', async function (req, res, next) {
           _id: "$_id",
           simulationName: { $first: "$simulationName" },
           date: { $first: "$date" },
+          frequency: { $first: "$frequency" },
+          frequencyType: { $first: "$frequencyType" },
           startTime: { $first: "$startTime" },
           endTime: { $first: "$endTime" },
           status: { $first: "$status" },
@@ -224,6 +250,8 @@ router.get('/', function (req, res, next) {
         _id: "$_id",
         simulationName: { $first: "$simulationName" },
         date: { $first: "$date" },
+        frequency: { $first: "$frequency" },
+        frequencyType: { $first: "$frequencyType" },
         startTime: { $first: "$startTime" },
         endTime: { $first: "$endTime" },
         status: { $first: "$status" },
@@ -304,17 +332,6 @@ function validateDataForUpdate(simulation) {
     return false;
   }
   return true;
-}
-
-async function validateNewJobs(jobIds) {
-  let flag = true;
-  for (let job of jobIds) {
-    const temp = await JobModel.find({ _id: job, simulation: { $exists: false } });
-    if (temp.length === 0) {
-      flag = false;
-    }
-  }
-  return flag;
 }
 
 function getJobsToRemove(oldList, newList) {
