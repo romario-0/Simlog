@@ -290,7 +290,46 @@ const SimulationDetails = () => {
                 value={simulation.simulationName}
                 onChange={e => handleOnChange('simulationName', e.target.value)}
                 placeholder="Add Simulation name" />
+              
+              </div>
+
+            <div className="col-2 simtext ">
+            
+            <label className="form-group col-sm-auto">Run on</label>
+              <input type='datetime-local' className="form-control col-sm-12" value={formatDate(new Date(simulation.date))}
+                onChange={e => handleOnChange('date', e.target.value)} />
             </div>
+
+            <div className="col-lg-2 simtitle row">
+
+            <label className="form-group col-sm-auto">Repeat Every</label>
+            <input type='number' className="form-control" value={simulation.frequency}
+                onChange={e => handleOnChange('frequency', e.target.value)} />
+              </div>
+
+              <div className="col-2 simtext ">
+              <label className="form-group col-sm-auto"></label>
+              <select className="form-select" onChange={e => handleOnChange('frequencyType', e.target.value)} disabled={!simulation.frequency} >
+                <option selected={simulation.frequencyType === 0} value={0}>Select</option>
+                <option selected={simulation.frequencyType === 's'} value={'s'}>Seconds</option>
+                <option selected={simulation.frequencyType === 'm'} value={'m'}>Minutes</option>
+                <option selected={simulation.frequencyType === 'h'} value={'h'}>Hours</option>
+                <option selected={simulation.frequencyType === 'd'} value={'d'}>Days</option>
+              </select>
+            </div>
+
+            </div>
+
+            <div className="form-group col-sm-7">
+              <label>Is Active</label>
+              <input
+                value={simulation.isActive}
+                checked={simulation.isActive}
+                onChange={e => handleOnChange('isActive', !simulation.isActive)}
+                type="checkbox" />
+            </div>
+
+
             {/* <div className="jobheight form-group col-md-4">
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div> */}
@@ -321,6 +360,10 @@ const SimulationDetails = () => {
             </div>
 
             <div className="dtheight form-group">
+              {/* <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
+                onChange={e => handleOnChange('date', e.target.value)} /> */}
+
+              
               <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
                 onChange={e => handleOnChange('date', e.target.value)} />
 
