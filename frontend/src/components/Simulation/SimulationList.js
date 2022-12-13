@@ -45,6 +45,7 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
             setShowJob({ ...showJob, ...show });
         }
     }
+    
 
     const createSimulationElements = () => {
         return simulationList.map((ele, index) =>
@@ -53,7 +54,8 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
                     <div className="col-sm-1"><i class="btn bi bi-chevron-down" onClick={(e) => handleClick(e, index) }></i></div>
                     <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>{ele.simulationName}</div>
                     <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>{displayDate(ele.date)}</div>
-                    <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>{ele.status}</div>
+                    {/* <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>{ele.status}</div> */}
+                    <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>Every {ele.frequency} {ele.frequencyType}</div>
                     <div className="col-sm-2" onClick={(e) => handleClick(e, index)}>{ele.jobs.length}</div>
                     <div className="col-sm-3" onClick={(e) => handleClick(e, index)}>
                         {ele.status.toUpperCase() === 'NEW' && <Link class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit" to={`/simulations/${ele._id}`}><i class="bi bi-pencil-fill"></i></Link>}
@@ -78,8 +80,8 @@ const SimulationList = ({ simulationList, refreshList, reload, clone }) => {
             <div className="row bg-info rounded-3">
                 <div className="col-sm-1"></div>
                 <div className="col-sm-2">Simulation Name</div>
-                <div className="col-sm-2">Date</div>
-                <div className="col-sm-2">Status</div>
+                <div className="col-sm-2">Next Run On</div>
+                <div className="col-sm-2">Frequency</div>
                 <div className="col-sm-2">Job Count</div>
                 <div className="col-sm-3">Action</div>
             </div>

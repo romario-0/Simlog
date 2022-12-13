@@ -129,17 +129,17 @@ const LogTypeDetails = () => {
 							Add
 						</button>}
 					</div>
-					<div className="form-group col-sm-4 mb-0">
+					<div className="form-group col-sm-3 mb-0">
 
 						<input
 							type="text"
 							value={ele.fieldKey}
 							onChange={(e) => setPatternData(idx, 'fieldKey', e.target.value)}
 							className="form-control"
-							placeholder="Enter Grab Pattern"
+							placeholder="Enter Value"
 						/>
 					</div>
-					<div className="form-group col-sm-4 mb-0">
+					<div className="form-group col-sm-3 mb-0">
 
 						<select className="form-control" onChange={(e) => setPatternData(idx, 'fieldFormat', e.target.value)}>
 							<option value={0} selected={ele.fieldFormat === 0}>-- Select Log Type --</option>
@@ -149,7 +149,7 @@ const LogTypeDetails = () => {
 						</select>
 					</div>
 
-					<div className="form-group col-sm-4 mb-0">
+					<div className="form-group col-sm-3 mb-0">
 						{
 							pattern[idx]?.fieldFormat === 'dataset' ?
 								(
@@ -163,11 +163,11 @@ const LogTypeDetails = () => {
 									value={ele.pyFormat}
 									onChange={(e) => setPatternData(idx, 'pyFormat', e.target.value)}
 									className="form-control"
-									placeholder="Enter Date Pattern"
+									placeholder="Enter Value"
 								/>
 						}
 					</div>
-					<div className="form-group col-sm-2 mb-0">
+					<div className="form-group col-sm-1 mb-0">
 						{
 							pattern.length > 1 && <button type="button" className=" btnheight btn btn-primary" onClick={(e) => removeFields(idx)} >
 								Del
@@ -355,7 +355,10 @@ const LogTypeDetails = () => {
 									Grab Pattern
 								</div>
 								<div className=" form-group">
-									Date Pattern
+									Data
+								</div>
+								<div className=" form-group">
+									Value
 								</div>
 							</div>
 							<div className="form-group col">
