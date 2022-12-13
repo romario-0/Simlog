@@ -9,6 +9,8 @@ const SimulationSchema = mongoose.Schema({
     frequency: Number,
     frequencyType: String,
     actualFrequency: Number,
+    isActive: Boolean,
+    isRepeat: Boolean,
     status: { type: String, default: 'NEW' },
     jobIds: [mongoose.Schema.ObjectId],
     createdBy: mongoose.Schema.ObjectId,

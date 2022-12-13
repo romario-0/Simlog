@@ -32,6 +32,8 @@ router.post('/save', async function (req, res, next) {
           frequency: req.body.frequency ? req.body?.frequency : 0,
           frequencyType: req.body.frequencyType ? req.body.frequencyType : 's',
           actualFrequency: req.body.frequency ? req.body.frequency * frequencyFactor : 0,
+          isActive: req.body.isActive ? req.body.isActive : false,
+          isRepeat: req.body.isRepeat ? req.body.isRepeat : false,
           status: SIMULATION_STATUS_NEW,
         });
 
@@ -157,6 +159,8 @@ router.get('/view/:simulationId', async function (req, res, next) {
           _id: "$_id",
           simulationName: { $first: "$simulationName" },
           date: { $first: "$date" },
+          isActive: { $first: "$isActive" },
+          isRepeat: { $first: "$isRepeat" },
           frequency: { $first: "$frequency" },
           frequencyType: { $first: "$frequencyType" },
           startTime: { $first: "$startTime" },
@@ -250,6 +254,8 @@ router.get('/', function (req, res, next) {
         _id: "$_id",
         simulationName: { $first: "$simulationName" },
         date: { $first: "$date" },
+        isActive: { $first: "$isActive" },
+        isRepeat: { $first: "$isRepeat" },
         frequency: { $first: "$frequency" },
         frequencyType: { $first: "$frequencyType" },
         startTime: { $first: "$startTime" },
