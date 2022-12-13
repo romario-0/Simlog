@@ -282,8 +282,8 @@ const SimulationDetails = () => {
         <div className="col-lg-10 col-md-6 col-sm-6 card bg-light row p-0 mx-3">
           <h4 class="card-title mb-3">Create New Simulation</h4>
           <div className="card-body col-sm-12 col-md-12 row">
-            <div className="simulationhead row col ">
-              <div  className="col-lg-2 simtitle row">
+            <div className="simulationhead row col-lg-10 ">
+              <div  className="col-lg-2 simtext row">
               <label className="form-group col-sm-auto">Simulation Name</label>
               <input className="form-control"
                 disabled={simulation._id}
@@ -299,37 +299,41 @@ const SimulationDetails = () => {
               <input type='datetime-local' className="form-control col-sm-12" value={formatDate(new Date(simulation.date))}
                 onChange={e => handleOnChange('date', e.target.value)} />
             </div>
-
-            <div className="col-lg-2 simtitle row">
-
-            <label className="form-group col-sm-auto">Repeat Every</label>
-            <input type='number' className="form-control" value={simulation.frequency}
-                onChange={e => handleOnChange('frequency', e.target.value)} />
-              </div>
-
-              <div className="col-2 simtext ">
-              <label className="form-group col-sm-auto"></label>
-              <select className="form-select" onChange={e => handleOnChange('frequencyType', e.target.value)} disabled={!simulation.frequency} >
-                <option selected={simulation.frequencyType === 0} value={0}>Select</option>
-                <option selected={simulation.frequencyType === 's'} value={'s'}>Seconds</option>
-                <option selected={simulation.frequencyType === 'm'} value={'m'}>Minutes</option>
-                <option selected={simulation.frequencyType === 'h'} value={'h'}>Hours</option>
-                <option selected={simulation.frequencyType === 'd'} value={'d'}>Days</option>
-              </select>
-            </div>
-
-            </div>
-
-            <div className="form-group col-sm-7">
-              <label>Is Active</label>
+            <div className="form-group col-auto">
+               {/* <label>Schedule</label>
               <input
                 value={simulation.isActive}
                 checked={simulation.isActive}
                 onChange={e => handleOnChange('isActive', !simulation.isActive)}
-                type="checkbox" />
+                type="checkbox" /> */}
             </div>
+              
+            <div className="col-2 repeat">
+            {/* <label>Schedule</label> */}
+            <label className="form-group col-sm-auto">Repeat Every</label>
+               <input
+                value={simulation.isRepeat}
+                onChange={e => handleOnChange('isRepeat', !simulation.isRepeat)}
+                type="checkbox" checked={simulation.isRepeat} />
 
+              
+              
+              {simulation.isRepeat &&
+                <>
+                  
+                  <input type='number' className="form-control col-sm-5 control-label" value={simulation.frequency}
+                    onChange={e => handleOnChange('frequency', e.target.value)} />
 
+                  <select className="form-select col-sm-6 control-label" onChange={e => handleOnChange('frequencyType', e.target.value)} disabled={!simulation.frequency} >
+                    <option selected={simulation.frequencyType === 0} value={0}>Select</option>
+                    <option selected={simulation.frequencyType === 's'} value={'s'}>Seconds</option>
+                    <option selected={simulation.frequencyType === 'm'} value={'m'}>Minutes</option>
+                    <option selected={simulation.frequencyType === 'h'} value={'h'}>Hours</option>
+                    <option selected={simulation.frequencyType === 'd'} value={'d'}>Days</option>
+                  </select>
+                </>}
+              </div>
+            </div>
             {/* <div className="jobheight form-group col-md-4">
             <MultiSelect options={getJobOptions} onChange={setSimulationJobs} value={selectedJobs} />
           </div> */}
@@ -364,27 +368,8 @@ const SimulationDetails = () => {
                 onChange={e => handleOnChange('date', e.target.value)} /> */}
 
               
-              <input type='datetime-local' className="form-control" value={formatDate(new Date(simulation.date))}
-                onChange={e => handleOnChange('date', e.target.value)} />
 
-              <input
-                value={simulation.isRepeat}
-                onChange={e => handleOnChange('isRepeat', !simulation.isRepeat)}
-                type="checkbox" checked={simulation.isRepeat} />
-
-              {simulation.isRepeat &&
-                <>
-                  <input type='number' className="form-control" value={simulation.frequency}
-                    onChange={e => handleOnChange('frequency', e.target.value)} />
-
-                  <select onChange={e => handleOnChange('frequencyType', e.target.value)} disabled={!simulation.frequency} >
-                    <option selected={simulation.frequencyType === 0} value={0}>Select</option>
-                    <option selected={simulation.frequencyType === 's'} value={'s'}>Seconds</option>
-                    <option selected={simulation.frequencyType === 'm'} value={'m'}>Minutes</option>
-                    <option selected={simulation.frequencyType === 'h'} value={'h'}>Hours</option>
-                    <option selected={simulation.frequencyType === 'd'} value={'d'}>Days</option>
-                  </select>
-                </>}
+              
 
               <button className="btn btn-primary" onClick={saveSimulation} disabled={isLoading}>Submit</button>
 

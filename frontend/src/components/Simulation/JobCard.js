@@ -84,7 +84,7 @@ const JobCard = ({ job, updateJob, logOptions, sourceOptions, collectorOptions, 
     <div className="simjobcard row col-12">
       <div className="form-group col-sm-2">
         <select
-          className="form-select"
+          className="form-select col-sm-9 control-label"
           name="logSourceId"
           disabled={(job.status && job.status !== 'New')}
           onChange={(e) => handleOnChange("logId", e.target.value)}

@@ -170,8 +170,8 @@ padding:none;
 
 .jobcardbtn1 {
   position: absolute;
-  margin-left: 53rem; 
-  margin-top: -86px;
+  margin-left: 49rem; 
+  margin-top: -89px;
 }
 i.btn.bi.bi-chevron-down {
   padding: 0 0;
@@ -188,7 +188,7 @@ i.fa.fa-user {
   margin-bottom: 11px;
   }
   .deljob.col-12.simhead {
-    width: 88%;
+    width: 91%;
     margin-left: 2px;
     column-gap:17px;
   
@@ -230,3 +230,23 @@ table.table.table-striped.table-bordered.table-hover tr:first-child > * {
   border-radius: 0px;
 }
 
+.col-2.repeat {
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+    column-gap: 8px;
+}
+
+ input[type="checkbox"] {
+  margin-top:3px;
+} 
+.form-group.col-auto {
+  display: flex;
+  align-items: flex-end;
+  align-content: center;
+  margin-top: 14px;
+  column-gap: 12px;
+}
+.simulationhead.row.col-lg-10 {
+  padding-left: 41px;
+}
